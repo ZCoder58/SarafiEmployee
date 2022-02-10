@@ -1,0 +1,83 @@
+
+$primaryTransparentMain:#779cf318;
+$primaryTransparentLight:#769bf318;
+$primaryTransparentDark:#769bf118;
+$primaryTransparentContrastText:#000000;
+
+$primaryMain:#0364b4;
+$primaryLight:#0364b3;
+$primaryDark:#0364b4;
+$primaryContrastText:#ffffff;
+
+$infoMain:#0c57f9;
+$infoLight:#0c57f9;
+$infoDark:#0c57f9;
+$infoContrastText:#ffffff;
+
+$secondaryMain:#363636;
+$secondaryLight:#363636;
+$secondaryDark:#363636;
+$secondaryContrastText:#ffffff;
+
+$successMain:#77fd65;
+$successLight:#77fd65;
+$successDark:#77fd65;
+$successContrastText:#271111;
+
+$dangerMain:#ff3838;
+$dangerLight:#ff3838;
+$dangerDark:#ff3838;
+$dangerContrastText:#ffffff;
+
+$warningMain:#ffdb38;
+$warningLight:#ffdb38;
+$warningDark:#ffdb38;
+$warningContrastText:#ffffff;
+
+$grey0:#ffffff;
+$grey50:#f1f1f1;
+$grey100:#f0f0f0;
+$grey200:#dfdddd;
+$grey300:#c9c9c9;
+$grey400:#adadad;
+$grey500:#979797;
+$bodyBackgroundColor:#f7f7f7;
+:export 
+{
+    primaryTransparentMain:$primaryTransparentMain;
+    primaryTransparentLight:$primaryTransparentLight;
+    primaryTransparentDark:$primaryTransparentDark;
+    primaryTransparentContrastText:$primaryTransparentContrastText;
+    primaryMain:$primaryMain;
+    primaryLight:$primaryLight;
+    primaryDark:$primaryDark;
+    primaryContrastText:$primaryContrastText;
+    infoMain:$infoMain;
+    infoLight:$infoLight;
+    infoDark: $infoDark;
+    infoContrastText:$infoContrastText;
+    secondaryMain: $secondaryMain;
+    secondaryLight: $secondaryLight;
+    secondaryDark: $secondaryDark;
+    secondaryContrastText:$secondaryContrastText;
+    successMain: $successMain;
+    successLight: $successLight;
+    successDark: $successDark;
+    successContrastText:$successContrastText;
+    dangerMain: $dangerMain;
+    dangerLight: $dangerLight;
+    dangerDark: $dangerDark;
+    dangerContrastText:$dangerContrastText;
+    warningMain: $warningMain;
+    warningLight: $warningLight;
+    warningDark: $warningDark;
+    warningContrastText:$warningContrastText;
+    grey0: $grey0;
+    grey50: $grey50;
+    grey100: $grey100;
+    grey200: $grey200;
+    grey300: $grey300;
+    grey400: $grey400;
+    grey500: $grey500;
+    bodyBackgroundColor:$bodyBackgroundColor;
+}

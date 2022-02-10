@@ -1,0 +1,2 @@
+export const T_SCROLLED="SCROLLED"
+export const T_SCROLLED_ZERO="SCROLLED-ZERO"
