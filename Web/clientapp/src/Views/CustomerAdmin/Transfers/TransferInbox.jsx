@@ -21,7 +21,7 @@ export default function InnerTransferInbox() {
         {
             name: <Typography variant="body2" fontWeight={600}>از طرف</Typography>,
             selector: row => (
-                <ListItem sx={{ flexDirection: "column",alignItems:"normal" }} >
+                <ListItem sx={{ flexDirection: "column",alignItems:"normal",px:0 }} >
                     <ListItemText
                         primary={
                             <React.Fragment>
@@ -79,6 +79,14 @@ export default function InnerTransferInbox() {
             name: <Typography variant="body2" fontWeight={600}>دریافت کننده</Typography>,
             selector: row => (
                 <Box>{row.toName} {row.toLastName}</Box>
+            ),
+            sortable: false,
+            reorder: true
+        },
+        {
+            name: <Typography variant="body2" fontWeight={600}>مبلغ دریافتی</Typography>,
+            selector: row => (
+                <Box>{row.destinationAmount} {row.toCurrency}</Box>
             ),
             sortable: false,
             reorder: true

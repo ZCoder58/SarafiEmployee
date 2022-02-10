@@ -13,7 +13,7 @@ namespace Domain.Entities
         public string ToName { get; set; }
         public string ToLastName { get; set; }
         public string ToPhone { get; set; }
-
+        public string ToSId { get; set; }
         public string FromCurrency { get; set; }
         public string ToCurrency { get; set; }
 

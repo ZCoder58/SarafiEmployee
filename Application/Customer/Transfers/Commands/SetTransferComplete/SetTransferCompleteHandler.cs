@@ -24,6 +24,7 @@ namespace Application.Customer.Transfers.Commands.SetTransferComplete
                 .GetById(request.TransferId);
             targetTransfer.State = TransfersStatusTypes.Completed;
             targetTransfer.ToPhone = request.Phone;
+            targetTransfer.ToSId = request.SId;
            await _dbContext.SaveChangesAsync(cancellationToken);
            await _mediator.Publish(new TransferCompleted(),cancellationToken);
            return Unit.Value;

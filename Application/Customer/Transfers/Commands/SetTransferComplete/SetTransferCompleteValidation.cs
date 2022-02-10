@@ -22,6 +22,8 @@ namespace Application.Customer.Transfers.Commands.SetTransferComplete
                 .WithMessage("درخواست رد شد");
             RuleFor(a => a.Phone)
                 .NotNull().WithMessage("شماره تماس دریافت کننده پول ضروری میباشد");
+            RuleFor(a => a.SId)
+                .NotNull().WithMessage("نمبر تذکره دریافت کننده پول ضروری میباشد");
         }
 
         public bool Valid(Guid transferId)

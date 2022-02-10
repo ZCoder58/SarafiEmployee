@@ -7,7 +7,8 @@ import Util from '../../../helpers/Util'
 import { LoadingButton } from '@mui/lab'
 import { CheckCircleOutline } from '@mui/icons-material'
 const validationSchema = Yup.object().shape({
-    phone: Yup.string().required("شماره تماس دریافت کننده پول ضروری میباشد")
+    phone: Yup.string().required("شماره تماس دریافت کننده پول ضروری میباشد"),
+    sId: Yup.string().required("نمبر تذکره دریافت کننده پول ضروری میباشد")
 });
 export default function SetTransferCompleteForm({ transferId,onSubmited }) {
     const formik = useFormik({
@@ -35,6 +36,17 @@ export default function SetTransferCompleteForm({ transferId,onSubmited }) {
                 type='text'
                 required
                 error={formik.errors.phone ? true : false}
+                onChange={formik.handleChange}
+            />
+            <TextField
+                variant='outlined'
+                name='sId'
+                helperText={formik.errors.sId}
+                size='small'
+                label='نمبر تذکره گیرنده پول'
+                type='text'
+                required
+                error={formik.errors.sId ? true : false}
                 onChange={formik.handleChange}
             />
              <LoadingButton

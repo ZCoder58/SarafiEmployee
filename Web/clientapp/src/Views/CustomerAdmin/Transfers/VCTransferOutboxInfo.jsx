@@ -71,7 +71,7 @@ export default function VCTransferInfo() {
                                 <Typography variant="body2">{transfer.fromName} {transfer.fromLastName}</Typography>
                             </StyledRowDark>
                             <StyledRowLight>
-                                <Typography variant="body1" fontWeight={900}>شماره تماس ارسال کننده :</Typography>
+                                <Typography variant="body1" fontWeight={900}>شماره تماس :</Typography>
                                 <Typography variant="body2">{transfer.fromPhone}</Typography>
                             </StyledRowLight>
                             <StyledRowDark>
@@ -83,6 +83,16 @@ export default function VCTransferInfo() {
                             <StyledRowLight>
                                 <Typography variant="body1" fontWeight={900}>دریافت کننده :</Typography>
                                 <Typography variant="body2">{transfer.toName} {transfer.toLastName}</Typography>
+                               
+                            </StyledRowLight>
+                            <StyledRowLight>
+                                <Typography variant="body1" fontWeight={900}>شماره تماس :</Typography>
+                                <Typography variant="body2">{transfer.toPhone}</Typography>
+                               
+                            </StyledRowLight>
+                            <StyledRowLight>
+                                <Typography variant="body1" fontWeight={900}>نمبر تذکره :</Typography>
+                                <Typography variant="body2">{transfer.toSid}</Typography>
 
                             </StyledRowLight>
                             <StyledRowDark>
