@@ -97,7 +97,7 @@ export default function VCTransferInfo() {
                             </StyledRowLight>
                             <StyledRowLight>
                                 <Typography variant="body1" fontWeight={900}>نمبر تذکره :</Typography>
-                                <Typography variant="body2">{transfer.toSid}</Typography>
+                                <Typography variant="body2">{transfer.toSId}</Typography>
 
                             </StyledRowLight>
                             <StyledRowDark>

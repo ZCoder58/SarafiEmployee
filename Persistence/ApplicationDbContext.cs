@@ -44,11 +44,11 @@ namespace Persistence
                 {
                     case EntityState.Added:
                        
-                        entry.Entity.CreatedDate = DateTime.Now;
+                        entry.Entity.CreatedDate = DateTime.UtcNow;
                         break;
                     case EntityState.Modified:
                        
-                        entry.Entity.UpdatedDate = DateTime.Now;
+                        entry.Entity.UpdatedDate = DateTime.UtcNow;
                         break;
                 }
             }
@@ -64,11 +64,11 @@ namespace Persistence
                    
                     case EntityState.Added:
                         
-                        entry.Entity.CreatedDate = DateTime.Now;
+                        entry.Entity.CreatedDate = DateTime.UtcNow;
                         break;
                     case EntityState.Modified:
                       
-                        entry.Entity.UpdatedDate = DateTime.Now;
+                        entry.Entity.UpdatedDate = DateTime.UtcNow;
                         break;
 
                 }

@@ -9,7 +9,7 @@ namespace Domain.Common
         public BaseEntity()
         {
             Id= Guid.NewGuid();
-            CreatedDate = DateTime.Now;
+            CreatedDate = DateTime.UtcNow;
         }
         public Guid Id { get; set; } 
         public DateTime? UpdatedDate { get; set; }
