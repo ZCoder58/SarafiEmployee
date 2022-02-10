@@ -1,0 +1,13 @@
+﻿/Web/bin/
+/Web/clientapp/node_modules/
+/Web/clientapp/build.zip
+/Web/obj/
+/Persistence/bin/
+/Persistence/obj/
+/Infrastructure/bin/
+/Infrastructure/obj/
+/Domain/bin/
+/Domain/obj/
+/Application/bin/
+/Application/obj/
+/Web/clientapp/build/
