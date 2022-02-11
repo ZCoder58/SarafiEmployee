@@ -93,6 +93,8 @@ export const AuthProvider = ({ children }) => {
     if(isCustomer()){
       let profilePhoto=getPhoto()
       profilePhotoPath= CustomerStatics.profilePituresPath(userId,profilePhoto)
+   
+      console.log("path :",CustomerStatics.profilePituresPath(userId,profilePhoto))
     }
 
     dispatch({

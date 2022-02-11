@@ -1,5 +1,5 @@
 const CountriesRatesStatics={
-     flagPath:(flagName)=>process.env.PUBLIC_URL + "/flags/"+flagName
+     flagPath:(flagName)=>"/images/flags/"+flagName
 }
 export default CountriesRatesStatics;
 

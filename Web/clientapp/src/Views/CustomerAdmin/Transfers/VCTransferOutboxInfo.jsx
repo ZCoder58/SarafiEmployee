@@ -62,7 +62,11 @@ export default function VCTransferInfo() {
                             </StyledRowDark>
                             <StyledRowLight>
                                 <Typography variant="body1" fontWeight={900}>وضعیت :</Typography>
-                                {transfer.state === 0 ? <Chip size="small" color="warning" label="درجریان"></Chip> : <Chip size="small" color="success" label="اجرا شده"></Chip>}
+                                {transfer.state === 0 ?
+                                 <Chip size="small" color="warning" label="درجریان"></Chip> :
+                                 transfer.state===1?
+                                 <Chip size="small" color="success" label="اجرا شده"></Chip> :
+                                 <Chip size="small" color="error" label="رد شده"></Chip>}
                             </StyledRowLight>
                             <Typography variant="h6" color="primary">معلومات ارسال کننده</Typography>
                             <Divider />

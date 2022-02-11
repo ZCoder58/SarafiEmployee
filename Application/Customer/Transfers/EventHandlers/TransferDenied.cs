@@ -10,34 +10,34 @@ using MediatR;
 
 namespace Application.Customer.Transfers.EventHandlers
 {
-    public record TransferCreated(Guid ReceiverId) : INotification;
-    public class TransferCreatedHandler:INotificationHandler<TransferCreated>
+    public record TransferDenied(Guid TransferSenderId) : INotification;
+    public class TransferDeniedHandler:INotificationHandler<TransferDenied>
     {
         private readonly INotifyHubAccessor _notifyHub;
         private readonly IApplicationDbContext _dbContext;
         private readonly IHttpUserContext _httpUserContext;
 
-        public TransferCreatedHandler(INotifyHubAccessor notifyHub, IApplicationDbContext dbContext, IHttpUserContext httpUserContext)
+        public TransferDeniedHandler(INotifyHubAccessor notifyHub, IApplicationDbContext dbContext, IHttpUserContext httpUserContext)
         {
             _notifyHub = notifyHub;
             _dbContext = dbContext;
             _httpUserContext = httpUserContext;
         }
 
-        public async Task Handle(TransferCreated notification, CancellationToken cancellationToken)
+        public async Task Handle(TransferDenied notification, CancellationToken cancellationToken)
         {
             var sender = _dbContext.Customers.GetById(_httpUserContext.GetCurrentUserId().ToGuid());
-            //send self notific 
-            await _notifyHub.NotifySelfAsync("حواله جدید موفقانه اضافه شد","success");
+           
+            
             await _dbContext.CustomerNotifications.AddAsync(new CustomerNotification()
             {
-                Title = "حواله جدید",
-                Body = string.Concat("حواله جدید از ",sender.Name," ",sender.LastName),
-                CustomerId = notification.ReceiverId,
-                Type = "newTransfer"
+                Title = "رد حواله",
+                Body = string.Concat(sender.Name," ",sender.LastName," حواله شما را رد کرد"),
+                CustomerId = notification.TransferSenderId,
+                Type = "deniedTransfer"
             },cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            await _notifyHub.UpdateNotificationUser(notification.ReceiverId);
+            await _notifyHub.UpdateNotificationUser(notification.TransferSenderId);
         }
     }
 }

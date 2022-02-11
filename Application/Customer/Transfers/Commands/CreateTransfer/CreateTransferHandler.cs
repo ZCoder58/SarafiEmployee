@@ -5,7 +5,7 @@ using Application.Common.Extensions.DbContext;
 using Application.Common.Interfaces;
 using Application.Common.Statics;
 using Application.Customer.ExchangeRates.Extensions;
-using Application.Customer.Transfers.Commands.EventHandlers;
+using Application.Customer.Transfers.EventHandlers;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;

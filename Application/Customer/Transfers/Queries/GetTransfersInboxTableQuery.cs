@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
 using Application.Common.Models;
+using Application.Common.Statics;
 using Application.Customer.Transfers.Commands.DTOs;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Customer.Transfers.Commands.Queries
+namespace Application.Customer.Transfers.Queries
 {
     public record GetTransfersInboxTableQuery
         (TableFilterModel FilterModel) : IRequest<PaginatedList<TransferInboxTableDTo>>;
@@ -36,7 +37,10 @@ namespace Application.Customer.Transfers.Commands.Queries
         {
             var searchText = request.FilterModel.Search;
             var items = _dbContext.Transfers
-                    .Where(a => a.ReceiverId == _userContext.GetCurrentUserId().ToGuid())
+                    .Where(a => 
+                        a.ReceiverId == _userContext.GetCurrentUserId().ToGuid() &&
+                        (a.State == TransfersStatusTypes.Completed ||
+                         a.State == TransfersStatusTypes.InProgress))
                     .OrderDescending();
             if (searchText.IsNotNullOrEmpty())
             {

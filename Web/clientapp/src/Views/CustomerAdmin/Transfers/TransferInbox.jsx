@@ -7,13 +7,14 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useNavigate } from 'react-router'
 import authAxiosApi from '../../../axios';
 import { useSelector } from 'react-redux';
+import DoDisturbOffOutlinedIcon from '@mui/icons-material/DoDisturbOffOutlined';
 export default function InnerTransferInbox() {
     // const [loading, setLoading] = React.useState(true)
     const [refreshTableState, setRefreshTableState] = React.useState(false)
     const [searchOpen, setSeachOpen] = React.useState(false)
     const [searchText, setSearchText] = React.useState("")
-    const [askCompleteOpen, setAskCompleteOpen] = React.useState(false)
-    const [transferIdForSetComplete, setTransferIdForSetComplete] = React.useState("")
+    const [askDenyOpen, setAskDenyOpen] = React.useState(false)
+    const [transferIdForSetDeny, setTransferIdForDeny] = React.useState("")
     const theme = useTheme()
     const navigate = useNavigate()
     const { screenXs } = useSelector(states => states.R_AdminLayout)
@@ -48,9 +49,10 @@ export default function InnerTransferInbox() {
                    <Button variant="contained" size="small" onClick={() => navigate("/customer/transfers/inbox/" + row.id)}>
                        {row.state===0?"اجرا کردن":"جزییات"}
                     </Button>
-                    {/* <Button variant="contained" color="error" size="small" onClick={() => navigate("/customer/transfers/inbox/" + row.id)}>
+                    {row.state===0&&
+                    <Button variant="contained" color="error" size="small" onClick={()=>askForDeny(row.id)}>
                         رد کردن
-                    </Button> */}
+                    </Button>}
                    </Stack>
 
                 </ListItem>
@@ -111,11 +113,12 @@ export default function InnerTransferInbox() {
                         <InfoOutlinedIcon />
                     </IconButton>
                 </CTooltip>
-                {/* <CTooltip title="رد کردن">
-                   <IconButton onClick={() => navigate("/customer/transfers/inbox/" + row.id)}>
-                       <InfoOutlinedIcon />
-                   </IconButton>
-               </CTooltip> */}
+               {row.state===0&&
+                <CTooltip title="رد کردن">
+                <IconButton onClick={() =>askForDeny(row.id)}>
+                    <DoDisturbOffOutlinedIcon  />
+                </IconButton>
+            </CTooltip>}
                </>
             ,
             sortable: false,
@@ -126,15 +129,15 @@ export default function InnerTransferInbox() {
     const globalSearch = React.useCallback((searchedText) => {
         setSearchText(s => s = searchedText)
     }, [])
-    function askForSetComplete(transferId) {
-        setTransferIdForSetComplete(transferId)
-        setAskCompleteOpen(true)
+    function askForDeny(transferId) {
+        setTransferIdForDeny(transferId)
+        setAskDenyOpen(true)
     }
-    async function setTransferComplete() {
-        await authAxiosApi.put(`customer/transfers/setComplete/${transferIdForSetComplete}`).then(r => {
+    async function setTransferDeny() {
+        await authAxiosApi.put(`customer/transfers/denyTransfer/${transferIdForSetDeny}`).then(r => {
             refreshTable()
         })
-        setAskCompleteOpen(false)
+        setAskDenyOpen(false)
     }
     function refreshTable() {
         setRefreshTableState(!refreshTableState)
@@ -145,10 +148,10 @@ export default function InnerTransferInbox() {
 
         <Grid container spacing={2}>
             <AskDialog
-                open={askCompleteOpen}
-                onNo={() => setAskCompleteOpen(!askCompleteOpen)}
-                onYes={() => setTransferComplete()}
-                message="این عملیه غیر قابل بازگشت است" />
+                open={askDenyOpen}
+                onNo={() => setAskDenyOpen(!askDenyOpen)}
+                onYes={() => setTransferDeny()}
+                message="ایا میخواهید این حواله را رد کنید؟" />
             <Grid item lg={12} md={12} sm={12} xs={12}>
                 <CToolbar>
                     <CTooltip title="حواله جدید">
@@ -178,8 +181,6 @@ export default function InnerTransferInbox() {
                     columns={screenXs?columnsMobile:columnsDesktop}
                     serverUrl={`customer/transfers/inbox`}
                     refreshState={refreshTableState}
-                    // expandableRows={true}
-                    // ExpandedComponent={ExpandedRowComponent}
                 />
             </Grid>
         </Grid>

@@ -5,7 +5,7 @@ import authAxiosApi from '../../../axios';
 import CustomerStatics from '../../../helpers/statics/CustomerStatic';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 export default function FriendsRequestList() {
     const [loading, setLoading] = React.useState(false)
     const [requests, setRequests] = React.useState([])
@@ -14,24 +14,26 @@ export default function FriendsRequestList() {
     const [filterList, setFilterList] = React.useState({
         page: 1,
     })
-    const{screenXs}=useSelector(states=>states.R_AdminLayout)
-    const ListItemViewDetect=({request,children})=>(
-    screenXs?
-    (<ListItem sx={{ flexDirection: "column",alignItems:"normal" }}>
-       {children}
-       <Stack direction="row" spacing={1} justifyContent="flex-end">
-       <ApproveFriendRequestButton requestId={request.id} onClick={()=>removeRequest(request.id)}/>
-       </Stack>
-    </ListItem>):
-    (<ListItem secondaryAction={
-        <ApproveFriendRequestButton requestId={request.id} onClick={()=>removeRequest(request.id)}/>
-    }>
-       {children}
-    </ListItem>)
+    const { screenXs } = useSelector(states => states.R_AdminLayout)
+    const ListItemViewDetect = ({ request, children }) => (
+        screenXs ?
+            (  <Box>
+            <ListItem>
+                   {children}
+            </ListItem>
+            <Stack direction="row" justifyContent="flex-end" px={1} pb={1}>
+                    <ApproveFriendRequestButton requestId={request.id} onClick={() => removeRequest(request.id)} />
+                </Stack>
+            </Box>) :
+            (<ListItem secondaryAction={
+                <ApproveFriendRequestButton requestId={request.id} onClick={() => removeRequest(request.id)} />
+            }>
+                {children}
+            </ListItem>)
     )
 
-    function removeRequest(requestId){
-        setRequests(r=>r.filter(e=>e.id!==requestId))
+    function removeRequest(requestId) {
+        setRequests(r => r.filter(e => e.id !== requestId))
     }
 
     React.useEffect(() => {
@@ -53,10 +55,10 @@ export default function FriendsRequestList() {
             {loading ? <SkeletonFull /> :
                 <>
                     <List>
-                        {requests.length>0?requests.map((request, i) => (
+                        {requests.length > 0 ? requests.map((request, i) => (
                             <Box key={i}>
-                               <ListItemViewDetect request={request}>
-                                <ListItemAvatar>
+                                <ListItemViewDetect request={request}>
+                                    <ListItemAvatar>
                                         <CAvatar src={CustomerStatics.profilePituresPath(request.id, request.customerPhoto)}
                                             variant="rounded"
                                             size={50} />
@@ -68,14 +70,14 @@ export default function FriendsRequestList() {
                                 </ListItemViewDetect>
                                 <Divider orientation='horizontal' flexItem />
                             </Box>
-                        )):<NotExist/>}
+                        )) : <NotExist />}
                     </List>
                     <Stack justifyContent="space-around" direction="row" spaceing={2}>
                         <Button
                             disabled={!hasPrevious ? true : false}
                             startIcon={<NavigateNextIcon />}
                             onClick={() => {
-                                setFilterList(s=>s={
+                                setFilterList(s => s = {
                                     ...s,
                                     page: (s.page - 1)
                                 })
@@ -87,7 +89,7 @@ export default function FriendsRequestList() {
                             disabled={!hasNext ? true : false}
                             endIcon={<NavigateBeforeIcon />}
                             onClick={() => {
-                                setFilterList(s=>s={
+                                setFilterList(s => s = {
                                     ...s,
                                     page: (s.page + 1)
                                 })

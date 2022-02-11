@@ -8,7 +8,8 @@ namespace Application.Common.Statics
     {
         public static string FilesSavePath(Guid customerId)
         {
-            return Path.Combine("clientapp","public","customer",customerId.ToString(),"photos");
+                
+            return Path.Combine("images","customers",customerId.ToString(),"photos");
         } 
 
         public static Claim[] DefaultCustomerClaim(string photo,string name,string lastName,string isPremiumAccount)

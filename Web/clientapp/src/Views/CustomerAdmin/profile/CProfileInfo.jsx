@@ -8,6 +8,7 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { LoadingButton } from '@mui/lab'
 import Util from '../../../helpers/Util'
+import CustomerStatics from '../../../helpers/statics/CustomerStatic'
 const validationSchema = Yup.object().shape({
     photoFile:Yup.mixed().nullable()
 });

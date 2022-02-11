@@ -41,7 +41,6 @@
       <Folder Include="Countries\Commands" />
       <Folder Include="Customer\Dashboards\DTOs" />
       <Folder Include="Customer\Dashboards\Queries" />
-      <Folder Include="Customer\Transfers\Commands\DenyTransfer" />
       <Folder Include="SunriseSuperAdmin\Customers\Extensions" />
       <Folder Include="Website\Customers" />
       <Folder Include="Website\Management\extensions" />

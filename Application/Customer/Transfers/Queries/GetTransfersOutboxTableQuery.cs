@@ -10,7 +10,7 @@ using AutoMapper.QueryableExtensions;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Customer.Transfers.Commands.Queries
+namespace Application.Customer.Transfers.Queries
 {
     public record GetTransfersOutboxTableQuery
         (TableFilterModel FilterModel) : IRequest<PaginatedList<TransferOutboxTableDTo>>;

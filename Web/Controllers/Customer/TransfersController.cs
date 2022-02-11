@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Common.Models;
 using Application.Customer.Transfers.Commands.CreateTransfer;
+using Application.Customer.Transfers.Commands.DenyTransfer;
 using Application.Customer.Transfers.Commands.DTOs;
-using Application.Customer.Transfers.Commands.Queries;
+using Application.Customer.Transfers.Commands.ResendTransfer;
 using Application.Customer.Transfers.Commands.SetTransferComplete;
 using Application.Customer.Transfers.DTOs;
+using Application.Customer.Transfers.Queries;
 using Application.Customer.Transfers.Queries.GetInTransfersReport;
 using Application.Customer.Transfers.Queries.GetOutTransfersReport;
 using Application.Customer.Transfers.Queries.GetTransferDetailInbox;
@@ -67,6 +69,16 @@ namespace Web.Controllers.Customer
         public Task PassTransfer([FromForm]SetTransferCompleteCommand request)
         {
             return Mediator.Send(request);
+        }
+        [HttpPut("denyTransfer/{transferId}")]
+        public Task DenyTransfer(Guid transferId)
+        {
+            return Mediator.Send(new DenyTransferCommand(transferId));
+        }
+        [HttpPut("resendTransfer/{transferId}")]
+        public Task ResendTransfer(Guid transferId)
+        {
+            return Mediator.Send(new ResendTransferCommand(transferId));
         }
         [HttpGet("inReport")]
         public Task<List<TransferInReportDTo>> GetInReport(DateTime fromDate,DateTime toDate,Guid friendId)
