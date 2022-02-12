@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
 using Application.Common.Models;
-using Application.Customer.Transfers.Commands.DTOs;
+using Application.Customer.Transfers.DTOs;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Interfaces;

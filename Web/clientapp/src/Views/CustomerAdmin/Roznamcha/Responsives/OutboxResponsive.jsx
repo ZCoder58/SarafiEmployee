@@ -11,6 +11,12 @@ export const TableRoznamchaOutboxDesktop = ({ transfers=[] }) => (
             <TableCell sx={{ typography: "body1", fontWeight: 900 }}>
                 تعداد حواله
             </TableCell>
+            <TableCell sx={{ typography: "body1", fontWeight: 900 }}>
+                مجموع کمیشن
+            </TableCell>
+            <TableCell sx={{ typography: "body1", fontWeight: 900 }}>
+                مجموع طلب
+            </TableCell>
         </TableRow>
     </TableHead>
     <TableBody>
@@ -21,6 +27,15 @@ export const TableRoznamchaOutboxDesktop = ({ transfers=[] }) => (
                     </TableCell>
                     <TableCell>
                         {e.totalTransfers}
+                    </TableCell>
+                    <TableCell>
+                        {e.totalReceiverFee} {e.currencyName}
+                    </TableCell>
+                    <TableCell sx={{ 
+                        fontWeight:900,
+                         color:"primary"
+                     }}>
+                        {(Number(e.totalReceiverFee)+Number(e.totalAmount))} {e.currencyName}
                     </TableCell>
                 </TableRow>
             )):
@@ -55,6 +70,8 @@ export const TableRoznamchaOutboxMobile = ({transfers=[]}) => (
                                 <React.Fragment>
                                     <Stack component="span" spacing={1} direction="column">
                                         <Typography component="span">مجموع حواله - {e.totalTransfers}</Typography>                                   
+                                        <Typography component="span">مجموع کمیشن - {e.totalReceiverFee} {e.currencyName}</Typography>                                   
+                                        <Typography component="span" fontWeight={900} color="primary">مجموع طلب -{(Number(e.totalReceiverFee)+Number(e.totalAmount))} {e.currencyName}</Typography>                                   
                                     </Stack>
                                 </React.Fragment>
                             }

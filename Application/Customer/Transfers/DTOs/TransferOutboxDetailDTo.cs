@@ -7,12 +7,15 @@ namespace Application.Customer.Transfers.DTOs
         public Guid Id { get; set; }
         public string FromName { get; set; }
         public string FromLastName { get; set; }
+        public string FromFatherName { get; set; }
         public string FromPhone { get; set; }
 
         public string ToName { get; set; }
         public string ToLastName { get; set; }
         public string ToPhone { get; set; }
         public string ToSId { get; set; }
+        public string ToFatherName { get; set; }
+        public string ToGrandFatherName { get; set; }
         
         public string FromCurrency { get; set; }
         public string ToCurrency { get; set; }
@@ -29,5 +32,9 @@ namespace Application.Customer.Transfers.DTOs
         public string ReceiverCity { get; set; }
         public string ReceiverDetailedAddress { get; set; }
         public string ReceiverCountryName { get; set; }
+        public double ReceiverFee { get; set; }
+        public DateTime CompleteDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+
     }
 }

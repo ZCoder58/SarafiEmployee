@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Application.Common.Models;
 using Application.Customer.Transfers.Commands.CreateTransfer;
 using Application.Customer.Transfers.Commands.DenyTransfer;
-using Application.Customer.Transfers.Commands.DTOs;
 using Application.Customer.Transfers.Commands.ResendTransfer;
 using Application.Customer.Transfers.Commands.SetTransferComplete;
 using Application.Customer.Transfers.DTOs;

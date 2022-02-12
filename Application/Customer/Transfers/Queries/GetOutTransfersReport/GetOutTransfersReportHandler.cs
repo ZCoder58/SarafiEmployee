@@ -42,6 +42,7 @@ namespace Application.Customer.Transfers.Queries.GetOutTransfersReport
                         CurrencyName = a.Key,
                         TotalAmount = a.Sum(b => b.DestinationAmount).ToString(),
                         TotalTransfers = a.Count(),
+                        TotalReceiverFee = a.Sum(b=>b.ReceiverFee).ToString()
                     }).ToList();
                 return Task.FromResult(inReportFriend);
             }
@@ -58,6 +59,7 @@ namespace Application.Customer.Transfers.Queries.GetOutTransfersReport
                     CurrencyName = a.Key,
                     TotalAmount = a.Sum(b => b.DestinationAmount).ToString(),
                     TotalTransfers = a.Count(),
+                    TotalReceiverFee = a.Sum(b=>b.ReceiverFee).ToString()
                 }).ToList();
             return Task.FromResult(inReportGlobal);
         }

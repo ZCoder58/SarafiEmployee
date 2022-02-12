@@ -15,10 +15,10 @@ export default function FriendRequestButton({ defaultState, defaultRequestId, cu
     async function handleClick() {
         setLoading(true)
         if (state === 1) {//approved
-            await authAxiosApi.get(`customer/friends/deleteRequest/${requestId}`).then(r => {
-                setState(r.state)
-                setRequestId(r.requestId)
-            })
+            // await authAxiosApi.get(`customer/friends/deleteRequest/${requestId}`).then(r => {
+            //     setState(r.state)
+            //     setRequestId(r.requestId)
+            // })
         } else if (state === 0) {//pending
             await authAxiosApi.get(`customer/friends/cancelRequest/${requestId}`).then(r => {
                 setState(r.state)
@@ -37,7 +37,7 @@ export default function FriendRequestButton({ defaultState, defaultRequestId, cu
     }
     React.useEffect(() => {
         if (state === 1) {//approved
-            setButtonText("لغو همکاری")
+            setButtonText("پروفایل")
         } else if (state === 0) {//pending
             setButtonText("لغو درخواست")
         } else if (state === -1) {//notSend

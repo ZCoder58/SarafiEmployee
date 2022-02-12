@@ -21,22 +21,28 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
                 .NotNull().WithMessage("انتخاب واحد پول ارسالی ضروری میباشد");   
             RuleFor(a => a.FromName)
                 .NotNull().WithMessage("نام ارسال کننده پول ضروری میباشد");
+            RuleFor(a => a.FromName)
+                .NotNull().WithMessage("ولد ارسال کننده پول ضروری میباشد");
             RuleFor(a => a.FromPhone)
                 .NotNull().WithMessage("شماره تماس ارسال کننده پول ضروری میباشد");
             RuleFor(a => a.TCurrency)
                 .NotNull().WithMessage("انتخاب واحد پول دریافتی ضروری میباشد");
             RuleFor(a => a.ToName)
                 .NotNull().WithMessage("نام دریافت کننده ضروری میباشد");
-            RuleFor(a => a.FromLastName)
-                .NotNull().WithMessage("تخلص ارسال کننده ضروری میباشد");
-            RuleFor(a => a.ToLastName)
-                .NotNull().WithMessage("تخلص دریافت گننده پول ضروری میباشد");
+            RuleFor(a => a.ToFatherName)
+                .NotNull().WithMessage("ولد دریافت گننده پول ضروری میباشد"); 
             RuleFor(a => a.FriendId)
                 .Cascade(CascadeMode.Stop)
                 .NotNull().WithMessage("انتخاب همکار ضروری میباشد")
                 .Must(friendId => dbContext.Friends.IsCustomerApprovedFriend(
                     httpUserContext.GetCurrentUserId().ToGuid(),
                     friendId)).WithMessage("درخواست شما رد شد");
+            RuleFor(a => a.Fee)
+                .Cascade(CascadeMode.Stop)
+                .GreaterThanOrEqualTo(0).WithMessage("کمتر از 0 مجاز نیست");
+            RuleFor(a => a.ReceiverFee)
+                .Cascade(CascadeMode.Stop)
+                .GreaterThanOrEqualTo(0).WithMessage("کمتر از 0 مجاز نیست");
         }
     }
 }

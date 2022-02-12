@@ -29,6 +29,7 @@ export const TableRoznamchaInboxDesktop = ({ transfers=[] }) => (
                     <TableCell>
                         {e.totalFee} {e.currencyName}
                     </TableCell>
+                   
                 </TableRow>
             )) :
                 <TableRow >
@@ -67,7 +68,6 @@ export const TableRoznamchaInboxMobile = ({transfers=[]}) => (
                                     <Stack component="span" spacing={1} direction="column">
                                         <Typography component="span">مجموع حواله - {e.totalTransfers}</Typography>
                                         <Typography component="span">مجموع کمیشن - {e.totalFee} {e.currencyName}</Typography>
-                                   
                                     </Stack>
                                 </React.Fragment>
                             }

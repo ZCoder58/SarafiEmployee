@@ -86,6 +86,9 @@ namespace Persistence.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FatherName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -298,6 +301,9 @@ namespace Persistence.Migrations
                     b.Property<int>("CodeNumber")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("CompleteDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -310,6 +316,9 @@ namespace Persistence.Migrations
                     b.Property<string>("FromCurrency")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FromFatherName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FromLastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -318,6 +327,9 @@ namespace Persistence.Migrations
 
                     b.Property<string>("FromPhone")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ReceiverFee")
+                        .HasColumnType("float");
 
                     b.Property<Guid?>("ReceiverId")
                         .HasColumnType("uniqueidentifier");
@@ -332,6 +344,12 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ToCurrency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ToFatherName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ToGrandFatherName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ToLastName")

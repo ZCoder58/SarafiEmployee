@@ -1,11 +1,11 @@
 import React from 'react'
-import { Grid, Card, CardContent, Typography, Chip, Box, Divider, Stack, styled, Button, CardHeader, IconButton } from '@mui/material'
+import { Grid, Card, CardContent, Typography, Chip, Divider, Stack, styled, Button, CardHeader, IconButton } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import authAxiosApi from '../../../axios'
 import { CDialog, SkeletonFull } from '../../../ui-componets'
 import { shouldForwardProp } from '@mui/system'
 import { useNavigate } from 'react-router'
-import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined'
 import SetTransferCompleteForm from './SetTransferCompleteForm'
 const StyledRowLight = styled(Stack)({
     flexDirection: "row",
@@ -66,13 +66,25 @@ export default function VCTransferInfo() {
                                 <Typography variant="body2">{transfer.senderCountryName}-{transfer.senderCity} {transfer.senderDetailedAddress}</Typography>
                             </StyledRowDark>
                             <StyledRowLight>
+                                <Typography variant="body1" fontWeight={900}>کمیشن اجرا کننده :</Typography>
+                                <Typography variant="body2">{transfer.receiverFee} {transfer.toCurrency}</Typography>
+                            </StyledRowLight>
+                            <StyledRowDark>
                                 <Typography variant="body1" fontWeight={900}>وضعیت :</Typography>
                                 {transfer.state === 0 ? 
                                 <Chip size="small" color="warning" label="درجریان"></Chip> :
                                  transfer.state===1?
                                  <Chip size="small" color="success" label="اجرا شده"></Chip> :
                                  <Chip size="small" color="error" label="رد شده"></Chip>}
+                            </StyledRowDark>
+                            <StyledRowLight>
+                                <Typography variant="body1" fontWeight={900}>تاریخ ارسال :</Typography>
+                                <Typography variant="body2">{new Date(transfer.createdDate).toLocaleDateString()}</Typography>
                             </StyledRowLight>
+                            <StyledRowDark>
+                                <Typography variant="body1" fontWeight={900}>تاریخ اجرا :</Typography>
+                                <Typography variant="body2">{transfer.state===1&&new Date(transfer.completeDate).toLocaleDateString()}</Typography>
+                            </StyledRowDark>
                             <Typography variant="h6" color="primary">معلومات ارسال کننده</Typography>
                             <Divider />
                             <StyledRowDark>
@@ -94,11 +106,21 @@ export default function VCTransferInfo() {
                                 <Typography variant="body2">{transfer.toName} {transfer.toLastName}</Typography>
                                
                             </StyledRowLight>
+                            <StyledRowDark>
+                                <Typography variant="body1" fontWeight={900}>ولد :</Typography>
+                                <Typography variant="body2">{transfer.toFatherName}</Typography>
+
+                            </StyledRowDark>
                             <StyledRowLight>
+                                <Typography variant="body1" fontWeight={900}>ولدیت :</Typography>
+                                <Typography variant="body2">{transfer.toGrandFatherName}</Typography>
+
+                            </StyledRowLight>
+                            <StyledRowDark>
                                 <Typography variant="body1" fontWeight={900}>شماره تماس :</Typography>
                                 <Typography variant="body2">{transfer.toPhone}</Typography>
                                
-                            </StyledRowLight>
+                            </StyledRowDark>
                             <StyledRowLight>
                                 <Typography variant="body1" fontWeight={900}>نمبر تذکره :</Typography>
                                 <Typography variant="body2">{transfer.toSId}</Typography>

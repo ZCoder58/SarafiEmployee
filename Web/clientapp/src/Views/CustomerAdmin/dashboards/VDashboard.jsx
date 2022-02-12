@@ -1,13 +1,11 @@
 import React from "react";
 import { Grid } from '@mui/material'
+import Profits from './Profits'
 const VDashboard = () => {
 
     return (
         <Grid container spacing={2}>
-            <Grid item lg={6} md={6} sm={6} xs={12}>
-               <center>dashboard</center>
-            </Grid>
-
+            <Profits/>
         </Grid>
     )
 }

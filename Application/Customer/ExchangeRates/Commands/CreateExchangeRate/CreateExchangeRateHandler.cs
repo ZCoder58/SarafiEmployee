@@ -29,8 +29,8 @@ namespace Application.Customer.ExchangeRates.Commands.CreateExchangeRate
                 b.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid() &&
                 b.ToRatesCountry.Abbr == request.AbbrTo &&
                 b.FromRatesCountry.Abbr == request.AbbrFrom &&
-                (b.CreatedDate.Value.Date == DateTime.Now.Date ||
-                 b.UpdatedDate.Value.Date == DateTime.Now.Date)))
+                (b.CreatedDate.Value.Date == DateTime.UtcNow.Date ||
+                 b.UpdatedDate.Value.Date == DateTime.UtcNow.Date)))
             {
                 var fromRate = _dbContext.RatesCountries.GetByAbbr(request.AbbrFrom);
                 var toRate = _dbContext.RatesCountries.GetByAbbr(request.AbbrTo);

@@ -39,7 +39,7 @@ namespace Application.Customer.ExchangeRates.Queries
             CancellationToken cancellationToken)
         {
             //step 1: create customerExchangeRates for targetDate if not is exists
-            if (request.TargetDate.Date == DateTime.Now.Date)
+            if (request.TargetDate.Date == DateTime.UtcNow.Date)
             {
                 await _mediator.Send(new CreateExchangeRatesForDateCommand(request.RateCountryId), cancellationToken);
             }

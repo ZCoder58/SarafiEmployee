@@ -6,7 +6,6 @@ using Application.Customer.Notifications.DTOs;
 using Application.Customer.Profile.Commands.EditProfile;
 using Application.Customer.Profile.DTOs;
 using Application.Customer.Transfers.Commands.CreateTransfer;
-using Application.Customer.Transfers.Commands.DTOs;
 using Application.Customer.Transfers.DTOs;
 using Application.SunriseSuperAdmin.Customers.DTOs;
 using Application.SunriseSuperAdmin.Rates.Commands.CreateRate;

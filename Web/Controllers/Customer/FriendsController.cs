@@ -58,11 +58,11 @@ namespace Web.Controllers.Customer
         {
             return Mediator.Send(new SendFriendRequestCommand(id));
         }
-        [HttpGet("deleteRequest/{id}")]
-        public Task<RequestDto> DeleteRequest(Guid id)
-        {
-            return Mediator.Send(new DeleteFriendRequestCommand(id));
-        }
+        // [HttpGet("deleteRequest/{id}")]
+        // public Task<RequestDto> DeleteRequest(Guid id)
+        // {
+        //     return Mediator.Send(new DeleteFriendRequestCommand(id));
+        // }
         [HttpGet("cancelRequest/{id}")]
         public Task<RequestDto> CancelRequest(Guid id)
         {

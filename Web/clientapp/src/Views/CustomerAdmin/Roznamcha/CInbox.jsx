@@ -10,6 +10,7 @@ import { CDateTimeRange, SearchFriendDropdown, SkeletonFull } from '../../../ui-
 import { TableRoznamchaInboxDesktop, TableRoznamchaInboxMobile } from './Responsives/InboxResponsive';
 export default function CInbox() {
     const [transfers, setTransfers] = React.useState([])
+    const [loading,setLoading]=React.useState(true)
     const {screenXs} = useSelector(states => states.R_AdminLayout)
     const validationSchema = Yup.object().shape({
         fromDate: Yup.date().required("تاریخ شروع ضروری میباشد"),
@@ -24,11 +25,13 @@ export default function CInbox() {
         },
         onSubmit: async (values, formikHelper) => {
             try {
+                setLoading(true)
                 await authAxiosApi.get('customer/transfers/inReport', {
                     params: values
                 }).then(r => {
                     setTransfers(r)
                 })
+                setLoading(false)
             } catch (errors) {
                 formikHelper.setErrors(errors)
             }
@@ -37,14 +40,17 @@ export default function CInbox() {
     })
     React.useEffect(() => {
         (async () => {
+            setLoading(true)
             await authAxiosApi.get('customer/transfers/inReport', {
                 params: {
                     fromDate: new Date(),
                     toDate: new Date()
                 }
+                
             }).then(r => {
                 setTransfers(r)
             })
+            setLoading(false)
         })()
         return ()=>(
             setTransfers([])
@@ -107,7 +113,7 @@ export default function CInbox() {
                 </Box>
             </Grid>
             <Grid item lg={12} md={12} sm={12} xs={12}>
-                {formik.isSubmitting ?
+                {loading ?
                     <SkeletonFull />
                     :
                     <TableContainer>

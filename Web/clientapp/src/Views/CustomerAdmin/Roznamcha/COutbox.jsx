@@ -12,6 +12,7 @@ import { TableRoznamchaOutboxDesktop, TableRoznamchaOutboxMobile } from './Respo
 export default function COutbox() {
     const [transfers, setTransfers] = React.useState([])
     const {screenXs} = useSelector(states => states.R_AdminLayout)
+    const [loading,setLoading]=React.useState(true)
     const validationSchema = Yup.object().shape({
         fromDate: Yup.date().required("تاریخ شروع ضروری میباشد"),
         toDate: Yup.date().required("تاریخ ختم ضروری میباشد")
@@ -25,11 +26,13 @@ export default function COutbox() {
         },
         onSubmit: async (values, formikHelper) => {
             try {
+                setLoading(true)
                 await authAxiosApi.get('customer/transfers/outReport', {
                     params: values
                 }).then(r => {
                     setTransfers(r)
                 })
+                setLoading(false)
             } catch (errors) {
                 formikHelper.setErrors(errors)
             }
@@ -39,6 +42,7 @@ export default function COutbox() {
     
     React.useEffect(() => {
         (async () => {
+            setLoading(true)
             await authAxiosApi.get('customer/transfers/outReport', {
                 params: {
                     fromDate: new Date(),
@@ -47,6 +51,7 @@ export default function COutbox() {
             }).then(r => {
                 setTransfers(r)
             })
+            setLoading(false)
         })()
         return () => (
             setTransfers([])
@@ -112,7 +117,7 @@ export default function COutbox() {
                 </Box>
             </Grid>
             <Grid item lg={12} md={12} sm={12} xs={12}>
-                {formik.isSubmitting ? <SkeletonFull /> :
+                {loading ? <SkeletonFull /> :
                     <TableContainer>
                         {screenXs ? <TableRoznamchaOutboxMobile transfers={transfers} /> : <TableRoznamchaOutboxDesktop transfers={transfers} />}
                     </TableContainer>}

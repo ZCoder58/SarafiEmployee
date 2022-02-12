@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions.DbContext;
 using Application.Common.Statics;
@@ -25,6 +26,7 @@ namespace Application.Customer.Transfers.Commands.SetTransferComplete
             targetTransfer.State = TransfersStatusTypes.Completed;
             targetTransfer.ToPhone = request.Phone;
             targetTransfer.ToSId = request.SId;
+            targetTransfer.CompleteDate=DateTime.UtcNow;
            await _dbContext.SaveChangesAsync(cancellationToken);
            await _mediator.Publish(new TransferCompleted(),cancellationToken);
            return Unit.Value;

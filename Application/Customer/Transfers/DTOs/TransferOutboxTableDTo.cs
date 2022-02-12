@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace Application.Customer.Transfers.Commands.DTOs
+namespace Application.Customer.Transfers.DTOs
 {
     public class TransferOutboxTableDTo
     {

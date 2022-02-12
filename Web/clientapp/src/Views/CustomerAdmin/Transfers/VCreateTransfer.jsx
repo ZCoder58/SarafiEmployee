@@ -1,6 +1,6 @@
 import { AutoComplete, CCard, SearchFriendDropdown, SkeletonFull } from '../../../ui-componets'
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
-import { Grid, Box, TextField, Stack, Typography, Divider, Alert, Slide, Grow } from '@mui/material'
+import { Grid, Box, TextField, Stack, Typography, Divider, Alert, Grow } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import React from 'react'
@@ -14,21 +14,25 @@ import { FieldSet } from '../../../ui-componets'
 const createModel = {
     fromName: "",
     fromLastName: "",
+    fromFatherName: "",
     fromPhone: "",
     toName: "",
     toLastName: "",
+    toFatherName: "",
+    toGrandFatherName: "",
     fCurrency: "",
     tCurrency: "",
     amount: "",
     friendId: "",
-    fee: 0
+    fee: 0,
+    receiverFee:0
 }
 const validationSchema = Yup.object().shape({
     fromName: Yup.string().required("نام ارسال کنننده ضروری میباشد"),
-    fromLastName: Yup.string().required("تخلص ارسال کننده ضروری میباشد"),
+    fromFatherName: Yup.string().required("ولد ارسال کننده ضروری میباشد"),
     fromPhone: Yup.string().required("شماره تماس ارسال کننده ضروری میباشد"),
     toName: Yup.string().required("نام دریافت کننده ضروری میباشد"),
-    toLastName: Yup.string().required("تخلص دریافت کننده ضروری میباشد"),
+    toFatherName: Yup.string().required("ولد دریافت کننده ضروری میباشد"),
     fCurrency: Yup.string().required("انتخاب ارز ضروری میباشد"),
     tCurrency: Yup.string().required("انتخاب ارز دریافت کننده ضروری میباشد"),
     amount: Yup.string().required("مقدار پول ارسالی ضروری میباشد"),
@@ -116,10 +120,16 @@ export default function VCreateTransfer() {
                                     size="small"
                                     name='fromLastName'
                                     label="تخلص ارسال کننده"
+                                    onChange={formik.handleChange}
+                                />
+                                <TextField
+                                    size="small"
+                                    name='fromFatherName'
+                                    label="ولد ارسال کننده"
                                     required
                                     type="text"
-                                    error={formik.errors.fromLastName ? true : false}
-                                    helperText={formik.errors.fromLastName}
+                                    error={formik.errors.fromFatherName ? true : false}
+                                    helperText={formik.errors.fromFatherName}
                                     onChange={formik.handleChange}
                                 />
                                 <TextField
@@ -151,13 +161,27 @@ export default function VCreateTransfer() {
                                 <TextField
                                     name='toLastName'
                                     label="تخلص دریافت کننده"
+                                    size="small"
+                                    type="text"
+                                    onChange={formik.handleChange}
+                                />
+                                 <TextField
+                                    name='toFatherName'
+                                    label="ولد دریافت کننده"
                                     required
                                     size="small"
                                     type="text"
-                                    error={formik.errors.toLastName ? true : false}
-                                    helperText={formik.errors.toLastName}
+                                    error={formik.errors.toFatherName ? true : false}
+                                    helperText={formik.errors.toFatherName}
                                     onChange={formik.handleChange}
                                 />
+                                 <TextField
+                                name='toGrandFatherName'
+                                label="ولدیت دریافت کننده"
+                                size="small"
+                                type="text"
+                                onChange={formik.handleChange}
+                            />
 
                             </FieldSet>
                         </Grid>
@@ -292,6 +316,21 @@ export default function VCreateTransfer() {
                                     helperText={formik.errors.friendId}
                                     onValueChange={(newValue) => formik.setFieldValue("friendId", newValue ? newValue.id : "")}
                                     required
+                                />
+                                 <TextField
+                                    name='receiverFee'
+                                    label="کمیشن حواله دار"
+                                    size="small"
+                                    type="number"
+                                    onChange={formik.handleChange}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <Stack direction="row">
+                                                <Divider orientation='vertical' flexItem ></Divider>
+                                                <Typography sx={{ ml: 1 }} variant="body1" >{distRate ? distRate.priceName : "هیچ"}</Typography>
+                                            </Stack>
+                                        )
+                                    }}
                                 />
                             </FieldSet>
 

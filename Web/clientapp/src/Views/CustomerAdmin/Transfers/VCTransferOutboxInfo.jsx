@@ -61,12 +61,28 @@ export default function VCTransferInfo() {
                                 <Typography variant="body2">{transfer.receiverCountryName}-{transfer.receiverCity} {transfer.receiverDetailedAddress}</Typography>
                             </StyledRowDark>
                             <StyledRowLight>
+                                <Typography variant="body1" fontWeight={900}>کمیشن اجرا کننده :</Typography>
+                                <Typography variant="body2">{transfer.receiverFee} {transfer.toCurrency}</Typography>
+                            </StyledRowLight>
+                            <StyledRowDark>
+                                <Typography variant="body1" fontWeight={900}>کمیشن ارسال کننده :</Typography>
+                                <Typography variant="body2">{transfer.fee} {transfer.fromCurrency}</Typography>
+                            </StyledRowDark>
+                            <StyledRowLight>
                                 <Typography variant="body1" fontWeight={900}>وضعیت :</Typography>
                                 {transfer.state === 0 ?
                                  <Chip size="small" color="warning" label="درجریان"></Chip> :
                                  transfer.state===1?
                                  <Chip size="small" color="success" label="اجرا شده"></Chip> :
                                  <Chip size="small" color="error" label="رد شده"></Chip>}
+                            </StyledRowLight>
+                            <StyledRowDark>
+                                <Typography variant="body1" fontWeight={900}>تاریخ ارسال :</Typography>
+                                <Typography variant="body2">{new Date(transfer.createdDate).toLocaleDateString()}</Typography>
+                            </StyledRowDark>
+                            <StyledRowLight>
+                                <Typography variant="body1" fontWeight={900}>تاریخ اجرا :</Typography>
+                                <Typography variant="body2">{transfer.state===1&&new Date(transfer.completeDate).toLocaleDateString()}</Typography>
                             </StyledRowLight>
                             <Typography variant="h6" color="primary">معلومات ارسال کننده</Typography>
                             <Divider />
@@ -89,11 +105,21 @@ export default function VCTransferInfo() {
                                 <Typography variant="body2">{transfer.toName} {transfer.toLastName}</Typography>
                                
                             </StyledRowLight>
+                            <StyledRowDark>
+                                <Typography variant="body1" fontWeight={900}>ولد :</Typography>
+                                <Typography variant="body2">{transfer.toFatherName}</Typography>
+
+                            </StyledRowDark>
                             <StyledRowLight>
+                                <Typography variant="body1" fontWeight={900}>ولدیت :</Typography>
+                                <Typography variant="body2">{transfer.toGrandFatherName}</Typography>
+
+                            </StyledRowLight>
+                            <StyledRowDark>
                                 <Typography variant="body1" fontWeight={900}>شماره تماس :</Typography>
                                 <Typography variant="body2">{transfer.toPhone}</Typography>
                                
-                            </StyledRowLight>
+                            </StyledRowDark>
                             <StyledRowLight>
                                 <Typography variant="body1" fontWeight={900}>نمبر تذکره :</Typography>
                                 <Typography variant="body2">{transfer.toSId}</Typography>
