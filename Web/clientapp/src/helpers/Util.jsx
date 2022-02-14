@@ -11,6 +11,9 @@ const Util ={
     },
     GenerateRandom:(min,max)=>{
         return Math.floor(Math.random() * (max - min + 1)) + min
+    },
+    displayText:(text)=>{
+        return text?text:"وجود ندارد"
     }
 }
 

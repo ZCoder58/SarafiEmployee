@@ -27,9 +27,10 @@ namespace Domain.Entities
         public int State { get; set; }
         public int CodeNumber { get; set; }
         public double Fee { get; set; }
+        public double ReceiverFee { get; set; }
+        public string Comment { get; set; }
         public Guid? ReceiverId { get; set; }
         public Customer Receiver { get; set; }
-        public double ReceiverFee { get; set; }
         public Guid SenderId { get; set; }
         public Customer Sender { get; set; }
     }

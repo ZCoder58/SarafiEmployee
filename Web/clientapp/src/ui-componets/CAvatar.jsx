@@ -7,7 +7,7 @@ export default function CAvatar({ src, size,variant,props }) {
         (async () => {
             try {
                 const tool = await fromImage(src);
-                var result= await tool.thumbnail(size,true).toDataURL();
+                var result= await tool.scale(size,size).toDataURL();
                 setImgSrc(result)
             }catch{
                 setImgSrc("")
@@ -21,6 +21,9 @@ export default function CAvatar({ src, size,variant,props }) {
         )
     },[])
     return (
-        <Avatar src={imgSrc} {...props} variant={variant}/>
+        <Avatar src={imgSrc} sx={{ 
+            width:size,
+            height:size
+         }} {...props} variant={variant}/>
     )
 }

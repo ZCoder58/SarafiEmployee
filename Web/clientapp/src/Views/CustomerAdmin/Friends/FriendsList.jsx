@@ -7,6 +7,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { CloseOutlined } from '@mui/icons-material';
+import {useNavigate} from 'react-router'
 const ListItemStyled = styled(ListItemButton)({
     height: 40
 })
@@ -15,6 +16,7 @@ export default function FriendsList() {
     const [friends, setFriends] = React.useState([])
     const [hasNext, setHasNext] = React.useState(false)
     const [hasPrevious, setHasPrevious] = React.useState(false)
+    const navigate=useNavigate()
     const [filterList, setFilterList] = React.useState({
         page: 1,
         search: ""
@@ -68,7 +70,7 @@ export default function FriendsList() {
                                                 <ListItemStyled>
                                                     <ListItemText>ارسال حواله</ListItemText>
                                                 </ListItemStyled>
-                                                <ListItemStyled>
+                                                <ListItemStyled onClick={()=>navigate(`/customer/profile/${friend.customerFriendId}`)}>
                                                     <ListItemText>دیدن پروفایل</ListItemText>
                                                 </ListItemStyled>
                                                 <ListItemStyled>
@@ -78,7 +80,7 @@ export default function FriendsList() {
                                         </MenuAndToggle>
                                     }>
                                     <ListItemAvatar>
-                                        <CAvatar src={CustomerStatics.profilePituresPath(friend.customerFriendId, friend.CustomerFriendPhoto)}
+                                        <CAvatar src={CustomerStatics.profilePituresPath(friend.customerFriendId, friend.customerFriendPhoto)}
                                             variant="rounded"
                                             size={50} />
                                     </ListItemAvatar>

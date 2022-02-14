@@ -6,10 +6,13 @@ import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import CountriesRatesStatic from '../../../helpers/statics/CountriesRatesStatic'
 import authAxiosApi from "../../../axios";
 import { useNavigate } from "react-router";
+import { useSelector } from 'react-redux'
+
 export default function VRates() {
     const [loading, setLoading] = React.useState(false)
     const [rates, setRates] = React.useState([])
-    const navigate=useNavigate()
+   
+    const navigate = useNavigate()
     React.useEffect(() => {
         (async () => {
             setLoading(true)
@@ -32,44 +35,48 @@ export default function VRates() {
             <Grid container spacing={2}>
 
                 <Grid item lg={12} sm={12} md={12} xs={12}>
-                {loading ? <SkeletonFull /> :   <Table size="small" stickyHeader>
+                    {loading ? <SkeletonFull /> : <Table size="small" stickyHeader>
                         <TableHead>
                             <TableRow>
                                 <TableCell sx={{
-                                     typography: "body1" ,
-                                     fontWeight:600}}>
+                                    typography: "body1",
+                                    fontWeight: 600
+                                }}>
                                     ارز
                                 </TableCell>
-                                <TableCell  sx={{
-                                     typography: "body1" ,
-                                     fontWeight:600}}>
-                                    گزینه ها
-                                </TableCell>
+
                             </TableRow>
                         </TableHead>
-                         <TableBody>
-                             {rates.map((e, i) => (
+                        <TableBody>
+                            {rates.map((e, i) => (
                                 <TableRow key={i}>
                                     <TableCell>
-                                        <Stack direction="row" spacing={1} alignItems="center">
-                                            <ImagePreview
-                                                imagePath={CountriesRatesStatic.flagPath(e.flagPhoto)}
-                                                size={20}
-                                                isWidthTheSame
-                                                 />
-                                            <Typography variant="body2">{e.faName}</Typography>
-                                            <Typography variant="body2">-</Typography>
-                                            <Typography variant="body2">{e.priceName}</Typography>
+                                        <Stack direction={{
+                                            xs: "column",
+                                            lg:"row",
+                                            md:"row",
+                                            sm:"row"
+                                        }}
+                                         spacing={1}
+                                         justifyContent="space-between">
+                                            <Stack direction="row" spacing={1} alignItems="center">
+                                                <ImagePreview
+                                                    imagePath={CountriesRatesStatic.flagPath(e.flagPhoto)}
+                                                    size={20}
+                                                    isWidthTheSame
+                                                />
+                                                <Typography variant="body2">{e.faName}</Typography>
+                                                <Typography variant="body2">-</Typography>
+                                                <Typography variant="body2">{e.priceName}</Typography>
+                                            </Stack>
+                                            <Button
+                                                variant="contained"
+                                                size="small"
+                                                color="primary"
+                                                onClick={() => navigate("/customer/exchangeRates/" + e.id)}>
+                                                ویرایش
+                                            </Button>
                                         </Stack>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Button
-                                         variant="contained"
-                                         size="small" 
-                                         color="primary"
-                                         onClick={()=>navigate("/customer/exchangeRates/"+e.id)}>
-                                            ویرایش معادلات
-                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}

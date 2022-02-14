@@ -21,6 +21,8 @@ const VCTransferInboxDetail=LoadablePage(React.lazy(()=>import("../Views/Custome
 const VCTransferOutboxDetail=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/VCTransferOutboxInfo")))
 //roznamche
 const VCRoznamcha=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Roznamcha")))
+//general
+const VCOtherCustomerProfile=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Friends/VCOtherCustomerProfile")))
 export const CustomerAuthRoutes={
     path:"/customer",
     element:<CustomerAuthLayout/>,
@@ -79,6 +81,11 @@ export const CustomerAuthRoutes={
         {
             path:"search",
             element:<VCSearch/>
+        },
+        //general
+        {
+            path:"profile/:customerId",
+            element:<VCOtherCustomerProfile/>
         }
     ]
 }

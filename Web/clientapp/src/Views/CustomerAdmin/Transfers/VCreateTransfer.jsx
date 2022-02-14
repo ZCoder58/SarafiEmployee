@@ -1,6 +1,6 @@
 import { AutoComplete, CCard, SearchFriendDropdown, SkeletonFull } from '../../../ui-componets'
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
-import { Grid, Box, TextField, Stack, Typography, Divider, Alert, Grow } from '@mui/material'
+import { Grid, Box, TextField, Stack, Typography, Divider, Alert, Grow, IconButton } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import React from 'react'
@@ -11,6 +11,7 @@ import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import Util from '../../../helpers/Util'
 import { useNavigate } from 'react-router';
 import { FieldSet } from '../../../ui-componets'
+import { ArrowBack } from '@mui/icons-material';
 const createModel = {
     fromName: "",
     fromLastName: "",
@@ -101,7 +102,11 @@ export default function VCreateTransfer() {
         loading ? <SkeletonFull /> :
             <CCard
                 title="فورم ثبت حواله جدید"
-                headerIcon={<SyncAltOutlinedIcon />}>
+                headerIcon={<SyncAltOutlinedIcon />}
+                enableActions={true}
+                actions={<IconButton onClick={()=>navigate("/customer/transfers")}>
+                        <ArrowBack/>
+                    </IconButton>}>
                 <Box component="form" noValidate onSubmit={formik.handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item lg={6} md={6} sm={6} xs={12}>

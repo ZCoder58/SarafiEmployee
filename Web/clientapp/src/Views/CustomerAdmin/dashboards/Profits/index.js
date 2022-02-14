@@ -3,7 +3,7 @@ import { Card, CardHeader, Grid, List, ListItem, ListItemText, Stack, Typography
 import authAxiosApi from '../../../../axios'
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import UnarchiveOutlinedIcon from '@mui/icons-material/UnarchiveOutlined';
-import {SkeletonFull} from '../../../../ui-componets'
+import { SkeletonFull } from '../../../../ui-componets'
 export default function Profits() {
     const [inProfits, setInProfits] = React.useState([])
     const [outProfits, setOutProfits] = React.useState([])
@@ -19,7 +19,7 @@ export default function Profits() {
             })
             setLoading(false)
         })()
-        return ()=>{
+        return () => {
             setInProfits([])
             setOutProfits([])
         }
@@ -105,6 +105,5 @@ export default function Profits() {
 
             </Grid>
         </>
-       
     )
 }
