@@ -13,8 +13,8 @@ export default function CInbox() {
     const [loading,setLoading]=React.useState(true)
     const {screenXs} = useSelector(states => states.R_AdminLayout)
     const validationSchema = Yup.object().shape({
-        fromDate: Yup.date().required("تاریخ شروع ضروری میباشد"),
-        toDate: Yup.date().required("تاریخ ختم ضروری میباشد")
+        fromDate: Yup.date().required("تاریخ شروع ضروری میباشد").typeError("لطفا یک تاریخ انتخاب نمایید"),
+        toDate: Yup.date().required("تاریخ ختم ضروری میباشد").typeError("لطفا یک تاریخ انتخاب نمایید")
     });
     const formik = useFormik({
         validationSchema: validationSchema,
@@ -66,7 +66,7 @@ export default function CInbox() {
                                 value={[formik.values.fromDate, formik.values.toDate]}
                                 onChange={(start, end) => {
                                     formik.setFieldValue("fromDate", start)
-                                    formik.setFieldValue("toDate", end)
+                                    formik.setFieldValue("toDate",  end)
                                 }}
                                 startOptions={{
                                     error: formik.errors.fromDate ? true : false,

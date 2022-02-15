@@ -24,7 +24,7 @@ namespace Application.Customer.Transfers.Commands.ResendTransfer
             var targetTransfer = _dbContext.Transfers.GetById(request.TransferId);
             targetTransfer.State = TransfersStatusTypes.InProgress;
             await _dbContext.SaveChangesAsync(cancellationToken);
-            await _mediator.Publish(new TransferCreated(targetTransfer.ReceiverId.ToGuid()),cancellationToken);
+            await _mediator.Publish(new TransferCreated(targetTransfer.ReceiverId.ToGuid(),targetTransfer.Id),cancellationToken);
             return Unit.Value;
         }
     }

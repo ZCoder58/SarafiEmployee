@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
+using Application.Common.Statics;
 using Domain.Interfaces;
 using MediatR;
 
@@ -24,7 +25,8 @@ namespace Application.Customer.Friend.Queries
         {
             return Task.FromResult(_dbContext.Friends.Count(a =>
                 a.CustomerFriendId == _httpUserContext.GetCurrentUserId().ToGuid() &&
-                !a.CustomerFriendApproved));
+                !a.CustomerFriendApproved &&
+                a.State==FriendRequestStates.Pending));
         }
     }
 }

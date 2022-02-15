@@ -1,0 +1,1 @@
+xcopy /a /e /f /y /i build z:\publishes\sarafiEmployee\clientapp\build

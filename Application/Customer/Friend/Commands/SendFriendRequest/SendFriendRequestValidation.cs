@@ -11,8 +11,8 @@ namespace Application.Customer.Friend.Commands.SendFriendRequest
         {
             RuleFor(a => a.CustomerId)
                 .NotNull().WithMessage("ای دی ضروری میباشد")
-                .Must(customerId => !dbContext.Friends
-                    .IsCustomersFriend(httpUserContext.GetCurrentUserId().ToGuid(),
+                .Must(customerId => dbContext.Friends
+                    .IsNotFriends(httpUserContext.GetCurrentUserId().ToGuid(),
                         customerId)).WithMessage("درخواست رد شد");
         }
     }

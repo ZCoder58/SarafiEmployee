@@ -27,14 +27,20 @@ namespace Application.Customer.Friend.Commands.SendFriendRequest
             var newRequest=await _dbContext.Friends.AddAsync(new Domain.Entities.Friend()
             {
                 CustomerId = _httpUserContext.GetCurrentUserId().ToGuid(),
-                CustomerFriendId = request.CustomerId
+                CustomerFriendId = request.CustomerId,
+                State = FriendRequestStates.Pending
+            }, cancellationToken);
+            var newRequestReverse=await _dbContext.Friends.AddAsync(new Domain.Entities.Friend()
+            {
+                CustomerFriendId = _httpUserContext.GetCurrentUserId().ToGuid(),
+                CustomerId = request.CustomerId,
+                State = FriendRequestStates.Received
             }, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             await _mediator.Publish(new FriendRequestSent(newRequest.Entity.CustomerFriendId.ToString().ToGuid()), cancellationToken);
             return new RequestDto()
             {
-                State = FriendRequestTypes.Pending,
-                RequestId = newRequest.Entity.Id
+                State = newRequest.Entity.State,
             };
         }
     }

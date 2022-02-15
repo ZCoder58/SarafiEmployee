@@ -32,7 +32,8 @@ namespace Application.Customer.Friend.EventHandlers
                 Body = string.Concat(senderCustomer.Name," ",senderCustomer.LastName, " از شما درخواست همکاری کرده است"),
                 Title = "درخواست همکاری",
                 Type = "request",
-                CustomerId = notification.TargetCustomerId
+                CustomerId = notification.TargetCustomerId,
+                BaseId = senderCustomer.Id
             },cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             await _notifyAccessor.UpdateNotificationUser(notification.TargetCustomerId);

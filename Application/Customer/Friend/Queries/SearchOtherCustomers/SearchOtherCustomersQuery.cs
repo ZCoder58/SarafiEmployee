@@ -39,14 +39,13 @@ namespace Application.Customer.Friend.Queries.SearchOtherCustomers
                     _dbContext.Friends.GetFriendRequest(_httpUserContext.GetCurrentUserId().ToGuid(),customer.Id);
                 if (targetFriendRequest.IsNotNull())
                 {
-                    tempCustomer.RequestState =targetFriendRequest.CustomerFriendApproved?
-                        FriendRequestTypes.Approved:FriendRequestTypes.Pending;
+                    tempCustomer.RequestState =targetFriendRequest.State;
                     tempCustomer.RequestId = targetFriendRequest.Id;
                     customers.Add(tempCustomer);
                 }
                 else
                 {
-                    tempCustomer.RequestState = FriendRequestTypes.NotSend;
+                    tempCustomer.RequestState = FriendRequestStates.NotSend;
                     customers.Add(tempCustomer);
                 }
             }

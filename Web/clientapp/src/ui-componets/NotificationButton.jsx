@@ -8,11 +8,13 @@ import { CTooltip } from '.';
 import { SkeletonFull } from '.'
 import { CloseOutlined } from '@mui/icons-material';
 import useNotifications from '../hooks/useNotifications'
+import { useNavigate } from 'react-router';
 const formatter = buildFormatter(faString)
 export default function NotificationButton() {
     const { loading, notifications, notificationCount,unSeensCount,seenNotifications } = useNotifications()
     const theme = useTheme()
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const navigate=useNavigate()
     const screenMachedXS = useMediaQuery(theme.breakpoints.down("sm"))
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -27,7 +29,15 @@ export default function NotificationButton() {
     const id = open ? 'simple-popover' : undefined;
     const notificDataRender = <List dense>
         {notifications.map((d, i) =>
-            <ListItemButton key={i} sx={{ width: "100%", minWidth: 280 }}>
+            <ListItemButton key={i} sx={{ width: "100%", minWidth: 280 }} onClick={()=>{
+                if(d.type==="newTransfer" || d.type==="deniedTransfer"){
+                    navigate(`/customer/transfers/inbox/${d.baseId}`)
+                    handleClose()
+                }else if(d.type==="request"){
+                    navigate(`/customer/profile/${d.baseId}`)
+                    handleClose()
+                }
+            }}>
                 <Stack direction="column" spacing={1} width="100%">
                     <Stack direction="row" justifyContent="space-between" spacing={1} >
                         <Typography fontSize="14px">

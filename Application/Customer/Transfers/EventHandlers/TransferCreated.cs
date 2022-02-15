@@ -10,7 +10,7 @@ using MediatR;
 
 namespace Application.Customer.Transfers.EventHandlers
 {
-    public record TransferCreated(Guid ReceiverId) : INotification;
+    public record TransferCreated(Guid ReceiverId,Guid NewTransferId) : INotification;
     public class TransferCreatedHandler:INotificationHandler<TransferCreated>
     {
         private readonly INotifyHubAccessor _notifyHub;
@@ -34,7 +34,8 @@ namespace Application.Customer.Transfers.EventHandlers
                 Title = "حواله جدید",
                 Body = string.Concat("حواله جدید از ",sender.Name," ",sender.LastName),
                 CustomerId = notification.ReceiverId,
-                Type = "newTransfer"
+                Type = "newTransfer",
+                BaseId = notification.NewTransferId
             },cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             await _notifyHub.UpdateNotificationUser(notification.ReceiverId);

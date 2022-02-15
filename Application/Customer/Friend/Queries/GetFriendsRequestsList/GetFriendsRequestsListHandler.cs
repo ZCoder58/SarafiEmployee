@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.Common.Models;
+using Application.Common.Statics;
 using Application.Customer.Friend.DTOs;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -28,7 +29,8 @@ namespace Application.Customer.Friend.Queries.GetFriendsRequestsList
         {
             return await _dbContext.Friends
                 .Where(a => a.CustomerFriendId == _httpUserContext.GetCurrentUserId().ToGuid() &&
-                            !a.CustomerFriendApproved)
+                            !a.CustomerFriendApproved &&
+                            a.State==FriendRequestStates.Pending)
                 .ProjectTo<FriendRequestDTo>(_mapper.ConfigurationProvider)
                 .ToPaginatedListAsync(request.Model);
         }

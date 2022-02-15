@@ -9,11 +9,11 @@ namespace Application.Customer.Friend.Commands.DenyFriendRequest
     {
         public DenyFriendRequestValidation(IApplicationDbContext dbContext,IHttpUserContext httpUserContext)
         {
-            RuleFor(a => a.FriendId)
+            RuleFor(a => a.CustomerId)
                 .Cascade(CascadeMode.Stop)
                 .NotNull().WithMessage("ای دی ضروری میباشد")
-                .Must(friendId =>
-                    dbContext.Friends.IsRequestSentToCustomer(friendId, httpUserContext.GetCurrentUserId().ToGuid()))
+                .Must(customerId =>
+                    dbContext.Friends.IsNotApprovedRequest(httpUserContext.GetCurrentUserId().ToGuid(),customerId))
                 .WithMessage("در خواست رد شد");
         }
     }

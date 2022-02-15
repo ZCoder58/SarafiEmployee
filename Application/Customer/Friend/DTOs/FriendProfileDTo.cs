@@ -16,5 +16,7 @@ namespace Application.Customer.Friend.DTOs
         public string UserName { get; set; }
         public bool IsActive { get; set; }
         public string CountryName { get; set; }
+        public int State { get; set; }
+        public Guid FId { get; set; }
     }
 }

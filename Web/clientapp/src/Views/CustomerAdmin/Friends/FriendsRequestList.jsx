@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Button, Divider, List, ListItem, ListItemAvatar, ListItemText, Stack } from '@mui/material'
-import { ApproveFriendRequestButton, CAvatar, NotExist, SkeletonFull } from '../../../ui-componets'
+import { ApproveFriendRequestButton, CAvatar, FriendRequestButton, NotExist, SkeletonFull } from '../../../ui-componets'
 import authAxiosApi from '../../../axios';
 import CustomerStatics from '../../../helpers/statics/CustomerStatic';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -22,18 +22,28 @@ export default function FriendsRequestList() {
                    {children}
             </ListItem>
             <Stack direction="row" justifyContent="flex-end" px={1} pb={1}>
-                    <ApproveFriendRequestButton requestId={request.id} onClick={() => removeRequest(request.id)} />
+                    <FriendRequestButton 
+                    enableGotoProfile 
+                    defaultState={request.state} 
+                    reverseState
+                    customerId={request.customerId} 
+                    onClick={() => removeRequest(request.customerId)} />
                 </Stack>
             </Box>) :
             (<ListItem secondaryAction={
-                <ApproveFriendRequestButton requestId={request.id} onClick={() => removeRequest(request.id)} />
+                <FriendRequestButton 
+                enableGotoProfile 
+                defaultState={request.state} 
+                reverseState
+                customerId={request.customerId} 
+                onClick={() => removeRequest(request.customerId)} />
             }>
                 {children}
             </ListItem>)
     )
 
-    function removeRequest(requestId) {
-        setRequests(r => r.filter(e => e.id !== requestId))
+    function removeRequest(customerId) {
+        setRequests(r => r.filter(e => e.customerId !== customerId))
     }
 
     React.useEffect(() => {
@@ -59,7 +69,7 @@ export default function FriendsRequestList() {
                             <Box key={i}>
                                 <ListItemViewDetect request={request}>
                                     <ListItemAvatar>
-                                        <CAvatar src={CustomerStatics.profilePituresPath(request.id, request.customerPhoto)}
+                                        <CAvatar src={CustomerStatics.profilePituresPath(request.custm, request.customerPhoto)}
                                             variant="rounded"
                                             size={50} />
                                     </ListItemAvatar>

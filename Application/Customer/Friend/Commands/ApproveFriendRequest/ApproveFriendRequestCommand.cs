@@ -4,5 +4,5 @@ using MediatR;
 
 namespace Application.Customer.Friend.Commands.ApproveFriendRequest
 {
-    public record ApproveFriendRequestCommand(Guid FriendId) : IRequest<RequestDto>;
+    public record ApproveFriendRequestCommand(Guid CustomerId) : IRequest<RequestDto>;
 }

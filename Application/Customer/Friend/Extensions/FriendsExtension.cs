@@ -30,6 +30,7 @@ namespace Application.Customer.Friend.Extensions
                 a.CustomerId == whoCustomerId &&
                  a.CustomerFriendId==withCustomerId);
         }
+     
         public static bool IsFriendRequestApproved(this IQueryable<Domain.Entities.Friend> friends,Guid friendId)
         {
             return friends.Any(a =>a.Id==friendId &&
@@ -54,6 +55,23 @@ namespace Application.Customer.Friend.Extensions
                 a.CustomerId == customerId &&
                 a.CustomerFriendApproved &&
                 a.Id==friendId);
+        }
+        
+        ////////////////////////////////////
+        
+        
+        public static bool IsNotFriends(this IQueryable<Domain.Entities.Friend> friends,Guid who,Guid with)
+        {
+            return !friends.Any(a =>
+                a.CustomerId == who &&
+                a.CustomerFriendId==with);
+        }
+        public static bool IsNotApprovedRequest(this IQueryable<Domain.Entities.Friend> friends,Guid who,Guid with)
+        {
+            return !friends.Any(a =>
+                a.CustomerId == who &&
+                a.CustomerFriendApproved &&
+                a.CustomerFriendId==with);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Domain.Entities
         public string Type { get; set; }
         public bool IsSeen { get; set; }
         public bool IsRead { get; set; }
+        public Guid BaseId { get; set; }
         public Guid CustomerId { get; set; }
         public Customer Customer { get; set; }
     }

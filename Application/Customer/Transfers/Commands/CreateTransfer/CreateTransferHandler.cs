@@ -45,7 +45,7 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
             newTransfer.SenderId = receiver.CustomerId;
             await _dbContext.Transfers.AddAsync(newTransfer, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            await _mediator.Publish(new TransferCreated(receiver.CustomerFriendId.ToGuid()), cancellationToken);
+            await _mediator.Publish(new TransferCreated(receiver.CustomerFriendId.ToGuid(),newTransfer.Id), cancellationToken);
             return Unit.Value;
         }
     }

@@ -2,7 +2,7 @@ import React from 'react'
 import authAxiosApi from '../../../axios'
 import { useParams } from 'react-router'
 import { Box, Button, Card, CardContent, Grid, List, ListItem,styled, ListItemText, Stack, Typography } from '@mui/material'
-import { CAvatar, SkeletonFull } from '../../../ui-componets'
+import { CAvatar, ApproveFriendRequestButton, SkeletonFull, FriendRequestButton } from '../../../ui-componets'
 import CustomerStatics from '../../../helpers/statics/CustomerStatic'
 import Util from '../../../helpers/Util'
 const StyledListItem=styled(ListItemText)({
@@ -17,7 +17,7 @@ export default function VCOtherCustomerProfile() {
     React.useEffect(() => {
         (async () => {
             setLoading(true)
-            await authAxiosApi.get(`/general/profile?customerId=${customerId}`).then(r => {
+            await authAxiosApi.get(`general/profile?customerId=${customerId}`).then(r => {
                 setProfile(r)
             })
             setLoading(false)
@@ -33,6 +33,10 @@ export default function VCOtherCustomerProfile() {
                                 <CAvatar src={CustomerStatics.profilePituresPath(customerId, profile.photo)} size={150}/>
                                 <Typography fontWeight={900} variant="h5">{profile.userName}</Typography>
                                 <Typography fontWeight={900} fontSize={15}>{profile.name} {profile.lastName}</Typography>
+                               <FriendRequestButton
+                               defaultState={profile.state}
+                               reverseState
+                               customerId={profile.id} />
                             </Stack>
                         }
                     </CardContent>

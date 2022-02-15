@@ -1,6 +1,7 @@
 ﻿using System;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
+using Application.Customer.Friend.Extensions;
 using Domain.Interfaces;
 using FluentValidation;
 
@@ -14,17 +15,10 @@ namespace Application.Customer.Friend.Commands.ApproveFriendRequest
         {
             _dbContext = dbContext;
             _httpUserContext = httpUserContext;
-            RuleFor(a => a.FriendId)
+            RuleFor(a => a.CustomerId)
                 .Cascade(CascadeMode.Stop)
                 .NotNull().WithMessage("ای دی ضروری میباشد")
-                .Must(ValidForApprove).WithMessage("درخواست رد شد");
-        }
-        public bool ValidForApprove(Guid friendId)
-        {
-            var targetFriendRequest = _dbContext.Friends.GetById(friendId);
-            return targetFriendRequest.IsNotNull() &&
-                   targetFriendRequest.CustomerFriendId == _httpUserContext.GetCurrentUserId().ToGuid() &&
-                   !targetFriendRequest.CustomerFriendApproved;
+                .Must(customerId=>_dbContext.Friends.IsNotApprovedRequest(httpUserContext.GetCurrentUserId().ToGuid(),customerId)).WithMessage("درخواست رد شد");
         }
     }
 }

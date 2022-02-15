@@ -34,7 +34,7 @@ namespace Application.Customer.Friend.Commands.DeleteFriendRequest
             await _dbContext.SaveChangesAsync(cancellationToken);
             return new RequestDto()
             {
-                State = FriendRequestTypes.NotSend
+                State = FriendRequestStates.NotSend
             };
         }
     }

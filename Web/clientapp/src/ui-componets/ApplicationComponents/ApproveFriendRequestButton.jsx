@@ -2,11 +2,11 @@ import React from 'react'
 import { LoadingButton } from '@mui/lab'
 import authAxiosApi from '../../axios'
 import { ButtonGroup } from '@mui/material'
-FriendRequestButton.defaultProps = {
+ApproveFriendRequestButton.defaultProps = {
     customerId: "",
     onClick: () => { }
 }
-export default function FriendRequestButton({ requestId, onClick }) {
+export default function ApproveFriendRequestButton({ requestId, onClick }) {
     const [acceptLoading, setAcceptLoading] = React.useState(false)
     const [denyLoading, setDenyLoading] = React.useState(false)
     async function handleAcceptClick() {

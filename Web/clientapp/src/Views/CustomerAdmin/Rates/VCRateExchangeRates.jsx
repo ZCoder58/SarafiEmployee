@@ -53,7 +53,7 @@ export default function VCRateExchangeRates() {
             <Grid item lg={12} md={12} sm={12} xs={12}>
                 <CCard
                     title={`نرخ اسعار معادل ${rate.priceName}`}
-                    subHeader={`نرخ اسعار ${LocalDateStatic.fullDate(new Date())}`}
+                    subHeader={`نرخ اسعار ${new Date().toLocaleDateString()}`}
                     enableActions
                     headerIcon={<CurrencyExchangeIcon />}
                     actions={<IconButton onClick={()=>navigate("/customer/rates")}>

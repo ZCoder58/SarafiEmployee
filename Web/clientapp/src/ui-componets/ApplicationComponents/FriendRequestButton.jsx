@@ -1,33 +1,43 @@
 import React from 'react'
 import { LoadingButton } from '@mui/lab'
 import authAxiosApi from '../../axios'
+import { ButtonGroup } from '@mui/material'
+import { useNavigate } from 'react-router'
 FriendRequestButton.defaultProps={
     defaultState:"",
-    defaultRequestId:"",
+    customerFId:"",
     customerId:"",
-    onClick:()=>{}
+    onClick:()=>{},
+    enableGotoProfile:false,
+    reverseState:false
 }
-export default function FriendRequestButton({ defaultState, defaultRequestId, customerId,onClick }) {
+const states={
+    approved:1,
+    pending:0,
+    notSend:-1,
+    received:2
+}
+export default function FriendRequestButton({ defaultState,customerId,reverseState,onClick,enableGotoProfile }) {
     const [buttonText, setButtonText] = React.useState("")
     const [state, setState] = React.useState(defaultState)
-    const [requestId, setRequestId] = React.useState(defaultRequestId)
+    const [sCustomerId, setSCustomerId] = React.useState(customerId)    
     const [loading, setLoading] = React.useState(false)
+    const [acceptLoading, setAcceptLoading] = React.useState(false)
+    const [denyLoading, setDenyLoading] = React.useState(false)
+    const navigate=useNavigate()
+
     async function handleClick() {
         setLoading(true)
-        if (state === 1) {//approved
-            // await authAxiosApi.get(`customer/friends/deleteRequest/${requestId}`).then(r => {
-            //     setState(r.state)
-            //     setRequestId(r.requestId)
-            // })
-        } else if (state === 0) {//pending
-            await authAxiosApi.get(`customer/friends/cancelRequest/${requestId}`).then(r => {
+        if (state === states.approved && enableGotoProfile) {//pending
+            navigate(`/customer/profile/${sCustomerId}`)
+        } 
+         if (state === states.pending) {//pending
+            await authAxiosApi.get(`customer/friends/cancelRequest/${sCustomerId}`).then(r => {
                 setState(r.state)
-                setRequestId(r.requestId)
             })
-        } else if (state === -1) {//notSend
-            await authAxiosApi.get(`customer/friends/sendRequest/${customerId}`).then(r => {
+        } else if (state === states.notSend) {//notSend
+            await authAxiosApi.get(`customer/friends/sendRequest/${sCustomerId}`).then(r => {
                 setState(r.state)
-                setRequestId(r.requestId)
             })
         } else {
             console.log("invalid state");
@@ -35,17 +45,48 @@ export default function FriendRequestButton({ defaultState, defaultRequestId, cu
         setLoading(false)
         onClick()
     }
+    async function handleAcceptClick() {
+        setAcceptLoading(true)
+        try{
+            await authAxiosApi.get(`customer/friends/approveRequest/${sCustomerId}`).then(r=>{
+                setState(r.state)
+            })
+        }catch(error){
+
+        }
+        setAcceptLoading(false)
+        onClick()
+    }
+    async function handleDenyClick() {
+        setDenyLoading(true)
+        try{
+            await authAxiosApi.get(`customer/friends/denyRequest/${sCustomerId}`).then(r=>{
+                setState(r)
+            })
+        }catch(error){
+            
+        }
+        setDenyLoading(false)
+        onClick()
+    }
+    React.useEffect(()=>{
+        if(reverseState){
+            if(state===states.pending){
+                setState(states.received)
+            }
+        }
+    },[reverseState])
     React.useEffect(() => {
-        if (state === 1) {//approved
+        if (state === states.approved) {//approved
             setButtonText("پروفایل")
-        } else if (state === 0) {//pending
+        } else if (state === states.pending) {//pending
             setButtonText("لغو درخواست")
-        } else if (state === -1) {//notSend
+        } else if (state === states.notSend) {//notSend
             setButtonText("درخواست همکاری")
         }
     }, [state])
     return (
-        <LoadingButton
+       state!==2? ((enableGotoProfile|| state!==states.approved) &&<LoadingButton
             loading={loading}
             variant='contained'
             color='primary'
@@ -54,6 +95,28 @@ export default function FriendRequestButton({ defaultState, defaultRequestId, cu
             onClick={handleClick}
         >
             {buttonText}
-        </LoadingButton>
+        </LoadingButton>):
+         <ButtonGroup size='small'>
+         {!denyLoading&&<LoadingButton
+              loading={acceptLoading}
+              variant='contained'
+              color='primary'
+              size="small"
+              type='button'
+              onClick={handleAcceptClick}
+          >
+              قبول کردن
+          </LoadingButton>}
+         {!acceptLoading && <LoadingButton
+              loading={denyLoading}
+              variant='outlined'
+              color='primary'
+              size="small"
+              type='button'
+              onClick={handleDenyClick}
+          >
+              رد کردن
+          </LoadingButton>}
+      </ButtonGroup>
     )
 }

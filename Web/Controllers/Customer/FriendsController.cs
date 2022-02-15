@@ -69,7 +69,7 @@ namespace Web.Controllers.Customer
             return Mediator.Send(new CancelFriendRequestCommand(id));
         }
         [HttpGet("denyRequest/{id}")]
-        public Task DenyRequest(Guid id)
+        public Task<int> DenyRequest(Guid id)
         {
             return Mediator.Send(new DenyFriendRequestCommand(id));
         }

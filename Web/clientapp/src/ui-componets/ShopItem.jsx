@@ -1,11 +1,5 @@
 import React from 'react';
 import { Card, Box, CardContent, styled, Stack, Typography, useTheme, CardActions } from '@mui/material'
-// import uc32 from '../assets/images/uc32.png'
-// import uc300 from '../assets/images/uc300.png'
-// import uc600 from '../assets/images/uc600.png'
-// import uc1500 from '../assets/images/uc1500.png'
-// import uc3000 from '../assets/images/uc3000.png'
-// import ucXs from '../assets/images/ucXs.png'
 import { shouldForwardProp } from '@mui/system'
 const StyledCard = styled(Card, { shouldForwardProp })(({ theme }) => ({
     height:"310px",

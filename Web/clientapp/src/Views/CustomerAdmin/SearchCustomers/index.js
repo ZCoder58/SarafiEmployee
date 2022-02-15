@@ -57,8 +57,9 @@ export default function SearchCustomer() {
                             <ListItem secondaryAction={(
                                 <FriendRequestButton
                                 defaultState={e.requestState} 
-                                defaultRequestId={e.requestId} 
+                                enableGotoProfile
                                 customerId={e.id}/>
+                                
                             )}>
                                 <ListItemAvatar>
                                     <CAvatar src={CustomerStatic.profilePituresPath(e.id, e.photo)} size={40} variant="rounded" />

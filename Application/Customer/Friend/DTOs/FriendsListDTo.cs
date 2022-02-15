@@ -13,5 +13,6 @@ namespace Application.Customer.Friend.DTOs
         public string CustomerFriendCity { get; set; }
         public string CustomerFriendDetailedAddress { get; set; }
         public string CustomerFriendCountryName { get; set; }
+        public int State { get; set; }
     }
 }

@@ -11,5 +11,6 @@ namespace Application.Customer.Notifications.DTOs
         public string Type { get; set; }
         public bool IsSeen { get; set; }
         public bool IsRead { get; set; }
+        public Guid BaseId { get; set; }
     }
 }

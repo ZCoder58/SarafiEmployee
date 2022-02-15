@@ -1,36 +1,40 @@
 import React from 'react'
-import {TextField ,Box} from '@mui/material'
-import DateRangePicker from '@mui/lab/DateRangePicker';
+import { TextField, Box } from '@mui/material'
+import DatePicker from '@mui/lab/DatePicker';
 import { LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
-CDateTimeRange.defaultProps={
-  value:[null,null]
+CDateTimeRange.defaultProps = {
+  value: [null, null]
 }
-export default function CDateTimeRange({onChange,value,startOptions,endOptions}){
-    
-    return (
+export default function CDateTimeRange({ onChange, value, startOptions,endOptions }) {
+  const [dateValue, setDateValue] = React.useState(value)
+  React.useEffect(()=>{
+    console.log("value :",value)
+    console.log("date :",dateValue)
+    onChange(dateValue[0],dateValue[1])
+  },[dateValue])
+  return (
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DateRangePicker
-        
-        startText="از تاریخ"
-        endText="تا تاریخ"
-        value={value}
-        // mask="____/__/__"
-        onChange={(newValue) => {
-          const startDate=newValue[0]&&new Date(newValue[0]).toLocaleDateString()
-          const endDate=newValue[1]&&new Date(newValue[1]).toLocaleDateString()
-          onChange(startDate,endDate)
-        }}
-        renderInput={(startProps, endProps) => (
-          <React.Fragment>
-            <TextField {...startProps} {...endOptions}/>
-            <Box sx={{ mx: 2 }}> تا </Box>
-            <TextField {...endProps} {...startOptions}/>
-          </React.Fragment>
+      <DatePicker
+        value={dateValue[0]}
+        label="از تاریخ"
+        onChange={(e)=>setDateValue([new Date(e),dateValue[1]])}
+        renderInput={(startProps) => (
+          
+            <TextField {...startProps} {...startOptions}/>
+          
         )}
       />
-
-      </LocalizationProvider>
-    )
+      <DatePicker
+      label="تا تاریخ"
+          value={dateValue[1]}
+          onChange={(e)=>setDateValue([dateValue[0],new Date(e)])}
+          renderInput={(startProps) => (
+            <TextField {...startProps} {...endOptions} />
+          )}
+        />
+    </LocalizationProvider>
+ 
+  )
 }

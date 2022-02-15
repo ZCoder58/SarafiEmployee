@@ -23,12 +23,15 @@ namespace Application.Customer.Friend.Commands.CancelFriendRequest
 
         public async Task<RequestDto> Handle(CancelFriendRequestCommand request, CancellationToken cancellationToken)
         {
-            var targetFriendRequest = _dbContext.Friends.GetById(request.FriendId);
+            var targetFriendRequest = _dbContext.Friends.GetFriendRequest(_httpUserContext.GetCurrentUserId().ToGuid(),request.CustomerId);
+            var reverseRequest = _dbContext.Friends.GetFriendRequest(
+                targetFriendRequest.CustomerFriendId.ToGuid(),targetFriendRequest.CustomerId);
             _dbContext.Friends.Remove(targetFriendRequest);
+            _dbContext.Friends.Remove(reverseRequest);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return new RequestDto()
             {
-                State = FriendRequestTypes.NotSend
+                State = FriendRequestStates.NotSend
             };
         }
     }

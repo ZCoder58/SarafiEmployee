@@ -10,7 +10,7 @@ using MediatR;
 
 namespace Application.Customer.Transfers.EventHandlers
 {
-    public record TransferDenied(Guid TransferSenderId) : INotification;
+    public record TransferDenied(Guid TransferSenderId,Guid DeniedTransferId) : INotification;
     public class TransferDeniedHandler:INotificationHandler<TransferDenied>
     {
         private readonly INotifyHubAccessor _notifyHub;
@@ -27,14 +27,13 @@ namespace Application.Customer.Transfers.EventHandlers
         public async Task Handle(TransferDenied notification, CancellationToken cancellationToken)
         {
             var sender = _dbContext.Customers.GetById(_httpUserContext.GetCurrentUserId().ToGuid());
-           
-            
             await _dbContext.CustomerNotifications.AddAsync(new CustomerNotification()
             {
                 Title = "رد حواله",
                 Body = string.Concat(sender.Name," ",sender.LastName," حواله شما را رد کرد"),
                 CustomerId = notification.TransferSenderId,
-                Type = "deniedTransfer"
+                Type = "deniedTransfer",
+                BaseId = notification.DeniedTransferId
             },cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             await _notifyHub.UpdateNotificationUser(notification.TransferSenderId);

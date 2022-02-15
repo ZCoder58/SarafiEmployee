@@ -4,5 +4,5 @@ using MediatR;
 
 namespace Application.Customer.Friend.Commands.CancelFriendRequest
 {
-    public record CancelFriendRequestCommand(Guid FriendId) : IRequest<RequestDto>;
+    public record CancelFriendRequestCommand(Guid CustomerId) : IRequest<RequestDto>;
 }

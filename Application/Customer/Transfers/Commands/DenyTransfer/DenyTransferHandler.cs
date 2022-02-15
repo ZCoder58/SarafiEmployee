@@ -23,7 +23,7 @@ namespace Application.Customer.Transfers.Commands.DenyTransfer
             var targetTransfer = _dbContext.Transfers.GetById(request.TransferId);
             targetTransfer.State = TransfersStatusTypes.Denied;
             await _dbContext.SaveChangesAsync(cancellationToken);
-            await _mediator.Publish(new TransferDenied(targetTransfer.SenderId), cancellationToken);
+            await _mediator.Publish(new TransferDenied(targetTransfer.SenderId,targetTransfer.Id), cancellationToken);
             return Unit.Value;
         }
     }

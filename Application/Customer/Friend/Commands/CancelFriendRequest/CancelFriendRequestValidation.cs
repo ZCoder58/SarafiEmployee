@@ -15,17 +15,10 @@ namespace Application.Customer.Friend.Commands.CancelFriendRequest
         {
             _dbContext = dbContext;
             _httpUserContext = httpUserContext;
-            RuleFor(a => a.FriendId)
+            RuleFor(a => a.CustomerId)
                 .NotNull().WithMessage("ای دی ضروری میباشد")
-                .Must(ValidForCancel).WithMessage("درخواست رد شد");
-        }
-
-        public bool ValidForCancel(Guid friendId)
-        {
-            var targetFriendRequest = _dbContext.Friends.GetById(friendId);
-            return targetFriendRequest.IsNotNull() &&
-                   targetFriendRequest.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid() &&
-                   !targetFriendRequest.CustomerFriendApproved;
+                .Must(customerId=>dbContext.Friends.IsNotApprovedRequest(
+                    httpUserContext.GetCurrentUserId().ToGuid(),customerId)).WithMessage("درخواست رد شد");
         }
     }
 }
