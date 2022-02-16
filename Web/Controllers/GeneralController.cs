@@ -6,6 +6,8 @@ using Application.Countries.DTOs;
 using Application.Countries.Queries;
 using Application.Customer.Friend.DTOs;
 using Application.Customer.Friend.Queries.GetFriendProfile;
+using Application.SunriseSuperAdmin.Rates.DTos;
+using Application.SunriseSuperAdmin.Rates.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
@@ -25,6 +27,11 @@ namespace Web.Controllers
         public Task<FriendProfileDTo> Profile(Guid customerId)
         {
             return Mediator.Send(new GetFriendProfileQuery(customerId));
+        }
+        [HttpGet]
+        public Task<IEnumerable<RateDTo>> Rates()
+        {
+            return Mediator.Send(new GetRatesListQuery());
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
+using Application.Common.Extensions.DbContext;
 using Application.SunriseSuperAdmin.Rates.Extensions;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -24,27 +25,44 @@ namespace Application.Customer.ExchangeRates.Commands.CreateExchangeRate
         public async Task<CustomerExchangeRate> Handle(CreateExchangeRateCommand request,
             CancellationToken cancellationToken)
         {
-            var newExchangeRate = new CustomerExchangeRate();
-            if (!_dbContext.CustomerExchangeRates.Any(b =>
-                b.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid() &&
-                b.ToRatesCountry.Abbr == request.AbbrTo &&
-                b.FromRatesCountry.Abbr == request.AbbrFrom &&
-                (b.CreatedDate.Value.Date == DateTime.UtcNow.Date ||
-                 b.UpdatedDate.Value.Date == DateTime.UtcNow.Date)))
+            var fromCurrency = _dbContext.RatesCountries.GetById(request.FromCurrency);
+            var toCurrency = _dbContext.RatesCountries.GetById(request.ToCurrency);
+
+
+            //add base
+            var newCustomerExchangeRate = (await _dbContext.CustomerExchangeRates.AddAsync(new CustomerExchangeRate()
             {
-                var fromRate = _dbContext.RatesCountries.GetByAbbr(request.AbbrFrom);
-                var toRate = _dbContext.RatesCountries.GetByAbbr(request.AbbrTo);
-                newExchangeRate = (await _dbContext.CustomerExchangeRates.AddAsync(new CustomerExchangeRate()
+                CustomerId = _httpUserContext.GetCurrentUserId().ToGuid(),
+                FromRatesCountryId = fromCurrency.Id,
+                ToRatesCountryId = toCurrency.Id,
+                Updated = request.Updated,
+                Reverse = false,
+                FromAmount = request.FromAmount,
+                ToExchangeRate = request.ToAmount
+            }, cancellationToken)).Entity;
+            if (request.FromCurrency != request.ToCurrency)
+            {
+                //add reverse
+                await _dbContext.CustomerExchangeRates.AddAsync(new CustomerExchangeRate()
                 {
                     CustomerId = _httpUserContext.GetCurrentUserId().ToGuid(),
-                    ToRatesCountryId = toRate.Id,
-                    FromRatesCountryId = fromRate.Id,
-                    Updated = request.AbbrFrom == request.AbbrTo
-                }, cancellationToken)).Entity;
-                await _dbContext.SaveChangesAsync(cancellationToken);
+                    FromRatesCountryId = toCurrency.Id,
+                    ToRatesCountryId = fromCurrency.Id,
+                    Updated = request.Updated,
+                    Reverse = true,
+                    FromAmount = request.ToAmount,
+                    ToExchangeRate = request.FromAmount
+                }, cancellationToken);
+            }
+            else
+            {
+                newCustomerExchangeRate.Updated = true;
             }
 
-            return newExchangeRate;
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+
+            return newCustomerExchangeRate;
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using Application.Common.Extensions;
+﻿using System;
+using Application.Common.Extensions;
+using Application.Common.Extensions.DbContext;
+using Application.Customer.ExchangeRates.Extensions;
 using Application.SunriseSuperAdmin.Rates.Extensions;
 using Domain.Interfaces;
 using FluentValidation;
@@ -7,17 +10,38 @@ namespace Application.Customer.ExchangeRates.Commands.CreateExchangeRate
 {
     public class CreateExchangeRateValidation:AbstractValidator<CreateExchangeRateCommand>
     {
-        public CreateExchangeRateValidation(IApplicationDbContext dbContext)
+        private readonly IApplicationDbContext _dbContext;
+        private readonly IHttpUserContext _httpUserContext;
+        public CreateExchangeRateValidation(IApplicationDbContext dbContext, IHttpUserContext httpUserContext)
         {
-            RuleFor(a => a.AbbrFrom)
+            _dbContext = dbContext;
+            _httpUserContext = httpUserContext;
+            RuleFor(a => a.FromCurrency)
                 .Cascade(CascadeMode.Stop)
                 .NotNull()
-                .Must(abbrFrom=>dbContext.RatesCountries.GetByAbbr(abbrFrom).IsNotNull()).WithMessage("درخواست رد شد");
-            RuleFor(a => a.AbbrTo)
+                .NotEqual(Guid.Empty).WithMessage("انتخاب ارز مبدا ضروری میباشد")
+                .Must(fromCurrency=>dbContext.RatesCountries.IsExists(fromCurrency)).WithMessage("درخواست رد شد")
+                .Must(IsNotAlreadyAdded).WithMessage("نرخ ارز قبلا اضافه شده است");
+            RuleFor(a => a.ToCurrency)
                 .Cascade(CascadeMode.Stop)
                 .NotNull()
-                .Must(abbrTo=>dbContext.RatesCountries.GetByAbbr(abbrTo).IsNotNull()).WithMessage("درخواست رد شد");
+                .NotEqual(Guid.Empty).WithMessage("انتخاب ارز مقصد ضروری میباشد")
+                .Must(toCurrency=>dbContext.RatesCountries.IsExists(toCurrency)).WithMessage("درخواست رد شد");
+            RuleFor(a => a.FromAmount)
+                .Cascade(CascadeMode.Stop)
+                .NotNull().WithMessage("نرخ ارز ضروری میباشد")
+                .GreaterThanOrEqualTo(0).WithMessage("کوچکتر از 0 مجاز نیست"); 
+            RuleFor(a => a.ToAmount)
+                .Cascade(CascadeMode.Stop)
+                .NotNull().WithMessage("نرخ معادل ضروری میباشد")
+                .GreaterThanOrEqualTo(0).WithMessage("کوچکتر از 0 مجاز نیست");
+        }
 
+        public bool IsNotAlreadyAdded(CreateExchangeRateCommand model,Guid fromCurrency)
+        {
+            var target= _dbContext.CustomerExchangeRates.GetExchangeRateById(
+                _httpUserContext.GetCurrentUserId().ToGuid(),model.FromCurrency,model.ToCurrency);
+            return target.IsNull() || target.CreatedDate?.Date != DateTime.UtcNow.Date;
         }
     }
 }

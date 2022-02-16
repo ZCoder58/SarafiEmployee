@@ -2,7 +2,7 @@ import React from 'react'
 import authAxiosApi from '../../../axios'
 import { useParams } from 'react-router'
 import { Box, Button, Card, CardContent, Grid, List, ListItem,styled, ListItemText, Stack, Typography } from '@mui/material'
-import { CAvatar, ApproveFriendRequestButton, SkeletonFull, FriendRequestButton } from '../../../ui-componets'
+import { CAvatar, SkeletonFull, FriendRequestButton } from '../../../ui-componets'
 import CustomerStatics from '../../../helpers/statics/CustomerStatic'
 import Util from '../../../helpers/Util'
 const StyledListItem=styled(ListItemText)({

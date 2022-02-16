@@ -36,6 +36,7 @@ namespace Application.Customer.Friend.EventHandlers
                 BaseId = senderCustomer.Id
             },cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
+            await _notifyAccessor.UpdateFriendsRequestCount(senderCustomer.Id);
             await _notifyAccessor.UpdateNotificationUser(notification.TargetCustomerId);
         }
     }

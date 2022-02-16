@@ -37,7 +37,10 @@ const validationSchema = Yup.object().shape({
     fCurrency: Yup.string().required("انتخاب ارز ضروری میباشد"),
     tCurrency: Yup.string().required("انتخاب ارز دریافت کننده ضروری میباشد"),
     amount: Yup.string().required("مقدار پول ارسالی ضروری میباشد"),
-    friendId: Yup.string().required("انتخاب همکار شما ضروری میباشد")
+    friendId: Yup.string().required("انتخاب همکار شما ضروری میباشد"),
+    fee: Yup.number().required("کمیشن ضروری میباشد").min(0,"کمتر از 0 مجاز نیست"),
+    receiverFee: Yup.number().required("کمیشن ضروری میباشد").min(0,"کمتر از 0 مجاز نیست")
+    
 });
 export default function VCreateTransfer() {
     const [loading, setLoading] = React.useState(true)
@@ -46,6 +49,7 @@ export default function VCreateTransfer() {
     const [distRate, setDistRate] = React.useState(null)
     const [transferCode, setTransferCode] = React.useState(0)
     const [exchangeRate, setExchangeRate] = React.useState(null)
+    const [receivedAmount, setReceivedAmount] = React.useState(0)
     const navigate = useNavigate()
     const formik = useFormik({
         validationSchema: validationSchema,
@@ -73,13 +77,14 @@ export default function VCreateTransfer() {
     }
     const handleAmountChange = (event) => {
         formik.handleChange(event)
+        setReceivedAmount(exchangeRate ? (Number(exchangeRate.toExchangeRate) / Number(exchangeRate.fromAmount) * Number(event.target.value)).toFixed(2) : 0)
     }
     React.useMemo(async () => {
         try {
             await authAxiosApi.get('customer/rates/exchangeRate', {
                 params: {
-                    from: sourceRate.abbr,
-                    to: distRate.abbr
+                    from: sourceRate.id,
+                    to: distRate.id
                 }
             }).then(r => {
                 setExchangeRate(r)
@@ -90,7 +95,7 @@ export default function VCreateTransfer() {
     }, [sourceRate, distRate])
     React.useEffect(() => {
         (async () => {
-            await authAxiosApi.get('customer/rates').then(r => {
+            await authAxiosApi.get('general/rates').then(r => {
                 setCountriesRates(r)
             })
             setTransferCode(Util.GenerateRandom(50, 5000))
@@ -256,7 +261,7 @@ export default function VCreateTransfer() {
                                     label="مقدار پول دریافتی"
                                     required
                                     size="small"
-                                    value={exchangeRate ? (exchangeRate.toExchangeRate / exchangeRate.fromAmount) * formik.values.amount : 0}
+                                    value={receivedAmount}
                                     InputProps={{
                                         readOnly: true,
                                         endAdornment: (
@@ -300,7 +305,8 @@ export default function VCreateTransfer() {
                                     type="number"
                                     error={formik.errors.fee ? true : false}
                                     helperText={formik.errors.fee}
-                                    onChange={formik.handleChange}
+                                    value={formik.values.fee}
+                                    onChange={(e)=>formik.setFieldValue("fee",e.target.value?e.target.value:0)}
                                     InputProps={{
                                         endAdornment: (
                                             <Stack direction="row">
@@ -311,6 +317,7 @@ export default function VCreateTransfer() {
                                     }}
                                 />
                             </FieldSet>
+
                         </Grid>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
                             <FieldSet label="معلومات حواله دار">
@@ -327,7 +334,28 @@ export default function VCreateTransfer() {
                                     label="کمیشن حواله دار"
                                     size="small"
                                     type="number"
+                                    required
+                                    
+                                    defaultValue={formik.values.receiverFee}
+                                    error={formik.errors.receiverFee ? true : false}
+                                    helperText={formik.errors.receiverFee}
                                     onChange={formik.handleChange}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <Stack direction="row">
+                                                <Divider orientation='vertical' flexItem ></Divider>
+                                                <Typography sx={{ ml: 1 }} variant="body1" >{distRate ? distRate.priceName : "هیچ"}</Typography>
+                                            </Stack>
+                                        )
+                                    }}
+                                />
+                                <TextField
+                                    name='receiverFee'
+                                    label="مجموع پول طلب :"
+                                    size="small"
+                                    type="number"
+                                    required
+                                    value={Number(formik.values.receiverFee)+Number(receivedAmount)}
                                     InputProps={{
                                         endAdornment: (
                                             <Stack direction="row">
@@ -345,6 +373,12 @@ export default function VCreateTransfer() {
                                 <Stack direction="column" spacing={1}>
                                     <Typography variant="body1" fontWeight={900}>نمبر حواله :</Typography>
                                     <Typography variant="h4">{transferCode}</Typography>
+                                </Stack>
+                                <Stack direction="column" spacing={1}>
+                                    <Typography variant="body1" fontWeight={900}>مجموع پول دریافتی از مشتری :</Typography>
+                                    <Typography variant="h4">{`${exchangeRate ?Number(Number(formik.values.amount)+Number(formik.values.fee)).toFixed(2): 0} ${sourceRate?sourceRate.priceName :"هیچ"}`}
+</Typography>
+
                                 </Stack>
                             </FieldSet>
                         </Grid>

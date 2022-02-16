@@ -33,7 +33,8 @@ namespace Application.Customer.ExchangeRates.Queries
                 .Include(a=>a.FromRatesCountry)
                 .Include(a=>a.ToRatesCountry)
                 .GetById(request.ExchangeRateId);
-            if (targetCustomerExchangeRate.CustomerId != _httpUserContext.GetCurrentUserId().ToGuid())
+            if (targetCustomerExchangeRate.CustomerId != _httpUserContext.GetCurrentUserId().ToGuid() && 
+                targetCustomerExchangeRate.CreatedDate?.Date!=DateTime.UtcNow.Date)
             {
                 throw new EntityNotFoundException();
             }

@@ -21,5 +21,6 @@ namespace Domain.Entities
         public Guid CustomerId { get; set; }
         public Customer Customer { get; set; }
         public bool Updated { get; set; }
+        public bool Reverse { get; set; }
     }
 }

@@ -14,15 +14,15 @@ using MediatR.Pipeline;
 
 namespace Application.Customer.ExchangeRates.Queries
 {
-    public record GetExchangeRatesQuery(string AbbrFrom,string AbbrTo) : IRequest<ExchangeRatesDTo>;
+    public record GetExchangeRateQuery(Guid FromCurrencyId,Guid ToCurrencyId) : IRequest<ExchangeRatesDTo>;
 
-    public class GetExchangeRatesHandler:IRequestHandler<GetExchangeRatesQuery,ExchangeRatesDTo>
+    public class GetExchangeRateHandler:IRequestHandler<GetExchangeRateQuery,ExchangeRatesDTo>
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IHttpUserContext _httpUserContext;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-        public GetExchangeRatesHandler(IApplicationDbContext dbContext, IHttpUserContext httpUserContext, IMapper mapper, IMediator mediator)
+        public GetExchangeRateHandler(IApplicationDbContext dbContext, IHttpUserContext httpUserContext, IMapper mapper, IMediator mediator)
         {
             _dbContext = dbContext;
             _httpUserContext = httpUserContext;
@@ -30,17 +30,17 @@ namespace Application.Customer.ExchangeRates.Queries
             _mediator = mediator;
         }
 
-        public async Task<ExchangeRatesDTo> Handle(GetExchangeRatesQuery request, CancellationToken cancellationToken)
+        public async Task<ExchangeRatesDTo> Handle(GetExchangeRateQuery request, CancellationToken cancellationToken)
         {
             var userId = _httpUserContext.GetCurrentUserId().ToGuid();
             var targetExchangeRate = _dbContext.CustomerExchangeRates.FirstOrDefault(a =>
-                a.CreatedDate.Value.Date == DateTime.Now.Date &&
+                a.CreatedDate.Value.Date == DateTime.UtcNow.Date &&
                 a.CustomerId==userId&&
-                a.FromRatesCountry.Abbr == request.AbbrFrom &&
-                a.ToRatesCountry.Abbr == request.AbbrTo);
+                a.FromRatesCountry.Id == request.FromCurrencyId &&
+                a.ToRatesCountry.Id == request.ToCurrencyId);
             if (targetExchangeRate.IsNull())
             {
-               var newExchangeRate=await _mediator.Send(new CreateExchangeRateCommand(request.AbbrFrom, request.AbbrTo),cancellationToken);
+               var newExchangeRate=await _mediator.Send(new CreateExchangeRateCommand(request.FromCurrencyId, request.ToCurrencyId,1,1,false),cancellationToken);
                return _mapper.Map<ExchangeRatesDTo>(newExchangeRate);
             }
             return _mapper.Map<ExchangeRatesDTo>(targetExchangeRate);

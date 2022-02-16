@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
-using Application.Customer.ExchangeRates.Commands.CreateExchangeRatesForDate;
 using Application.Customer.ExchangeRates.DTos;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -15,10 +14,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Customer.ExchangeRates.Queries
 {
-    public record GetCustomerExchangeRatesListQuery
-        (Guid RateCountryId, DateTime TargetDate) : IRequest<IEnumerable<CustomerExchangeRatesListDTo>>;
+    public record GetTodayExchangeRatesTableQuery
+        (DateTime TargetDate) : IRequest<IEnumerable<CustomerExchangeRatesListDTo>>;
 
-    public class GetCustomerExchangeRatesListHandler : IRequestHandler<GetCustomerExchangeRatesListQuery,
+    public class GetTodayExchangeRatesTableHandler : IRequestHandler<GetTodayExchangeRatesTableQuery,
         IEnumerable<CustomerExchangeRatesListDTo>>
     {
         private readonly IApplicationDbContext _dbContext;
@@ -26,7 +25,7 @@ namespace Application.Customer.ExchangeRates.Queries
         private readonly IHttpUserContext _httpUserContext;
         private readonly IMediator _mediator;
 
-        public GetCustomerExchangeRatesListHandler(IApplicationDbContext dbContext, IMapper mapper,
+        public GetTodayExchangeRatesTableHandler(IApplicationDbContext dbContext, IMapper mapper,
             IHttpUserContext httpUserContext, IMediator mediator)
         {
             _dbContext = dbContext;
@@ -34,21 +33,14 @@ namespace Application.Customer.ExchangeRates.Queries
             _httpUserContext = httpUserContext;
             _mediator = mediator;
         }
+        
 
-        public async Task<IEnumerable<CustomerExchangeRatesListDTo>> Handle(GetCustomerExchangeRatesListQuery request,
-            CancellationToken cancellationToken)
+        public async Task<IEnumerable<CustomerExchangeRatesListDTo>> Handle(GetTodayExchangeRatesTableQuery request, CancellationToken cancellationToken)
         {
-            //step 1: create customerExchangeRates for targetDate if not is exists
-            if (request.TargetDate.Date == DateTime.UtcNow.Date)
-            {
-                await _mediator.Send(new CreateExchangeRatesForDateCommand(request.RateCountryId), cancellationToken);
-            }
-
-            //step 2: get customerExchangeRates for targetDate 
             return await _dbContext.CustomerExchangeRates
                 .Where(a => a.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid() &&
-                            a.ToRatesCountryId == request.RateCountryId &&
-                            a.FromRatesCountryId!=request.RateCountryId &&
+                            !a.Reverse &&
+                            a.FromRatesCountryId !=(Guid)a.ToRatesCountryId &&
                             (a.UpdatedDate.Value.Date == request.TargetDate.Date ||
                              a.CreatedDate.Value.Date == request.TargetDate.Date))
                 .OrderDescending()

@@ -4,10 +4,7 @@ import { CustomerAuthLayout } from "../layouts/customerAdminLayout"
 import {LoadablePage} from "../ui-componets";
 const VDashboard= LoadablePage(React.lazy(() => import("../Views/CustomerAdmin/dashboards/VDashboard.jsx")))
 //rates
-const VRates= LoadablePage(React.lazy(() => import("../Views/CustomerAdmin/Rates")))
-const VCExchangeRates= LoadablePage(React.lazy(() => import("../Views/CustomerAdmin/Rates/VCRateExchangeRates")))
-//exchange Rates
-const VExchangeRates= LoadablePage(React.lazy(() => import("../Views/company/exchangeRates")))
+const VCExchangeRates= LoadablePage(React.lazy(() => import("../Views/CustomerAdmin/Rates")))
 
 const VCProfile= LoadablePage(React.lazy(() => import("../Views/CustomerAdmin/profile")))
 //Friends
@@ -56,18 +53,14 @@ export const CustomerAuthRoutes={
         ///rates
         {
             path:"rates",
-            element:<VRates/>
-        },
-        {
-            path:"exchangeRates/:rateId",
             element:<VCExchangeRates/>
         },
-        ///exchange rates
-        {
-            path:"todayExchangeRates",
-            element:<VExchangeRates/>
-        },
-
+        // ///exchange rates
+        // {
+        //     path:"todayExchangeRates",
+        //     element:<VExchangeRates/>
+        // },
+        //customer
         {
             path:"profile",
             element:<VCProfile/>

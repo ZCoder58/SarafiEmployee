@@ -5,7 +5,6 @@ import { ButtonGroup } from '@mui/material'
 import { useNavigate } from 'react-router'
 FriendRequestButton.defaultProps={
     defaultState:"",
-    customerFId:"",
     customerId:"",
     onClick:()=>{},
     enableGotoProfile:false,
@@ -17,7 +16,7 @@ const states={
     notSend:-1,
     received:2
 }
-export default function FriendRequestButton({ defaultState,customerId,reverseState,onClick,enableGotoProfile }) {
+export default function FriendRequestButton({ defaultState,customerId,reverseState,onClick,enableGotoProfile,...props }) {
     const [buttonText, setButtonText] = React.useState("")
     const [state, setState] = React.useState(defaultState)
     const [sCustomerId, setSCustomerId] = React.useState(customerId)    
@@ -87,17 +86,20 @@ export default function FriendRequestButton({ defaultState,customerId,reverseSta
     }, [state])
     return (
        state!==2? ((enableGotoProfile|| state!==states.approved) &&<LoadingButton
+       {...props}
             loading={loading}
             variant='contained'
             color='primary'
             size="small"
             type='button'
             onClick={handleClick}
+            
         >
             {buttonText}
         </LoadingButton>):
          <ButtonGroup size='small'>
          {!denyLoading&&<LoadingButton
+          {...props}
               loading={acceptLoading}
               variant='contained'
               color='primary'
@@ -108,6 +110,7 @@ export default function FriendRequestButton({ defaultState,customerId,reverseSta
               قبول کردن
           </LoadingButton>}
          {!acceptLoading && <LoadingButton
+          {...props}
               loading={denyLoading}
               variant='outlined'
               color='primary'

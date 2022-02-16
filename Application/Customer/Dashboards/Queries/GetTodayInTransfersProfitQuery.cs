@@ -33,7 +33,7 @@ namespace Application.Customer.Dashboards.Queries
                     a.SenderId == _httpUserContext.GetCurrentUserId().ToGuid() &&
                     a.CreatedDate.Value.Date ==DateTime.UtcNow.Date &&
                     a.State==TransfersStatusTypes.Completed).ToList()
-                .GroupBy(a => a.ToCurrency)
+                .GroupBy(a => a.FromCurrency)
                 .Select(a => new TransferProfitDTo()
                 {
                     CurrencyName = a.Key,

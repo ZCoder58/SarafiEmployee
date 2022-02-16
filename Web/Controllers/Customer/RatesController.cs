@@ -2,11 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Customer.ExchangeRates.Commands.CreateExchangeRate;
 using Application.Customer.ExchangeRates.Commands.UpdateExchangeRate;
 using Application.Customer.ExchangeRates.DTos;
 using Application.Customer.ExchangeRates.Queries;
-using Application.SunriseSuperAdmin.Rates.DTos;
-using Application.SunriseSuperAdmin.Rates.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
@@ -17,20 +16,16 @@ namespace Web.Controllers.Customer
     [Route("api/customer/rates")]
     public class RatesController : ApiBaseController
     {
-        [HttpGet]
-        public Task<IEnumerable<RateDTo>> GetRatesList()
+       
+        [HttpGet("todayExchangeRates")]
+        public Task<IEnumerable<CustomerExchangeRatesListDTo>> GetExchangeRatesForToday()
         {
-            return Mediator.Send(new GetRatesListQuery());
+            return Mediator.Send(new GetTodayExchangeRatesTableQuery(DateTime.UtcNow));
         }
-        [HttpGet("{id}")]
-        public Task<RateDTo> GetRate(Guid id)
+        [HttpPost("exchangeRates")]
+        public Task CreateExchangeRate([FromForm]CreateExchangeRateCommand request)
         {
-            return Mediator.Send(new GetRateCountryQuery(id));
-        }
-        [HttpGet("exchangeRates")]
-        public Task<IEnumerable<CustomerExchangeRatesListDTo>> GetExchangeRatesForDate(Guid rate)
-        {
-            return Mediator.Send(new GetCustomerExchangeRatesListQuery(rate,DateTime.Now));
+            return Mediator.Send(request);
         }
         [HttpGet("exchangeRates/{id}")]
         public Task<CustomerExchangeRateEditDTo> GetUpdateRateEdit(Guid id)
@@ -43,9 +38,9 @@ namespace Web.Controllers.Customer
             return Mediator.Send(request);
         }
         [HttpGet("exchangeRate")]
-        public Task<ExchangeRatesDTo> GetExchangeRateRate(string from, string to)
+        public Task<ExchangeRatesDTo> GetExchangeRateRate(Guid from, Guid to)
         {
-            return Mediator.Send(new GetExchangeRatesQuery(from, to));
+            return Mediator.Send(new GetExchangeRateQuery(from, to));
         }
     }
 }

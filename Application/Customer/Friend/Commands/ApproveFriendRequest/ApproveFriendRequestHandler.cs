@@ -4,6 +4,7 @@ using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
 using Application.Common.Statics;
 using Application.Customer.Friend.DTOs;
+using Application.Customer.Friend.EventHandlers;
 using Application.Customer.Friend.Extensions;
 using Domain.Interfaces;
 using MediatR;
@@ -14,10 +15,12 @@ namespace Application.Customer.Friend.Commands.ApproveFriendRequest
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IHttpUserContext _httpUserContext;
-        public ApproveFriendRequestHandler(IApplicationDbContext dbContext, IHttpUserContext httpUserContext)
+        private readonly IMediator _mediator;
+        public ApproveFriendRequestHandler(IApplicationDbContext dbContext, IHttpUserContext httpUserContext, IMediator mediator)
         {
             _dbContext = dbContext;
             _httpUserContext = httpUserContext;
+            _mediator = mediator;
         }
 
         public async Task<RequestDto> Handle(ApproveFriendRequestCommand request, CancellationToken cancellationToken)
@@ -30,6 +33,7 @@ namespace Application.Customer.Friend.Commands.ApproveFriendRequest
             targetRequestReverse.CustomerFriendApproved = true;
             targetRequestReverse.State = FriendRequestStates.Approved;
             await _dbContext.SaveChangesAsync(cancellationToken);
+            await _mediator.Publish(new FriendRequestApproved(targetRequest.CustomerFriendId.ToGuid()), cancellationToken);
             return new RequestDto()
             {
                 State = targetRequest.State

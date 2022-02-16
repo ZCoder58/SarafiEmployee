@@ -33,7 +33,9 @@ namespace Application.Customer.ExchangeRates.Commands.UpdateExchangeRate
         public bool Exists(Guid exchangeRateId)
         {
             var targetExchangeRate = _dbContext.CustomerExchangeRates.GetById(exchangeRateId);
-            return targetExchangeRate.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid();
+            return targetExchangeRate.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid() &&
+                   !targetExchangeRate.Reverse &&
+                   targetExchangeRate.CreatedDate?.Date.Date ==DateTime.UtcNow.Date;
         }
     }
 }

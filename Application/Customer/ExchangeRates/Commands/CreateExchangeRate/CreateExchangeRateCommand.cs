@@ -1,8 +1,13 @@
-﻿using Application.Customer.ExchangeRates.DTos;
+﻿using System;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Customer.ExchangeRates.Commands.CreateExchangeRate
 {
-    public record CreateExchangeRateCommand(string AbbrFrom, string AbbrTo) : IRequest<CustomerExchangeRate>;
+    public record CreateExchangeRateCommand(
+        Guid FromCurrency, 
+        Guid ToCurrency,
+        double FromAmount,
+        double ToAmount,
+        bool Updated=true) : IRequest<CustomerExchangeRate>;
 }
