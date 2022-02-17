@@ -1,0 +1,22 @@
+﻿<html>
+<head>
+    <style>
+       .button{
+       font-style: normal;
+       font-weight: bolder;
+       text-decoration: unset;
+       font-size:18px
+       }
+       .rtl{
+       direction:rtl
+       }
+   </style>
+</head>
+<body>
+<div class="rtl">
+    <h2>کاربر گرامی <strong>@Model.UserName</strong></h2>
+    <p>شما موفقانه در سیستم صرافی و حواله داری آنلاین ثبت نام شدید.برای فعال سازی حساب خود لطفا روی لینک زیر کلیک نمایید</p>
+    <a href="https://localhost:5001/activateAccount/@Model.ActivationCode" class="button">اینجا کلیک کنید</a> 
+</div>
+</body>
+</html>

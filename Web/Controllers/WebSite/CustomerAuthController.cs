@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Application.Common.Models;
+using Application.Website.Customers.Auth.Command.ActivateCustomerAccount;
+using Application.Website.Customers.Auth.Command.CreateCustomer;
 using Application.Website.Customers.Auth.Command.Login;
+using Application.Website.Customers.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
@@ -16,6 +19,15 @@ namespace Web.Controllers.WebSite
         {
             return Mediator.Send(request);
         }
-
+        [HttpPost]
+        public Task SignUp([FromForm]CreateCustomerCommand request)
+        {
+            return Mediator.Send(request);
+        }
+        [HttpPut]
+        public Task<AccountActivationDTo> ActivateAccount(string id)
+        {
+            return Mediator.Send(new ActivateCustomerAccountCommand(id));
+        }
     }
 }

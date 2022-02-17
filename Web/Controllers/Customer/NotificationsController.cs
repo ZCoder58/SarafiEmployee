@@ -8,7 +8,7 @@ using Web.Controllers.Base;
 
 namespace Web.Controllers.Customer
 {
-    [Authorize("customer")]
+    [Authorize("customerSimple")]
     [Route("api/customer/notifications")]
     public class NotificationsController : ApiBaseController
     {

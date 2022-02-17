@@ -1,9 +1,12 @@
-﻿using Application.Common.Interfaces;
+﻿using System.Net;
+using System.Net.Mail;
+using Application.Common.Interfaces;
 using Domain.Interfaces;
 using Infrastructure.Models;
 using Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Org.BouncyCastle.Utilities;
 
 namespace Infrastructure
 {
@@ -14,8 +17,16 @@ namespace Infrastructure
             #region emailSender
 
             services.AddHttpClient();
-            services.Configure<EmailSettings>(configuration.GetSection("AppSettings"));
-            configuration.Bind("AppSettings", new EmailSettings());
+            services
+                .AddFluentEmail(configuration["AppSettings:Mail"])
+                .AddRazorRenderer()
+                .AddSmtpSender(new SmtpClient(configuration["AppSettings:Host"],int.Parse(configuration["AppSettings:Port"]))
+                {
+                    Credentials = new NetworkCredential(configuration["AppSettings:Mail"], configuration["AppSettings:Password"]),
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network, 
+                    UseDefaultCredentials = false
+                });
             services.AddScoped<IEmailSender, EmailSender>();
 
             #endregion

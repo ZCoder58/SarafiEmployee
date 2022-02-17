@@ -16,10 +16,10 @@ namespace Application.Common.Statics
         {
             return new[]
             {
-                new Claim("photo", photo),
+                new Claim("photo", photo??""),
                 new Claim("name", name),
-                new Claim("lastName", lastName),
-                new Claim("isPremiumAccount", isPremiumAccount.ToString())
+                new Claim("lastName", lastName??""),
+                new Claim("isPremiumAccount", isPremiumAccount)
             };
         }
     }

@@ -10,8 +10,6 @@ CDateTimeRange.defaultProps = {
 export default function CDateTimeRange({ onChange, value, startOptions,endOptions }) {
   const [dateValue, setDateValue] = React.useState(value)
   React.useEffect(()=>{
-    console.log("value :",value)
-    console.log("date :",dateValue)
     onChange(dateValue[0],dateValue[1])
   },[dateValue])
   return (

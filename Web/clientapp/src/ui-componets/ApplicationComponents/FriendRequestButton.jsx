@@ -27,22 +27,27 @@ export default function FriendRequestButton({ defaultState,customerId,reverseSta
 
     async function handleClick() {
         setLoading(true)
-        if (state === states.approved && enableGotoProfile) {//pending
-            navigate(`/customer/profile/${sCustomerId}`)
-        } 
-         if (state === states.pending) {//pending
-            await authAxiosApi.get(`customer/friends/cancelRequest/${sCustomerId}`).then(r => {
-                setState(r.state)
-            })
-        } else if (state === states.notSend) {//notSend
-            await authAxiosApi.get(`customer/friends/sendRequest/${sCustomerId}`).then(r => {
-                setState(r.state)
-            })
-        } else {
-            console.log("invalid state");
+        try{
+            if (state === states.approved && enableGotoProfile) {//pending
+                navigate(`/customer/profile/${sCustomerId}`)
+            } 
+             if (state === states.pending) {//pending
+                await authAxiosApi.get(`customer/friends/cancelRequest/${sCustomerId}`).then(r => {
+                    setState(r.state)
+                })
+            } else if (state === states.notSend) {//notSend
+                await authAxiosApi.get(`customer/friends/sendRequest/${sCustomerId}`).then(r => {
+                    setState(r.state)
+                })
+            } else {
+                console.log("invalid state");
+            }
+            onClick()
+        }catch(error){
+            console.log("invalid reqeust")
         }
         setLoading(false)
-        onClick()
+        
     }
     async function handleAcceptClick() {
         setAcceptLoading(true)
@@ -50,11 +55,11 @@ export default function FriendRequestButton({ defaultState,customerId,reverseSta
             await authAxiosApi.get(`customer/friends/approveRequest/${sCustomerId}`).then(r=>{
                 setState(r.state)
             })
+            onClick()
         }catch(error){
 
         }
         setAcceptLoading(false)
-        onClick()
     }
     async function handleDenyClick() {
         setDenyLoading(true)

@@ -39,8 +39,8 @@
 
     <ItemGroup>
       <Folder Include="Countries\Commands" />
+      <Folder Include="SunriseSuperAdmin\Customers\EventHandlers" />
       <Folder Include="SunriseSuperAdmin\Customers\Extensions" />
-      <Folder Include="Website\Customers" />
       <Folder Include="Website\Management\extensions" />
     </ItemGroup>
 

@@ -41,14 +41,14 @@ export default function Header(props) {
            padding:"10px 0",
           '&.MuiPaper-elevation2': {
             padding:"0 0",
-            backgroundColor:`${theme.palette.background.default}` ,
+            backgroundColor:`${theme.palette.common.white}` ,
             transition: "0.3s all ease",
             // backdropFilter:"blur(20px)",
           },
           '&.MuiPaper-elevation0': {
             borderBottom:`1px solid ${theme.palette.primaryTransparent.main}`,
             transition: "0.3s all ease",
-            backgroundColor:theme.palette.background.default,
+            backgroundColor:theme.palette.common.white,
           }
         }}>
           {screenMachedUpMd?<DesktopNav/>:<MobileNav/>}

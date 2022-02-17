@@ -1,5 +1,5 @@
 import React from 'react'
-import { HubConnectionBuilder } from "@microsoft/signalr";
+import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { getValidToken } from '../services/JWTAuthService';
 import useToast from '../hooks/useToast'
 import useNotifications  from '../hooks/useNotifications';
@@ -15,6 +15,7 @@ export default function NofifyHub({ children }) {
             .withUrl('/notify_hub', {
                 accessTokenFactory: async () => await getValidToken()
             })
+            .configureLogging(LogLevel.None)
             .build();
         newConnection.start().catch(e => console.log('Error while establishing connection :('))
         newConnection.on("ReceiveNotify", (message, type) => {

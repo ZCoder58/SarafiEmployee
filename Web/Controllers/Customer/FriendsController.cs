@@ -15,12 +15,14 @@ using Application.Customer.Friend.Queries.GetFriendsList;
 using Application.Customer.Friend.Queries.GetFriendsListTable;
 using Application.Customer.Friend.Queries.GetFriendsRequestsList;
 using Application.Customer.Friend.Queries.SearchOtherCustomers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
 
 namespace Web.Controllers.Customer
 {
     [Route("api/customer/friends")]
+    [Authorize("customerSimple")]
     public class FriendsController : ApiBaseController
     {
         [HttpGet]
@@ -48,11 +50,13 @@ namespace Web.Controllers.Customer
         {
             return Mediator.Send(new SearchOtherCustomersQuery(phone));
         }
+        [Authorize("limitRequest")]
         [HttpGet("approveRequest/{id}")]
         public Task<RequestDto> ApproveRequest(Guid id)
         {
             return Mediator.Send(new ApproveFriendRequestCommand(id));
         }
+        [Authorize("limitRequest")]
         [HttpGet("sendRequest/{id}")]
         public Task<RequestDto> SendRequest(Guid id)
         {

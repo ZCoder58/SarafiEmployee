@@ -31,7 +31,7 @@ namespace Application.Customer.Dashboards.Queries
             var inReportGlobalProfit= _dbContext.Transfers
                 .Where(a =>
                     a.SenderId == _httpUserContext.GetCurrentUserId().ToGuid() &&
-                    a.CreatedDate.Value.Date ==DateTime.UtcNow.Date &&
+                    a.CompleteDate.Value.Date ==DateTime.UtcNow.Date &&
                     a.State==TransfersStatusTypes.Completed).ToList()
                 .GroupBy(a => a.FromCurrency)
                 .Select(a => new TransferProfitDTo()

@@ -10,7 +10,7 @@ const WebSiteLayout=()=>{
   return (
     <Box>
       <Header />
-      <Box className="main-container">
+      <Box>
         <Outlet />
         <GotToTopButton show={scrolled}/>
       </Box>

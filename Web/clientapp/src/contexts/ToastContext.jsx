@@ -31,7 +31,7 @@ export const ToastContextProvider = ({ children }) => {
         </IconButton>
       ),
       TransitionComponent: TransitionLeft,
-      anchorOrigin: { horizontal: "left", vertical: "top" }
+      anchorOrigin: { horizontal: "center", vertical: "bottom" }
     });
   }
   const showError = (content) => showToast(content, "error");
@@ -47,7 +47,7 @@ export const ToastContextProvider = ({ children }) => {
         showSuccess,
         showWarning,
         showInfo,
-        
+
       }}
     >
       {children}

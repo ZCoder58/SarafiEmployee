@@ -9,7 +9,7 @@ using Web.Controllers.Base;
 
 namespace Web.Controllers.Customer
 {
-    [Authorize("customer")]
+    [Authorize("customerSimple")]
     [Route("api/customer/dashboard")]
     public class DashboardController : ApiBaseController
     {

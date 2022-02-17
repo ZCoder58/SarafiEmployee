@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { doRefreshToken, getRefresh, refreshSession, removeSession, setSession } from './services/JWTAuthService';
+import {  refreshSession, removeSession, setSession } from './services/JWTAuthService';
 import { isValidSession } from './services/JWTAuthService';
 import {getToken} from './services/JWTAuthService'
 //axios axiosApi without bearer

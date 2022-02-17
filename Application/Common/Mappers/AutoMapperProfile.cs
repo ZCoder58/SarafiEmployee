@@ -10,6 +10,7 @@ using Application.Customer.Transfers.DTOs;
 using Application.SunriseSuperAdmin.Rates.Commands.CreateRate;
 using Application.SunriseSuperAdmin.Rates.Commands.UpdateRate;
 using Application.SunriseSuperAdmin.Rates.DTos;
+using Application.Website.Customers.Auth.Command.CreateCustomer;
 using AutoMapper;
 using Domain.Entities;
 
@@ -23,6 +24,7 @@ namespace Application.Common.Mappers
 
             CreateMap<Domain.Entities.Customer, SearchOtherCustomerDTo>();
             CreateMap<Domain.Entities.Customer, FriendProfileDTo>();
+            CreateMap<CreateCustomerCommand, Domain.Entities.Customer>();
             // CreateMap<UserDto, Customer>().ReverseMap();
             // CreateMap<CreateUserCommand, Customer>().ReverseMap();
             

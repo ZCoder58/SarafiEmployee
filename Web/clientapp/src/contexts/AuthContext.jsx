@@ -93,9 +93,7 @@ export const AuthProvider = ({ children }) => {
     if(isCustomer()){
       let profilePhoto=getPhoto()
       profilePhotoPath= CustomerStatics.profilePituresPath(userId,profilePhoto)
-   
-      console.log("path :",CustomerStatics.profilePituresPath(userId,profilePhoto))
-    }
+       }
 
     dispatch({
       type: T_LOGIN,
@@ -106,7 +104,6 @@ export const AuthProvider = ({ children }) => {
         photo:profilePhotoPath
       }
     })
-    console.log("state :",state)
   };
   const isCustomer = () => {
     return getUserType()=== "Customer";

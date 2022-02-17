@@ -55,8 +55,10 @@ export const getAccountType=()=>{
     return "";
   }
   const decodedToken = jwtDecode(token);
-  const type= decodedToken.isPremiumAccount==="true"?"رایگان":"طلایی";
-  return type
+  if(decodedToken.isPremiumAccount==="True"){
+    return "طلایی"
+  }
+  return "ساده"
 }
 export const getLastName=()=>{
   const token=getToken()

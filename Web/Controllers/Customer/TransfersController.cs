@@ -18,7 +18,7 @@ using Web.Controllers.Base;
 
 namespace Web.Controllers.Customer
 {
-    [Authorize("customer")]
+    [Authorize("customerSimple")]
     [Route("api/customer/transfers")]
     public class TransfersController:ApiBaseController
     {

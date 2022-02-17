@@ -75,7 +75,11 @@ namespace Application.Common.Extensions.DbContext
         }
         public static bool IsUniqueUserName<T>(this IQueryable<T> model,string userName) where T :IAuthUser
         {
-            return model.Any(a => a.UserName==userName);
+            return !model.Any(a => a.UserName==userName);
+        }
+        public static bool IsUniqueEmail<T>(this IQueryable<T> model,string email) where T :IAuthUser
+        {
+            return !model.Any(a => a.Email==email);
         }
         public static bool IsUniqueUserNameExcept<T>(this IQueryable<T> model,string userName,Guid userId) where T :IAuthUser
         {
@@ -85,7 +89,10 @@ namespace Application.Common.Extensions.DbContext
         {
             return model.Any(a => a.Password==password && a.Id==userId);
         }
-      
+        public static bool IsPremiumAccount<T>(this IQueryable<T> model,Guid customerId) where T :Domain.Entities.Customer
+        {
+            return model.Any(a => a.Id==customerId && a.IsPremiumAccount);
+        }
 
     }
 }

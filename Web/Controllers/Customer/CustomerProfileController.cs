@@ -10,7 +10,7 @@ using Web.Controllers.Base;
 
 namespace Web.Controllers.Customer
 {
-    [Authorize("customer")]
+    [Authorize("customerSimple")]
     [Route("api/customer/profile")]
     public class CustomerProfileController:ApiBaseController
     {

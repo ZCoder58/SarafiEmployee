@@ -43,7 +43,6 @@ namespace Application
             
             #region Authentication
             var jwtConfig = new JwtConfig();
-            // services.AddScoped<JwtToken>();
             services.AddScoped<JwtService>();
             configuration.Bind("JwtConfig", jwtConfig);
             services.AddSingleton(jwtConfig);
@@ -88,15 +87,26 @@ namespace Application
             services.AddHttpContextAccessor();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IAuthorizationHandler, HandleTokenValidationRequirement>();
-            services.AddTransient<IAuthorizationHandler, CustomerAuthRequirementHandler>();
+            services.AddTransient<IAuthorizationHandler, CustomerAuthRequirementGoldHandler>();
+            services.AddTransient<IAuthorizationHandler, CustomerAuthRequirementLimitFriendsForSimpleCustomerHandler>();
+            services.AddTransient<IAuthorizationHandler, CustomerAuthRequirementSimpleHandler>();
             services.AddTransient<IAuthorizationHandler, AdminUserAuthRequirementHandler>();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("tokenValidation", policy => policy.AddRequirements(new TokenValidationRequirement()));
                 options.DefaultPolicy =options.GetPolicy("tokenValidation");
-                options.AddPolicy("customer", policy =>
+                options.AddPolicy("customerGold", policy =>
                 {
-                    policy.AddRequirements(new CustomerAuthRequirement());
+                    policy.AddRequirements(new CustomerAuthRequirementGold());
+                });
+                options.AddPolicy("limitRequest", policy =>
+                {
+                    policy.AddRequirements(new CustomerAuthRequirementLimitFriendsForSimpleCustomer(1));
+                });
+                
+                options.AddPolicy("customerSimple", policy =>
+                {
+                    policy.AddRequirements(new CustomerAuthRequirementSimple());
                 });
                 options.AddPolicy("management", policy =>
                 {

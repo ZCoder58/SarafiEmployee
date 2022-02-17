@@ -17,7 +17,7 @@ export const WebSiteRoutes={
             element:<VHome/>
         },
         {
-            path:"pricing",
+            path:"contactUs",
             element:<VPricing/>
         }
 

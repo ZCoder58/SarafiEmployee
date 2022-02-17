@@ -6,6 +6,7 @@ using Application.Countries.DTOs;
 using Application.Countries.Queries;
 using Application.Customer.Friend.DTOs;
 using Application.Customer.Friend.Queries.GetFriendProfile;
+using Application.SunriseSuperAdmin;
 using Application.SunriseSuperAdmin.Rates.DTos;
 using Application.SunriseSuperAdmin.Rates.Queries;
 using Microsoft.AspNetCore.Authorization;
@@ -14,20 +15,20 @@ using Web.Controllers.Base;
 
 namespace Web.Controllers
 {
-    [Authorize]
+   
     [Route("api/general/[action]")]
     public class GeneralController : ApiBaseController
     {
-        // GET
         public Task<IEnumerable<CountryListDTo>> GetCountries()
         {
             return Mediator.Send(new GetCountriesListQuery());
         }
-        
+        [Authorize("customerSimple")]
         public Task<FriendProfileDTo> Profile(Guid customerId)
         {
             return Mediator.Send(new GetFriendProfileQuery(customerId));
         }
+        [Authorize]
         [HttpGet]
         public Task<IEnumerable<RateDTo>> Rates()
         {

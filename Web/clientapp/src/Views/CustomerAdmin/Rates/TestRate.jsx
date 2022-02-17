@@ -27,8 +27,6 @@ export default function TestRate({ customerRateId }) {
             distResult: exchangeRate.toFixed(5)
         })
         const echangeRateModified=exchangeRate+rateTestModel.tax;
-        console.log("echangeRateModified : ",echangeRateModified)
-        console.log("echangeRateModified fixed : ",echangeRateModified.toFixed(5))
         setRatesModifiedResult({
             sourceResult: value,
             distResult: echangeRateModified.toFixed(5)

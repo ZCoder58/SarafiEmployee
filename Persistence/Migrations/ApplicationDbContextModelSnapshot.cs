@@ -71,6 +71,9 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ActivationAccountCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 

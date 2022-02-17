@@ -22,6 +22,7 @@ namespace Domain.Entities
         public string Password { get; set; }
         public bool IsActive { get; set; }
         public bool IsPremiumAccount { get; set; }
+        public string ActivationAccountCode { get; set; }
         public Guid CountryId { get; set; }
         public Country Country { get; set; }
     }

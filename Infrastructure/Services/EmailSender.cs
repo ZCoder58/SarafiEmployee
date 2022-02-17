@@ -1,10 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Infrastructure.Models;
 using Microsoft.Extensions.Options;
-using System.Text;
 using Domain.Interfaces;
 using FluentEmail.Core;
 using FluentEmail.Razor;
@@ -14,38 +14,29 @@ namespace Infrastructure.Services
 {
     public class EmailSender : IEmailSender
     {
-        private readonly EmailSettings _emailSettings;
-
-        public EmailSender(IOptions<EmailSettings> optionsAccessor)
+        private readonly IFluentEmail _email;
+        public EmailSender(IFluentEmail email)
         {
-            _emailSettings = optionsAccessor.Value;
+            _email = email;
         }
 
 
-        public Task SendEmailAsync(string to, string subject, string message)
+        public async Task SendEmailAsync(string to, string subject, string body)
         {
-            return Execute(subject, message, to);
-        }
-
-        public async Task Execute(string subject, string message, string to)
-        {
-           
-            var sender = new SmtpSender(()=>
-                new SmtpClient(_emailSettings.Host,Int32.Parse(_emailSettings.Port))
-                {
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(_emailSettings.Mail, _emailSettings.Password)
-                });
-            Email.DefaultSender = sender;
-              await Email
-                .From(_emailSettings.Mail, _emailSettings.DisplayName)
+              await _email
                 .To(to)
                 .Subject(subject)
-                .Body(message,true)
+                .Body(body)
                 .SendAsync();
-                
+        }
+
+        public async Task SendEmailAsync(string to, string subject, string templatePath, object model)
+        {
+            await _email
+                .To(to)
+                .Subject(subject)
+                .UsingTemplateFromFile(templatePath,model)
+                .SendAsync();
         }
     }
 }

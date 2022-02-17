@@ -67,15 +67,11 @@ export default function FriendsList() {
                                     secondaryAction={
                                         <MenuAndToggle icon={<MoreVertIcon />}>
                                             <List>
-                                                <ListItemStyled>
-                                                    <ListItemText>ارسال حواله</ListItemText>
-                                                </ListItemStyled>
+                                               
                                                 <ListItemStyled onClick={()=>navigate(`/customer/profile/${friend.customerFriendId}`)}>
                                                     <ListItemText>دیدن پروفایل</ListItemText>
                                                 </ListItemStyled>
-                                                <ListItemStyled>
-                                                    <ListItemText>روزنامچه</ListItemText>
-                                                </ListItemStyled>
+                                               
                                             </List>
                                         </MenuAndToggle>
                                     }>

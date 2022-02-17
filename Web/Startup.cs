@@ -83,6 +83,11 @@ namespace Web
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath,"images")),
                 RequestPath = "/images"
+            }); 
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath,"Contents")),
+                RequestPath = "/Contents"
             });
             app.UseRouting();
             app.UseAuthentication();
