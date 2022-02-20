@@ -1,13 +1,22 @@
-﻿using Application.Common.Extensions.DbContext;
+﻿using System;
+using System.Linq;
+using Application.Common.Extensions;
+using Application.Common.Extensions.DbContext;
 using Domain.Interfaces;
 using FluentValidation;
 
-namespace Application.SubCustomers.Commands.CreateSubCustomerAccount
+namespace Application.SubCustomers.Commands.EditSubCustomerAccount
 {
-    public class CreateSubCustomerValidation:AbstractValidator<CreateSubCustomerCommand>
+    public class EditSubCustomerValidation:AbstractValidator<EditSubCustomerCommand>
     {
-        public CreateSubCustomerValidation(IApplicationDbContext dbContext)
+        public EditSubCustomerValidation(IApplicationDbContext dbContext,IHttpUserContext httpUserContext)
         {
+            RuleFor(a => a.Id)
+                .Cascade(CascadeMode.Stop)
+                .NotEqual(Guid.Empty).WithMessage("ای دی ضروری میباشد")
+                .Must(id => dbContext.SubCustomerAccounts.Any(a =>
+                    a.CustomerId == httpUserContext.GetCurrentUserId().ToGuid() &&
+                    a.Id == id)).WithMessage("مشتری نامعتبر");
             RuleFor(a => a.Name)
                 .NotNull().WithMessage("نام ضروری میباشد");
             RuleFor(a => a.FatherName)
@@ -16,10 +25,6 @@ namespace Application.SubCustomers.Commands.CreateSubCustomerAccount
                 .NotNull().WithMessage("شماره تماس ضروری میباشد");
             RuleFor(a => a.SId)
                 .NotNull().WithMessage("شماره تذکره ضروری میباشد");
-            RuleFor(a => a.Amount)
-                .Cascade(CascadeMode.Stop)
-                .NotNull().WithMessage("مقدار پول اولیه حساب ضروری میباشد")
-                .GreaterThanOrEqualTo(0).WithMessage("کم تر از صفر مجاز نیست");
             RuleFor(a => a.RatesCountryId)
                 .Cascade(CascadeMode.Stop)
                 .NotNull().WithMessage("انتخاب نوع ارز ضروری میباشد")

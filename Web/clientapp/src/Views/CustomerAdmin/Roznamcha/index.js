@@ -1,7 +1,7 @@
 import React from 'react'
-import { CCard, TabsList, SearchFriendDropdown, CDateTimeRange } from '../../../ui-componets'
+import { CCard, TabsList } from '../../../ui-componets'
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
-import { Box, Grid, Stack, Tab } from '@mui/material';
+import { Grid, Tab } from '@mui/material';
 import {TabContext, TabPanel } from '@mui/lab';
 import OutboxIcon from '@mui/icons-material/Outbox';
 import InboxIcon from '@mui/icons-material/Inbox';

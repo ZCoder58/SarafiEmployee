@@ -12,18 +12,12 @@ namespace Persistence
 {
     public class ApplicationDbContext:Microsoft.EntityFrameworkCore.DbContext,IApplicationDbContext
     {
-        private readonly IHttpUserContext _httpUserContext;
-        private readonly INotifyHubAccessor _notifyHub;
-        public ApplicationDbContext(IHttpUserContext httpUserContext, INotifyHubAccessor notifyHub)
+      
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
         {
-            _httpUserContext = httpUserContext;
-            _notifyHub = notifyHub;
         }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpUserContext httpUserContext, INotifyHubAccessor notifyHub):base(options)
-        {
-            _httpUserContext = httpUserContext;
-            _notifyHub = notifyHub;
-        }
+
+        public DbSet<SubCustomerTransaction> SubCustomerTransactions { get; set; }
         public DbSet<CustomerAccount> CustomerAccounts { get; set; }
         public DbSet<SubCustomerAccount> SubCustomerAccounts { get; set; }
         public DbSet<Customer> Customers { get; set; }

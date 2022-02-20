@@ -27,6 +27,7 @@ namespace Application.SubCustomers.Commands.CreateSubCustomerAccount
             var newSubCustomer = _mapper.Map<SubCustomerAccount>(request);
             newSubCustomer.CustomerId = _httpUserContext.GetCurrentUserId().ToGuid();
             await _dbContext.SubCustomerAccounts.AddAsync(newSubCustomer, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

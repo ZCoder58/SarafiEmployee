@@ -1,4 +1,4 @@
-import { Grid, Button, Stack, Typography, IconButton} from "@mui/material";
+import { Grid, Button, Typography, IconButton} from "@mui/material";
 import { AskDialog, ImagePreview, CCard, CDialog, CTable } from "../../../ui-componets";
 import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';

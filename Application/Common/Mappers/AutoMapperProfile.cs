@@ -8,6 +8,8 @@ using Application.Customer.Profile.DTOs;
 using Application.Customer.Transfers.Commands.CreateTransfer;
 using Application.Customer.Transfers.Commands.EditTransfer;
 using Application.Customer.Transfers.DTOs;
+using Application.SubCustomers.Commands.CreateSubCustomerAccount;
+using Application.SubCustomers.Commands.EditSubCustomerAccount;
 using Application.SubCustomers.DTOs;
 using Application.SunriseSuperAdmin.Rates.Commands.CreateRate;
 using Application.SunriseSuperAdmin.Rates.Commands.UpdateRate;
@@ -94,6 +96,11 @@ namespace Application.Common.Mappers
             #region SubCustomer
 
             CreateMap<SubCustomerAccount, SubCustomerTableDTo>();
+            CreateMap<SubCustomerAccount, SubCustomerEditDTo>();
+            CreateMap<CreateSubCustomerCommand, SubCustomerAccount>();
+            CreateMap<EditSubCustomerCommand, SubCustomerAccount>();
+            CreateMap<SubCustomerTransaction,SubCustomerTransactionDTo>();
+            CreateMap<SubCustomerAccount,SubCustomerAccountDTo>();
 
             #endregion
             

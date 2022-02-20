@@ -1,4 +1,4 @@
-import {Select,FormControl,InputLabel,MenuItem} from '@mui/material'
+import {Select,FormControl,InputLabel,MenuItem, FormHelperText} from '@mui/material'
 
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -20,11 +20,11 @@ CSelect.propTypes={
  * @param {data=[{value,label}]} param0 
  * @returns 
  */
-export default function CSelect({data=[],...props}){
+export default function CSelect({data=[],helperText,...props}){
     const id=Math.random()
     const classess=useStyle()
     return (
-        <FormControl fullWidth className={classess.root}>
+        <FormControl required fullWidth className={classess.root}>
             <InputLabel id={"select-"+id.toString()}>{props.label}</InputLabel>
             <Select
             {...props}
@@ -34,6 +34,7 @@ export default function CSelect({data=[],...props}){
                     <MenuItem key={i} value={e.value}>{e.label}</MenuItem>
                 ))}
             </Select>
+            <FormHelperText error={props.error?true:false}>{helperText}</FormHelperText>
         </FormControl>
     )
 }

@@ -2,7 +2,7 @@ import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
-
+import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 const common = {
   title: "عمومی",
   type: "group",
@@ -42,6 +42,12 @@ const common = {
       type: "item",
       icon: CalendarTodayOutlinedIcon,
       url:"report"
+    },
+    {
+      title: "مشتریان",
+      type: "item",
+      icon: BadgeOutlinedIcon,
+      url:"subCustomers"
     },
   ]
 };
