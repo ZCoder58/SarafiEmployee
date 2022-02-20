@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220219132057_Rate")]
+    partial class Rate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,36 +129,6 @@ namespace Persistence.Migrations
                     b.HasIndex("CountryId");
 
                     b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CustomerAccount", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("Amount")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RatesCountryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("RatesCountryId");
-
-                    b.ToTable("CustomerAccounts");
                 });
 
             modelBuilder.Entity("Domain.Entities.CustomerExchangeRate", b =>
@@ -334,65 +306,11 @@ namespace Persistence.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SubCustomerAccount", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FatherName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Photo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("RatesCountryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("RatesCountryId");
-
-                    b.ToTable("SubCustomerAccounts");
-                });
-
             modelBuilder.Entity("Domain.Entities.Transfer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AccountType")
-                        .HasColumnType("int");
 
                     b.Property<int>("CodeNumber")
                         .HasColumnType("int");
@@ -448,9 +366,6 @@ namespace Persistence.Migrations
                     b.Property<int>("State")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("SubCustomerAccountId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ToCurrency")
                         .HasColumnType("nvarchar(max)");
 
@@ -484,8 +399,6 @@ namespace Persistence.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.HasIndex("SubCustomerAccountId");
-
                     b.ToTable("Transfers");
                 });
 
@@ -498,25 +411,6 @@ namespace Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CustomerAccount", b =>
-                {
-                    b.HasOne("Domain.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.RatesCountry", "RatesCountry")
-                        .WithMany()
-                        .HasForeignKey("RatesCountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("RatesCountry");
                 });
 
             modelBuilder.Entity("Domain.Entities.CustomerExchangeRate", b =>
@@ -572,25 +466,6 @@ namespace Persistence.Migrations
                     b.Navigation("CustomerFriend");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SubCustomerAccount", b =>
-                {
-                    b.HasOne("Domain.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.RatesCountry", "RatesCountry")
-                        .WithMany()
-                        .HasForeignKey("RatesCountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("RatesCountry");
-                });
-
             modelBuilder.Entity("Domain.Entities.Transfer", b =>
                 {
                     b.HasOne("Domain.Entities.Customer", "Receiver")
@@ -603,15 +478,9 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.SubCustomerAccount", "SubCustomerAccount")
-                        .WithMany()
-                        .HasForeignKey("SubCustomerAccountId");
-
                     b.Navigation("Receiver");
 
                     b.Navigation("Sender");
-
-                    b.Navigation("SubCustomerAccount");
                 });
 #pragma warning restore 612, 618
         }

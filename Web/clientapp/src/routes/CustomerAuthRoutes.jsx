@@ -16,10 +16,12 @@ const VCTransfers=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Tra
 const VCreateTransfe=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/VCreateTransfer")))
 const VCTransferInboxDetail=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/VCTransferInboxInfo")))
 const VCTransferOutboxDetail=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/VCTransferOutboxInfo")))
+const VCEditTransfer=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/VCEditTransfer")))
 //roznamche
 const VCRoznamcha=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Roznamcha")))
 //general
 const VCOtherCustomerProfile=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Friends/VCOtherCustomerProfile")))
+
 export const CustomerAuthRoutes={
     path:"/customer",
     element:<CustomerAuthLayout/>,
@@ -28,6 +30,7 @@ export const CustomerAuthRoutes={
             path:"dashboard",
             element:<VDashboard/>
         },
+       
         //roznamcha
         {
             path:"report",
@@ -39,8 +42,12 @@ export const CustomerAuthRoutes={
             element:<VCTransfers/>
         },
         {
-            path:"newTransfer",
+            path:"transfers/newTransfer",
             element:<VCreateTransfe/>
+        },
+        {
+            path:"transfers/edit/:transferId",
+            element:<VCEditTransfer/>
         },
         {
             path:"transfers/inbox/:transferId",
@@ -55,11 +62,6 @@ export const CustomerAuthRoutes={
             path:"rates",
             element:<VCExchangeRates/>
         },
-        // ///exchange rates
-        // {
-        //     path:"todayExchangeRates",
-        //     element:<VExchangeRates/>
-        // },
         //customer
         {
             path:"profile",

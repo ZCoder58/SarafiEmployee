@@ -1,8 +1,7 @@
-import { Autocomplete, ListItem, ListItemAvatar, ListItemText, Stack, TextField, IconButton,InputAdornment } from '@mui/material'
+import { Autocomplete, ListItem, ListItemAvatar, ListItemText, TextField } from '@mui/material'
 import React from 'react'
 import { CAvatar } from '..';
 import authAxiosApi from '../../axios'
-import {CloseOutlined} from '@mui/icons-material'
 import CustomerStatic from '../../helpers/statics/CustomerStatic';
 /**
  * only for employee use

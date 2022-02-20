@@ -38,6 +38,8 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
             newTransfer.SourceAmount = request.Amount;
             newTransfer.DestinationAmount = (request.Amount/targetExchangeRate.FromAmount)*targetExchangeRate.ToExchangeRate;
             newTransfer.ToRate = targetExchangeRate.ToExchangeRate;
+            newTransfer.FromRate = targetExchangeRate.FromAmount;
+            newTransfer.RateUpdated = targetExchangeRate.Updated;
             newTransfer.ToCurrency = toCurrency.PriceName;
             newTransfer.FromCurrency = fromCurrency.PriceName;
             newTransfer.State = TransfersStatusTypes.InProgress;

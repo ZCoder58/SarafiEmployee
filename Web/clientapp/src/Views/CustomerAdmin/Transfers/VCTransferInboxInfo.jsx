@@ -35,9 +35,10 @@ export default function VCTransferInfo() {
             setLoading(true)
             await authAxiosApi.get('customer/transfers/inbox/' + transferId).then(r => {
                 setTransfer(r)
-            })
+            }).catch(errors=>navigate('/requestDenied'))
             setLoading(false)
         })()
+        return ()=>setTransfer(null)
     }, [transferId])
     return (
         <Grid container spacing={2} justifyContent="center">

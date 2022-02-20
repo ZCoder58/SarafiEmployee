@@ -12,10 +12,8 @@ namespace Domain.Entities
         }
         public Guid FromRatesCountryId { get; set; }
         public double FromAmount { get; set; }
-        
         public Guid? ToRatesCountryId { get; set; }
         public double ToExchangeRate { get; set; }
-        
         public RatesCountry FromRatesCountry { get; set; }
         public RatesCountry ToRatesCountry { get; set; }
         public Guid CustomerId { get; set; }

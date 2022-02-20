@@ -24,8 +24,8 @@ namespace Persistence
             _httpUserContext = httpUserContext;
             _notifyHub = notifyHub;
         }
-
-
+        public DbSet<CustomerAccount> CustomerAccounts { get; set; }
+        public DbSet<SubCustomerAccount> SubCustomerAccounts { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<RatesCountry> RatesCountries { get; set; }

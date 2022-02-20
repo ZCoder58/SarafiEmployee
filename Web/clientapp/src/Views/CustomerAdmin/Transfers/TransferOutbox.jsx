@@ -1,19 +1,15 @@
-import { CCard, SkeletonFull, TableGlobalSearch, CToolbar, CTable, CTooltip, AskDialog } from '../../../ui-componets'
-import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
+import { TableGlobalSearch, CToolbar, CTable, CTooltip, AskDialog } from '../../../ui-componets'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'; import React from 'react'
-import { Box, Grid, Stack, Typography, useTheme, Chip, IconButton, ListItem, ListItemText, ListItemButton, Button } from '@mui/material'
+import { Box, Grid, Stack, Typography, useTheme, Chip, IconButton, ListItem, ListItemText, Button } from '@mui/material'
 import { PhoneOutlined, RefreshOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import PendingOutlinedIcon from '@mui/icons-material/PendingOutlined';
-import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import { useSelector } from 'react-redux';
 import authAxiosApi from '../../../axios';
 import ReplayIcon from '@mui/icons-material/Replay';
-
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 export default function TransferOutbox() {
-    // const [loading, setLoading] = React.useState(true)
     const [refreshTableState, setRefreshTableState] = React.useState(false)
     const [searchOpen, setSeachOpen] = React.useState(false)
     const [searchText, setSearchText] = React.useState("")
@@ -24,17 +20,17 @@ export default function TransferOutbox() {
         {
             name: <Typography variant="body2" fontWeight={600}>از طرف</Typography>,
             selector: row => (
-                <ListItem sx={{flexDirection: "column",alignItems:"normal",px:0 }} >
+                <ListItem sx={{ flexDirection: "column", alignItems: "normal", px: 0 }} >
                     <ListItemText
                         primary={
                             <React.Fragment>
-                                <Stack direction="row"  component="span" justifyContent="space-between">
+                                <Stack direction="row" component="span" justifyContent="space-between">
                                     <Typography variant="subtitle1" component="span" fontWeight={900}>{row.fromName} {row.fromLastName}</Typography>
                                     {row.state === 0 ? (
                                         <Chip component="span" label="در جریان" color="warning" size="small"></Chip>
-                                    ) : row.state===1?(
+                                    ) : row.state === 1 ? (
                                         <Chip component="span" label="اجرا شده" color="success" size="small"></Chip>
-                                    ):(
+                                    ) : (
                                         <Chip component="span" label="رد شده" color="error" size="small"></Chip>
                                     )}
                                 </Stack>
@@ -50,24 +46,23 @@ export default function TransferOutbox() {
                             </React.Fragment>
                         } />
                     <Stack direction="row" spacing={1} justifyContent="flex-end">
-                   <Button variant="contained" size="small" onClick={() => navigate("/customer/transfers/outbox/" + row.id)}>
-                       جزییات
-                    </Button>
-                    {row.state===-1 &&
-                     <Button variant="contained" size="small" onClick={() =>askForResend(row.id)}>
-                     ارسال دوباره
-                  </Button>
-                    }
-                   </Stack>
-
+                        <Button variant="contained" size="small" onClick={() => navigate("/customer/transfers/outbox/" + row.id)}>
+                            جزییات
+                        </Button>
+                        {row.state === -1 &&
+                            <Button variant="contained" size="small" onClick={() => askForResend(row.id)}>
+                                ارسال دوباره
+                            </Button>}
+                        {row.state === 0 &&
+                            <Button variant="contained" size="small" onClick={() => navigate("/customer/transfers/edit/" + row.id)}>
+                                ویرایش
+                            </Button>}
+                    </Stack>
                 </ListItem>
-
             ),
             sortable: false,
             reorder: true,
-        },
-
-
+        }
     ]
     const columnsDesktop = [
         {
@@ -103,9 +98,9 @@ export default function TransferOutbox() {
             name: <Typography variant="body2" fontWeight={600}>وضعیت</Typography>,
             selector: row => row.state === 0 ? (
                 <Chip color='warning' label="درجریان" size='small' />
-            ) : row.state===1?(
+            ) : row.state === 1 ? (
                 <Chip component="span" label="اجرا شده" color="success" size="small"></Chip>
-            ):(
+            ) : (
                 <Chip component="span" label="رد شده" color="error" size="small"></Chip>
             ),
             sortable: true,
@@ -114,19 +109,25 @@ export default function TransferOutbox() {
         {
             name: <Typography variant="body2" fontWeight={600}>گزینه ها</Typography>,
             selector: row =>
-               <>
-                <CTooltip title="جزییات">
-                    <IconButton onClick={() => navigate("/customer/transfers/outbox/" + row.id)}>
-                        <InfoOutlinedIcon />
-                    </IconButton>
-                </CTooltip>
-                {row.state===-1&&
-                <CTooltip title="ارسال دوباره">
-                <IconButton onClick={() => askForResend(row.id)}>
-                    <ReplayIcon />
-                </IconButton>
-            </CTooltip>}
-               </>
+                <>
+                    <CTooltip title="جزییات">
+                        <IconButton onClick={() => navigate("/customer/transfers/outbox/" + row.id)}>
+                            <InfoOutlinedIcon />
+                        </IconButton>
+                    </CTooltip>
+                    {row.state === -1 &&
+                        <CTooltip title="ارسال دوباره">
+                            <IconButton onClick={() => askForResend(row.id)}>
+                                <ReplayIcon />
+                            </IconButton>
+                        </CTooltip>}
+                    {row.state === 0 &&
+                        <CTooltip title="ویرایش">
+                            <IconButton onClick={() => navigate("/customer/transfers/edit/" + row.id)}>
+                                <ModeEditOutlineOutlinedIcon />
+                            </IconButton>
+                        </CTooltip>}
+                </>
             ,
             sortable: false,
             reorder: false
@@ -135,12 +136,11 @@ export default function TransferOutbox() {
     const globalSearch = React.useCallback((searchedText) => {
         setSearchText(s => s = searchedText)
     }, [])
-
     function refreshTable() {
         setRefreshTableState(!refreshTableState)
     }
-    const[askResendOpen,setAskResendOpen]=React.useState(false)
-    const [transferIdForResend,setTransferIdForResend]=React.useState("")
+    const [askResendOpen, setAskResendOpen] = React.useState(false)
+    const [transferIdForResend, setTransferIdForResend] = React.useState("")
     function askForResend(transferId) {
         setTransferIdForResend(transferId)
         setAskResendOpen(true)
@@ -156,14 +156,14 @@ export default function TransferOutbox() {
 
         <Grid container spacing={1}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
-            <AskDialog
-                open={askResendOpen}
-                onNo={() => setAskResendOpen(false)}
-                onYes={() => setTransferResend()}
-                message="ارسال دوباره حواله ؟" />
+                <AskDialog
+                    open={askResendOpen}
+                    onNo={() => setAskResendOpen(false)}
+                    onYes={() => setTransferResend()}
+                    message="ارسال دوباره حواله ؟" />
                 <CToolbar>
                     <CTooltip title="حواله جدید">
-                        <IconButton onClick={() => navigate('/customer/newTransfer')}>
+                        <IconButton onClick={() => navigate('/customer/transfers/newTransfer')}>
                             <AddOutlinedIcon />
                         </IconButton>
                     </CTooltip>

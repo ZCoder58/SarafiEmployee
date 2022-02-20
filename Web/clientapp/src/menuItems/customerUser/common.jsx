@@ -28,7 +28,7 @@ const common = {
         {
           title:"حواله جدید",
           type:"item",
-          url:"newTransfer"
+          url:"transfers/newTransfer"
         },
         {
           title:"لیست حواله ها",

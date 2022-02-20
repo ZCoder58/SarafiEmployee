@@ -155,7 +155,7 @@ export default function InnerTransferInbox() {
             <Grid item lg={12} md={12} sm={12} xs={12}>
                 <CToolbar>
                     <CTooltip title="حواله جدید">
-                        <IconButton onClick={() => navigate('/customer/newTransfer')}>
+                        <IconButton onClick={() => navigate('/customer/transfers/newTransfer')}>
                             <AddOutlinedIcon />
                         </IconButton>
                     </CTooltip>

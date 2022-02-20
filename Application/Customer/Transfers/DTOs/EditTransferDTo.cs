@@ -1,10 +1,10 @@
 ﻿using System;
-using MediatR;
 
-namespace Application.Customer.Transfers.Commands.CreateTransfer
+namespace Application.Customer.Transfers.DTOs
 {
-    public class CreateTransferCommand:IRequest
+    public class EditTransferDTo
     {
+        public Guid Id { get; set; }
         public string FromName { get; set; }
         public string FromLastName { get; set; }
         public string FromPhone { get; set; }
@@ -20,8 +20,7 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
         public double Amount { get; set; }
         public double Fee { get; set; } = 0;
         public double ReceiverFee { get; set; } = 0;
-
-
+        
         public int CodeNumber { get; set; }
         public Guid FriendId { get; set; }
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using Domain.Common;
-using Domain.Interfaces;
 
 namespace Domain.Entities
 {
@@ -10,7 +9,6 @@ namespace Domain.Entities
         public string FromLastName { get; set; }
         public string FromFatherName { get; set; }
         public string FromPhone { get; set; }
-
         public string ToName { get; set; }
         public string ToLastName { get; set; }
         public string ToFatherName { get; set; }
@@ -19,8 +17,9 @@ namespace Domain.Entities
         public string ToSId { get; set; }
         public string FromCurrency { get; set; }
         public string ToCurrency { get; set; }
-
+        public double FromRate { get; set; }
         public double ToRate { get; set; }
+        public bool RateUpdated { get; set; }
         public double SourceAmount { get; set; }
         public double DestinationAmount { get; set; }
         public DateTime? CompleteDate { get; set; }
@@ -33,5 +32,8 @@ namespace Domain.Entities
         public Customer Receiver { get; set; }
         public Guid SenderId { get; set; }
         public Customer Sender { get; set; }
+        public int AccountType { get; set; }
+        public Guid? SubCustomerAccountId { get; set; }
+        public SubCustomerAccount SubCustomerAccount { get; set; }
     }
 }

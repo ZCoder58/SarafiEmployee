@@ -7,6 +7,8 @@ const VSunriseLogin= LoadablePage(React.lazy(() => import("../Views/sunriseAdmin
 
 const VUserSignupDone= LoadablePage(React.lazy(() => import("../Views/website/signup/VUserSignUpDone")))
 const VAccountActivation= LoadablePage(React.lazy(() => import("../Views/website/AccountActivation")))
+//errors
+const VRequestDenied=LoadablePage(React.lazy(()=>import("../Views/shared/VRequestDenied")))
 export const NoneAuthWithoutHeaderRoutes={
     path:"/",
     element:(<NoneAuthLayoutWithoutHeader/>),
@@ -14,6 +16,11 @@ export const NoneAuthWithoutHeaderRoutes={
         {
             path:"login",
             element:<VLogin/>
+        },
+         //errors page
+         {
+            path:"requestDenied",
+            element:<VRequestDenied/>
         },
         {
             path:"signup",

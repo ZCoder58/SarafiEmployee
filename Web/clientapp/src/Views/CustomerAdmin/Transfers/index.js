@@ -1,5 +1,4 @@
-import { CCard, TabsList } from '../../../ui-componets'
-import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
+import { TabsList } from '../../../ui-componets'
 import React from 'react'
 import { Card, Tab } from '@mui/material'
 import TransferInbox from './TransferInbox'
@@ -21,14 +20,10 @@ export default function VCTransfers() {
                        <Tab label="ارسال شده" icon={<ArrowCircleUpOutlinedIcon/>} value="2" />
                    </TabsList>
                    <TabPanel value="1">
-   
                        <TransferInbox />
-   
                    </TabPanel>
                    <TabPanel value="2">
                        <TransferOutbox />
-   
-   
                    </TabPanel>
                </TabContext>
            </Card>

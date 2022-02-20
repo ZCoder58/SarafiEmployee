@@ -11,7 +11,9 @@ export default function CountriesDropdown({defaultId, onValueChange, ...props })
             await authAxiosApi.get('general/rates').then(r => {
                 setRates(r)
                 if (defaultId) {
-                    setValue(r.find(a => a.id === defaultId))
+                   const newValue=r.find(a => a.id === defaultId)
+                    setValue(newValue)
+                    onValueChange(newValue)
                 }
             })
             setLoading(false)
