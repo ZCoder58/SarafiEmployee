@@ -4,26 +4,29 @@ import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import authAxiosApi from '../../../axios'
 import Util from '../../../helpers/Util'
-import { CSelect } from '../../../ui-componets'
+import { CSelect,SubCustomerAccountRatesSelect } from '../../../ui-componets'
 import { LoadingButton } from '@mui/lab'
 import { CheckCircleOutline } from '@mui/icons-material'
 const initialModel = {
-    id: "",
+    subCustomerId: "",
+    subCustomerAccountRateId:"",
     comment: "",
     amount: 1,
     type: ''
 }
 const validationSchema = Yup.object().shape({
     amount: Yup.number().required("مقدار پول ضروری میباشد").moreThan(0,"کمتر از 1 مجاز نیست"),
+    subCustomerAccountRateId:Yup.string().required("انتخاب حساب ارز ضروری میباشد"),
     type: Yup.string().required("انتخاب نوع انتقال ضروری میباشد")
 });
-export default function NewSubCustomerTransactionFrom({customer, onSuccess}) {
+export default function NewSubCustomerTransactionFrom({subCustomer, onSuccess}) {
+    const [accountRate,setAccountRate]=React.useState(null)
     const formik = useFormik({
         validationSchema: validationSchema,
         initialValues: initialModel,
         onSubmit: async (values, formikHelper) => {
             const formData=Util.ObjectToFormData(values);
-            formData.set('id',customer.id)
+            formData.set('subCustomerId',subCustomer.id)
             await authAxiosApi.put('subCustomers/updateAmount',formData )
                 .then(r => {
                     onSuccess()
@@ -35,6 +38,21 @@ export default function NewSubCustomerTransactionFrom({customer, onSuccess}) {
     })
     return (
         <Box component="form" noValidate onSubmit={formik.handleSubmit}>
+            <SubCustomerAccountRatesSelect
+            subCustomerId={subCustomer.id}
+             name='subCustomerAccountRateId'
+             helperText={formik.errors.subCustomerAccountRateId}
+             size='small'
+             label='حساب ارز'
+             value={formik.values.subCustomerAccountRateId}
+             type='text'
+             required
+             error={formik.errors.subCustomerAccountRateId ? true : false}
+             onValueChange={(v)=>{
+                formik.setFieldValue("subCustomerAccountRateId",v?v.id:"")
+                setAccountRate(v)
+             }}
+            />
             <TextField
                 variant='outlined'
                 name='amount'
@@ -48,7 +66,7 @@ export default function NewSubCustomerTransactionFrom({customer, onSuccess}) {
                 onChange={formik.handleChange}
                 InputProps={{
                     endAdornment: <InputAdornment position="end">
-                        {customer.ratesCountryPriceName}
+                        {accountRate?accountRate.ratesCountryPriceName:"هیچ"}
                     </InputAdornment>
                 }}
             />

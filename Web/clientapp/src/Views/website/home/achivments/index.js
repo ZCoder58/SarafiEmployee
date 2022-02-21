@@ -22,20 +22,13 @@ const AchivementItem = ({ theme, title, subTitle }) => {
 export default function Achivements() {
     const theme = useTheme()
     return (
-        
         <PageSection alignContent="center" spacing={8} justifyContent="center" display="flex" flexDirection="row">
             <PageSectionTitle title="دستاورد ها"/>
                 <Grid item>
-                    <AchivementItem theme={theme} title="2220+" subTitle="کاربران"></AchivementItem>
+                    <AchivementItem theme={theme} title="10" subTitle="کاربران"></AchivementItem>
                 </Grid>
                 <Grid item>
-                    <AchivementItem theme={theme} title="100+" subTitle="شرکت ها"></AchivementItem>
-                </Grid>
-                <Grid item>
-                    <AchivementItem theme={theme} title="32" subTitle="ولایت"></AchivementItem>
-                </Grid>
-                <Grid item>
-                    <AchivementItem theme={theme} title="2444233+" subTitle="ارسال موفق"></AchivementItem>
+                    <AchivementItem theme={theme} title="1000+" subTitle="حواله ها"></AchivementItem>
                 </Grid>
         </PageSection>
 

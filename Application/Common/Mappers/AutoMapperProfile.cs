@@ -1,4 +1,5 @@
-﻿using Application.Countries.DTOs;
+﻿using System.Linq;
+using Application.Countries.DTOs;
 using Application.Customer.ExchangeRates.Commands.UpdateExchangeRate;
 using Application.Customer.ExchangeRates.DTos;
 using Application.Customer.Friend.DTOs;
@@ -8,6 +9,7 @@ using Application.Customer.Profile.DTOs;
 using Application.Customer.Transfers.Commands.CreateTransfer;
 using Application.Customer.Transfers.Commands.EditTransfer;
 using Application.Customer.Transfers.DTOs;
+using Application.SubCustomers.Commands.CreateAccountRate;
 using Application.SubCustomers.Commands.CreateSubCustomerAccount;
 using Application.SubCustomers.Commands.EditSubCustomerAccount;
 using Application.SubCustomers.DTOs;
@@ -95,15 +97,25 @@ namespace Application.Common.Mappers
 
             #region SubCustomer
 
-            CreateMap<SubCustomerAccount, SubCustomerTableDTo>();
+            CreateMap<SubCustomerAccount, SubCustomerTableDTo>()
+                .ForMember(dist=>dist.TotalRatesAccounts,option=>
+                    option.MapFrom(source=>source.SubCustomerAccountRates.Count()));
             CreateMap<SubCustomerAccount, SubCustomerEditDTo>();
             CreateMap<CreateSubCustomerCommand, SubCustomerAccount>();
             CreateMap<EditSubCustomerCommand, SubCustomerAccount>();
             CreateMap<SubCustomerTransaction,SubCustomerTransactionDTo>();
             CreateMap<SubCustomerAccount,SubCustomerAccountDTo>();
+            CreateMap<SubCustomerAccount,SubCustomerAccountDropdownListDTo>();
 
             #endregion
-            
+
+            #region SubCustomerAccountRate
+
+            CreateMap<SubCustomerAccountRate,SubCustomerAccountRatesTableDTo>();
+            CreateMap<CreateAccountRateCommand,SubCustomerAccountRate>();
+
+
+            #endregion
 
             #region customerProfile
 

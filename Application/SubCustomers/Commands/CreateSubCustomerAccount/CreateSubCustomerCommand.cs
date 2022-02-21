@@ -1,5 +1,4 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 
 namespace Application.SubCustomers.Commands.CreateSubCustomerAccount
 {
@@ -11,7 +10,5 @@ namespace Application.SubCustomers.Commands.CreateSubCustomerAccount
         public int SId { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
-        public double Amount { get; set; }
-        public Guid RatesCountryId { get; set; }
     }
 }

@@ -44,24 +44,18 @@ export default function HowToStart() {
             <Stepper activeStep={3} nonLinear orientation="vertical" connector={<StyledConnector />}>
                 <Step expanded  >
                     <StyledStepLabel>ثبت نام</StyledStepLabel>
-                    <StyledStepContent >ابتدا فورم ثبت نام را خانه پری نمایید و ثبت کنید</StyledStepContent>
+                    <StyledStepContent >ابتدا فورم روند ثبت نام در سایت را تکمیل کرده و وارد حساب کاربری خود شوید</StyledStepContent>
                 </Step>
                 <Step expanded >
-                    <StyledStepLabel>پرداخت قیمت</StyledStepLabel>
+                    <StyledStepLabel>مدیریت</StyledStepLabel>
                     <StyledStepContent >
-                        برای فعال سازی سیستم به طور کامل شما باید قیمت مشخص شده برای استفاده از این سیستم را بپردازید
-                    </StyledStepContent>
-                </Step>
-                <Step expanded >
-                    <StyledStepLabel>ثبت کارمندان و شعبات</StyledStepLabel>
-                    <StyledStepContent>
-                        کارمندان شعبات خود را ثبت در سیستم نمایید و به مدیریت آنها بپردازید
+                        به همکاران خود در هر نقطه جهان درخواست همکاری بفرستید و ارسال و دریافت حواله های بین خود را مدیریت کنید
                     </StyledStepContent>
                 </Step>
                 <Step expanded completed>
                     <StyledStepLabel>تمام</StyledStepLabel>
                     <StyledStepContent>
-                            از سیستم صرافی آنلاین خود لذت ببرید. 
+                        با سیستم صرافی و حواله داری آنلاین کسب کار خود را مدیریت کنید 
                     </StyledStepContent>
                 </Step>
             </Stepper>

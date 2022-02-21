@@ -27,13 +27,14 @@ namespace Application.SubCustomers.Queries
             _mapper = mapper;
             _httpUserContext = httpUserContext;
         }
-
+    
         public async Task<IEnumerable<SubCustomerTransactionDTo>> Handle(GetSubCustomerTransactionsFilterListQuery request, CancellationToken cancellationToken)
         {
-            return await _dbContext.SubCustomerTransactions.Where(a =>
-                a.SubCustomerAccountId == request.SubCustomerId &&
-                a.SubCustomerAccount.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid() &&
-                a.CreatedDate.Value.Date >= request.FromDate.Date ||
+            return await _dbContext.SubCustomerTransactions.Include(a=>a.SubCustomerAccountRate)
+                .Where(a =>
+                a.SubCustomerAccountRate.SubCustomerAccountId == request.SubCustomerId &&
+                a.SubCustomerAccountRate.SubCustomerAccount.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid() &&
+                a.CreatedDate.Value.Date >= request.FromDate.Date &&
                 a.CreatedDate.Value.Date <= request.ToDate.Date).ProjectTo<SubCustomerTransactionDTo>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
         }
     }

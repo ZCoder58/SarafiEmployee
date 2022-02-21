@@ -19,15 +19,13 @@ const initialModel = {
     phone: "",
     address: "",
     sId: "",
-    ratesCountryId: ""
 }
 const validationSchema = Yup.object().shape({
     name: Yup.string().required('نام ضروری میباشد'),
     fatherName: Yup.string().required('نام پدر ضروری میباشد'),
     phone: Yup.string().required('شماره تماس ضروری میباشد'),
     sId: Yup.string().required('شماره تذکره ضروری میباشد'),
-    address: Yup.string().required('آدرس مشتری ضروری میباشد'),
-    ratesCountryId: Yup.string().required('انتخاب نوع ارز ضروری میباشد')
+    address: Yup.string().required('آدرس مشتری ضروری میباشد')
 });
 export default function VCSubCustomersEdit() {
     const navigate = useNavigate()
@@ -126,39 +124,6 @@ export default function VCSubCustomersEdit() {
                                 error={formik.errors.sId ? true : false}
                                 onChange={formik.handleChange}
                             />
-                            <Accordion>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="ratesCountryId-content"
-                                    id="ratesCountryId-header"
-                                >
-                                    <Typography>تغیر نوع ارز حساب</Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Stack direction="column" spacing={2}>
-                                        <Alert severity="warning" variant='outlined'>
-                                            <AlertTitle>
-                                                اخطار!
-                                            </AlertTitle>
-                                            <Typography>لطفا توجه داشته باشید که با تغیر نوع ارز مقدار پول موجود در حساب مشتری به ارز جدید تبدیل خواهد شد.</Typography>
-                                        </Alert>
-                                        <RatesDropdown
-                                            defaultId={formik.values.ratesCountryId}
-                                            name='ratesCountryId'
-                                            helperText={formik.errors.ratesCountryId}
-                                            size='small'
-                                            label='نوع ارز حساب'
-                                            type='text'
-                                            required
-                                            error={formik.errors.ratesCountryId ? true : false}
-                                            onValueChange={(newRate) => {
-                                                formik.setFieldValue("ratesCountryId", newRate ? newRate.id : "")
-                                            }}
-                                        />
-                                    </Stack>
-                                </AccordionDetails>
-
-                            </Accordion>
                         </Grid>
                         <Grid item lg={12} md={12} sm={12} xs={12}>
                             <TextField

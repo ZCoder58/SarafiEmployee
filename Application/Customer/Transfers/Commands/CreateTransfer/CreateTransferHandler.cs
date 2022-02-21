@@ -6,6 +6,9 @@ using Application.Common.Interfaces;
 using Application.Common.Statics;
 using Application.Customer.ExchangeRates.Extensions;
 using Application.Customer.Transfers.EventHandlers;
+using Application.Customer.Transfers.Statics;
+using Application.SubCustomers.Commands.UpdateAmount;
+using Application.SubCustomers.Statics;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -45,6 +48,16 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
             newTransfer.State = TransfersStatusTypes.InProgress;
             newTransfer.ReceiverId = receiver.CustomerFriendId;
             newTransfer.SenderId = receiver.CustomerId;
+            if (request.AccountType == TransferAccountTypesStatic.SubCustomerAccount)
+            {
+                // await _mediator.Send(new UpdateSubCustomerAmountCommand(
+                //     request.SubCustomerAccountId,
+                //     request.Amount,
+                //     string.Concat("برداشت از حساب برای ارسال حواله با کد نمبر ",request.CodeNumber),
+                //     SubCustomerTransactionTypes.Withdrawal,
+                //     toCurrency.Abbr
+                // ),cancellationToken);
+            }
             await _dbContext.Transfers.AddAsync(newTransfer, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             await _mediator.Publish(new TransferCreated(receiver.CustomerFriendId.ToGuid(),newTransfer.Id), cancellationToken);

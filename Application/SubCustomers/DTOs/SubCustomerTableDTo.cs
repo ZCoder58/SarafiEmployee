@@ -11,6 +11,6 @@ namespace Application.SubCustomers.DTOs
         public string Phone { get; set; }
         public string Address { get; set; }
         public double Amount { get; set; }
-        public string RatesCountryPriceName { get; set; }
+        public int TotalRatesAccounts { get; set; }
     }
 }

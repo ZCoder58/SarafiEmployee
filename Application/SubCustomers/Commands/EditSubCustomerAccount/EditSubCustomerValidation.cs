@@ -25,10 +25,6 @@ namespace Application.SubCustomers.Commands.EditSubCustomerAccount
                 .NotNull().WithMessage("شماره تماس ضروری میباشد");
             RuleFor(a => a.SId)
                 .NotNull().WithMessage("شماره تذکره ضروری میباشد");
-            RuleFor(a => a.RatesCountryId)
-                .Cascade(CascadeMode.Stop)
-                .NotNull().WithMessage("انتخاب نوع ارز ضروری میباشد")
-                .Must(dbContext.RatesCountries.IsExists).WithMessage("ارز نامعتبر");
         }
     }
 }

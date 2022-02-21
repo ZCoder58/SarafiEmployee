@@ -25,8 +25,8 @@ const VCOtherCustomerProfile=LoadablePage(React.lazy(()=>import("../Views/Custom
 const VCSubCustomers=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/SubCustomers")))
 const VCSubcustomersCreate=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/SubCustomers/VCSubCustomersCreate")))
 const VCSubcustomersEdit=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/SubCustomers/VCSubCustomersEdit")))
-const VCTransactions=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/SubCustomers/transactions")))
-
+const VCTransactions=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/SubCustomers/Transactions/VCTransactions")))
+const VCSubCustomersAccounts=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/SubCustomers/Accounts/VCSubCustomersAccounts")))
 export const CustomerAuthRoutes={
     path:"/customer",
     element:<CustomerAuthLayout/>,
@@ -51,6 +51,10 @@ export const CustomerAuthRoutes={
         {
             path:"subCustomers/transactions/:subCustomerId",
             element:<VCTransactions/>
+        },
+        {
+            path:"subCustomers/accounts/:subCustomerId",
+            element:<VCSubCustomersAccounts/>
         },
         //roznamcha
         {

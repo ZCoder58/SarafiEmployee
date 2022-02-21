@@ -118,16 +118,16 @@ export default function themeComponents(theme) {
     //     }
     //   }
     // },
-    // MuiTableCell:{
-    //   styleOverrides:{
-    //     root:{
-    //       backgroundColor:theme.colors.grey0,
-    //       '&>div':{
-            
-    //       }
-    //     }
-    //   }
-    // },
+    MuiTableCell:{
+      styleOverrides:{
+        root:{
+         '& .MuiListItem-root':{
+           paddingLeft:0,
+           paddingRight:0
+         }
+        }
+      }
+    },
     MuiDialogTitle:{
       styleOverrides:{
         root:{

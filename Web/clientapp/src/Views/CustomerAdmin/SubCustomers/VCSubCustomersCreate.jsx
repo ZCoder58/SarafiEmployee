@@ -16,18 +16,14 @@ const initialModel = {
     fatherName: "",
     phone: "",
     address: "",
-    sId: "",
-    amount: 0,
-    ratesCountryId: ""
+    sId: ""
 }
 const validationSchema = Yup.object().shape({
     name: Yup.string().required('نام ضروری میباشد'),
     fatherName: Yup.string().required('نام پدر ضروری میباشد'),
     phone: Yup.string().required('شماره تماس ضروری میباشد'),
     sId: Yup.string().required('شماره تذکره ضروری میباشد'),
-    address: Yup.string().required('آدرس مشتری ضروری میباشد'),
-    amount: Yup.number().required('مقدار پول اولیه حساب ضروری میباشد').moreThan(0, "کمتر از صفر مجاز نیست"),
-    ratesCountryId: Yup.string().required('انتخاب نوع ارز ضروری میباشد')
+    address: Yup.string().required('آدرس مشتری ضروری میباشد')
 });
 export default function VCSubCustomersCreate() {
     const [accountRate, setAccountRate] = React.useState(null)
@@ -106,36 +102,6 @@ export default function VCSubCustomersCreate() {
                             required
                             error={formik.errors.sId ? true : false}
                             onChange={formik.handleChange}
-                        />
-                        <RatesDropdown
-                            name='ratesCountryId'
-                            helperText={formik.errors.ratesCountryId}
-                            size='small'
-                            label='نوع ارز حساب'
-                            type='text'
-                            required
-                            error={formik.errors.ratesCountryId ? true : false}
-                            onValueChange={(newRate) => {
-                                setAccountRate(newRate)
-                                formik.setFieldValue("ratesCountryId", newRate ? newRate.id : "")
-                            }}
-                        />
-                        <TextField
-                            variant='outlined'
-                            name="amount"
-                            helperText={formik.errors.amount}
-                            size='small'
-                            label='مقدار پول اولیه'
-                            type='number'
-                            required
-                            value={formik.values.amount}
-                            error={formik.errors.amount ? true : false}
-                            onChange={formik.handleChange}
-                            InputProps={{
-                                endAdornment: <InputAdornment position="end">
-                                    {accountRate ? accountRate.priceName : "هیچ"}
-                                </InputAdornment>
-                            }}
                         />
                     </Grid>
                     <Grid item lg={12} md={12} sm={12} xs={12}>

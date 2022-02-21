@@ -21,7 +21,7 @@ export default function VSignUpFormUser() {
         initialValues: signUpModel,
         onSubmit: async (values, formikHelper) => {
             try {
-                await axiosApi.post('customerAuth/signUp',Util.ObjectToFormData(values))
+                await axiosApi.post('customerAuth/signUp', Util.ObjectToFormData(values))
                 navigate("/signUpDone")
             } catch (e) {
                 formikHelper.setErrors(e)
@@ -51,6 +51,7 @@ export default function VSignUpFormUser() {
                             <Typography variant="h5"> حساب کاربری خود را بسازید</Typography>
                             <Box component="form" onSubmit={formik.handleSubmit} noValidate>
                                 <Grid container spacing={3}>
+                                    <Grid container item lg={6} md={6} sm={12} xs={12} spacing={3}>
                                     <Grid item lg={6} md={6} sm={6} xs={12}>
                                         <TextField
                                             variant="outlined"
@@ -85,7 +86,7 @@ export default function VSignUpFormUser() {
                                         />
                                     </Grid>
                                     <Grid item lg={6} md={6} sm={6} xs={12}>
-                                    <TextField
+                                        <TextField
                                             variant="outlined"
                                             size="small"
                                             name="phone"
@@ -94,7 +95,7 @@ export default function VSignUpFormUser() {
                                             onChange={formik.handleChange}
                                             error={formik.errors.phone ? true : false}
                                         />
-                                       
+
                                     </Grid>
                                     <Grid item lg={12} md={12} sm={12} xs={12}>
                                         <TextField
@@ -109,8 +110,8 @@ export default function VSignUpFormUser() {
                                             error={formik.errors.email ? true : false}
                                         />
                                     </Grid>
-                                    <Grid item lg={6} md={6} sm={6} xs={12}>
-                                    <CountriesDropDown
+                                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                                        <CountriesDropDown
                                             name="countryId"
                                             size="small"
                                             required
@@ -120,6 +121,13 @@ export default function VSignUpFormUser() {
                                             error={formik.errors.countryId ? true : false}
                                         />
                                     </Grid>
+                                    </Grid>
+                                    <Grid container item lg={6} md={6} sm={6} xs={12}>
+                                    {!screenMachedDownMd && <Box component="img" p={6} src={signupImg}></Box>}
+                                    </Grid>
+                                </Grid>
+                              
+                                <Grid container spacing={3}>
                                     <Grid item lg={6} md={6} sm={6} xs={12}>
                                         <TextField
                                             variant="outlined"
@@ -204,7 +212,7 @@ export default function VSignUpFormUser() {
                                 </Grid>
                             </Box>
                         </Stack>
-                        {!screenMachedDownMd && <Box component="img" p={6} src={signupImg}></Box>}
+                      
                     </Stack>
                 </CardContent>
             </Card>
@@ -221,7 +229,7 @@ const signUpModel = {
     userName: "",
     password: "",
     repeatPassword: "",
-    detailedAddress:""
+    detailedAddress: ""
 }
 
 const validationSchema = Yup.object().shape({

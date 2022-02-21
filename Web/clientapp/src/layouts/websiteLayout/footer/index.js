@@ -21,39 +21,24 @@ export default function Footer() {
             borderTop: `1px solid ${theme.palette.primaryTransparent.main}`,
             my: 3
         }}>
-            <Grid item lg={4} md={4} sm={6} xs={6}>
+            <Grid item lg={4} md={4} sm={6} xs={12}>
                 <Divider textAlign='left'>
                     <Stack direction="row" alignItems="center" spacing={2}>
                         <LinkIcon ml={2} color="primary" />
                         <Typography variant="h6">
-                            لینک های مفید
+                            لینک های سایت
                         </Typography>
                     </Stack>
                 </Divider>
                 <List type="ul">
                     <ListItem><StyledLink to="#">خانه</StyledLink></ListItem>
-                    <ListItem><StyledLink to="#">خدمات</StyledLink></ListItem>
+                    <ListItem><StyledLink to="#">ساخت حساب</StyledLink></ListItem>
+                    <ListItem><StyledLink to="#">ورود به حساب</StyledLink></ListItem>
                     <ListItem><StyledLink to="#">تماس با ما</StyledLink></ListItem>
                     <ListItem><StyledLink to="#">درباره ما</StyledLink></ListItem>
                 </List>
             </Grid>
-            <Grid item lg={4} md={4} sm={5} xs={6}>
-                <Divider textAlign='left'>
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                        <SportsEsportsIcon ml={2} color="primary" />
-                        <Typography variant="h6">
-                            بازی ها
-                        </Typography>
-                    </Stack>
-                </Divider>
-                <List type="ul">
-                    <ListItem><StyledLink to="#">PUBG</StyledLink></ListItem>
-                    <ListItem><StyledLink to="#">WarCraft</StyledLink></ListItem>
-                    <ListItem><StyledLink to="#">Clash of clans</StyledLink></ListItem>
-                    <ListItem><StyledLink to="#">Call of duty</StyledLink></ListItem>
-                </List>
-            </Grid>
-            <Grid item lg={4} md={4} sm={6} xs={6} display="flex" alignItems="flex-end">
+            {/* <Grid item lg={4} md={4} sm={6} xs={12} display="flex" alignItems="flex-end">
             <Stack direction="row" spacing={2}>
                             <StyledLink to="#">
                                 <FacebookIcon sx={{
@@ -74,7 +59,7 @@ export default function Footer() {
                                 }} />
                             </StyledLink>
                         </Stack>
-                </Grid>
+                </Grid> */}
 
             {/* <Grid item lg={4} md={4} sm={6} xs={6}>
 

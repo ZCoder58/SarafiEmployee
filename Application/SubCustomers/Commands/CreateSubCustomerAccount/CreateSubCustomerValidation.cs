@@ -6,7 +6,7 @@ namespace Application.SubCustomers.Commands.CreateSubCustomerAccount
 {
     public class CreateSubCustomerValidation:AbstractValidator<CreateSubCustomerCommand>
     {
-        public CreateSubCustomerValidation(IApplicationDbContext dbContext)
+        public CreateSubCustomerValidation()
         {
             RuleFor(a => a.Name)
                 .NotNull().WithMessage("نام ضروری میباشد");
@@ -16,14 +16,7 @@ namespace Application.SubCustomers.Commands.CreateSubCustomerAccount
                 .NotNull().WithMessage("شماره تماس ضروری میباشد");
             RuleFor(a => a.SId)
                 .NotNull().WithMessage("شماره تذکره ضروری میباشد");
-            RuleFor(a => a.Amount)
-                .Cascade(CascadeMode.Stop)
-                .NotNull().WithMessage("مقدار پول اولیه حساب ضروری میباشد")
-                .GreaterThanOrEqualTo(0).WithMessage("کم تر از صفر مجاز نیست");
-            RuleFor(a => a.RatesCountryId)
-                .Cascade(CascadeMode.Stop)
-                .NotNull().WithMessage("انتخاب نوع ارز ضروری میباشد")
-                .Must(dbContext.RatesCountries.IsExists).WithMessage("ارز نامعتبر");
+            
         }
     }
 }

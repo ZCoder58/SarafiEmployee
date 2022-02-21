@@ -11,7 +11,7 @@ function CToolbar({ children }) {
       sx={{
         padding: "10px",
         // border: "1px solid #e4e3e2",
-        margin: " 3px 0",
+        margin: " 5px 5px",
         background: "#fbfbfb"
       }}
     >

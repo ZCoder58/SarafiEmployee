@@ -12,6 +12,5 @@ namespace Application.SubCustomers.Commands.EditSubCustomerAccount
         public int SId { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
-        public Guid RatesCountryId { get; set; }
     }
 }

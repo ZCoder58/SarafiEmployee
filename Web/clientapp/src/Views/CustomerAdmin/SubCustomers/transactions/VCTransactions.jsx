@@ -3,14 +3,15 @@ import { useNavigate, useParams } from 'react-router'
 import authAxiosApi from '../../../../axios'
 import { CCard, SkeletonFull, CDateTimeRange } from '../../../../ui-componets'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { Grid } from '@mui/material'
+import { Box, Grid, IconButton } from '@mui/material'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import {LoadingButton} from '@mui/lab'
 import { useSelector } from 'react-redux';
 import  SubCustomerTransactionsMobile  from './SubCustomerTransactionsMobile';
 import SubCustomerTransactionsDesktop from './SubCustomerTransactionsDesktop';
+import { ArrowBack } from '@mui/icons-material';
 export default function VCTransactions() {
     const { subCustomerId } = useParams()
     const navigate = useNavigate()
@@ -45,7 +46,7 @@ export default function VCTransactions() {
     React.useEffect(() => {
         (async () => {
             setLoading(true)
-            await authAxiosApi.get('subCustomers/edit/' + subCustomerId)
+            await authAxiosApi.get('subCustomers/' + subCustomerId)
                 .then(r => {
                     setSubCustomer(r)
                 })
@@ -69,12 +70,15 @@ export default function VCTransactions() {
     }, [subCustomerId, navigate])
     return (
         <CCard
-            title={`انتقالات حساب ${subCustomer&& subCustomer.name} ${subCustomer&&subCustomer.fatherNAme}`}
+            title={`انتقالات حساب ${subCustomer&& subCustomer.name} ${subCustomer&&subCustomer.fatherName}`}
             headerIcon={<InfoOutlinedIcon />}
+            enableActions
+            actions={<IconButton onClick={()=>navigate('/customer/subCustomers')}><ArrowBack/></IconButton>}
         >
            
                 <Grid container spacing={2}>
-                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Grid item lg={4} md={4} sm={6} xs={12}>
+                        <Box component="form" noValidate onSubmit={formik.handleSubmit}>
                         <CDateTimeRange
                             value={[formik.values.fromDate, formik.values.toDate]}
                             onChange={(start, end) => {
@@ -102,11 +106,13 @@ export default function VCTransactions() {
                         variant='contained'
                         color='primary'
                         size='small'
-                        startIcon={<CheckOutlinedIcon />}
+                        startIcon={<SearchOutlinedIcon />}
                         type='submit'
                         >
-                        تایید 
+                        جستجو 
                         </LoadingButton>
+
+                        </Box>
                     </Grid>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
                     {loading ? <SkeletonFull /> :

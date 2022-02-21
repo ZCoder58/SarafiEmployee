@@ -9,6 +9,7 @@ namespace Domain.Interfaces
     {
          DbSet<SubCustomerTransaction> SubCustomerTransactions { get; set; }
          DbSet<CustomerAccount> CustomerAccounts { get; set; }
+         DbSet<SubCustomerAccountRate> SubCustomerAccountRates { get; set; }
          DbSet<SubCustomerAccount> SubCustomerAccounts { get; set; }
          DbSet<Customer> Customers { get; set; }
          DbSet<RefreshToken> RefreshTokens { get; set; }

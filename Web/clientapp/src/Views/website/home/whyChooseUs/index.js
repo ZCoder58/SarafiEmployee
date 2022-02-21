@@ -13,15 +13,15 @@ export default function WhyChooseUs() {
                 <BoxCardWithIcon 
                 className="cardBg2"
                 imageIcon={moneyManagementImg} 
-                content="با ساخت حساب تجارت صرافی خود را بیشتر توسعه داده و مدیریت بهتری در روند انتقال پول و مدیریت کارمندان خود داشته باشید."
-                title="صرافی آنلاین خود را بسازید"
+                content="با ساخت حساب کاربری روند حواله ها و کارهای صرافی خود را در زمان کم مدیریت کنید و کسب کار خود را سریع تر رونق دهید"
+                title="صرافی/حواله داری آنلاین خود را بسازید"
                 />
             </Grid>
             <Grid item lg={4} md={4} sm={4} xs={12}>
                 <BoxCardWithIcon 
                 className="cardBg2"
                 imageIcon={feeImg} 
-                content=" تجارتتان را با قیمت کم رونق دهید.دیگر نیازی به ساخت اپلیکیشن های شخصی با پول گزاف برای مدیریت کارتان نیست."
+                content="با قیمت کم حساب کاربری مخصوص خود را داشته باشید و نیازی به ساخت سیستم های خصوصی با قیمت گزاف نیست"
                 title="قیمت کم"
                 />
             </Grid>
@@ -30,7 +30,7 @@ export default function WhyChooseUs() {
                 className="cardBg2"
                 imageIcon={supportImg} 
                 title="پشتیبانی 24 ساعته"
-                content="سهولت در پشتیبانی از مشکلات و سوالات شما در 24 ساعت"
+                content="سهولت در پشتیبانی و حل مشکلات و سوالات شما در 24 ساعت"
                 />
             </Grid>
         </PageSection>

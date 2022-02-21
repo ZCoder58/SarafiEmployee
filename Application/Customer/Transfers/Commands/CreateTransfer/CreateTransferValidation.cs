@@ -1,5 +1,8 @@
-﻿using Application.Common.Extensions;
+﻿using System;
+using Application.Common.Extensions;
+using Application.Common.Extensions.DbContext;
 using Application.Customer.Friend.Extensions;
+using Application.Customer.Transfers.Statics;
 using Domain.Interfaces;
 using FluentValidation;
 
@@ -43,6 +46,17 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
             RuleFor(a => a.ReceiverFee)
                 .Cascade(CascadeMode.Stop)
                 .GreaterThanOrEqualTo(0).WithMessage("کمتر از 0 مجاز نیست");
+            RuleFor(a => a.AccountType)
+                .NotNull().WithMessage("انتخاب نوعیت حساب ضروری میباشد")
+                .Must(type=>type==TransferAccountTypesStatic.MyAccount || type==TransferAccountTypesStatic.SubCustomerAccount)
+                .WithMessage("نوع حساب نامعتبر");
+            RuleFor(a => a.SubCustomerAccountId)
+                .Cascade(CascadeMode.Stop)
+                .Must((model, subCustomerId) =>
+                    model.AccountType==TransferAccountTypesStatic.MyAccount ||
+                    (model.AccountType == TransferAccountTypesStatic.SubCustomerAccount &&
+                    subCustomerId != Guid.Empty)).WithMessage("انتخاب مشتری ضروری میباشد")
+                .Must(dbContext.SubCustomerAccounts.IsExists).WithMessage("مشتری نامعتبر");
         }
     }
 }

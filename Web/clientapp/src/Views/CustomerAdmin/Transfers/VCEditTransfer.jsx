@@ -40,8 +40,8 @@ const validationSchema = Yup.object().shape({
     tCurrency: Yup.string().required("انتخاب ارز دریافت کننده ضروری میباشد"),
     amount: Yup.string().required("مقدار پول ارسالی ضروری میباشد"),
     friendId: Yup.string().required("انتخاب همکار شما ضروری میباشد"),
-    fee: Yup.number().required("کمیشن ضروری میباشد").min(0, "کمتر از 0 مجاز نیست"),
-    receiverFee: Yup.number().required("کمیشن ضروری میباشد").min(0, "کمتر از 0 مجاز نیست")
+    fee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
+    receiverFee: Yup.number().min(0, "کمتر از 0 مجاز نیست")
 
 });
 export default function VCEditTransfer() {
@@ -294,11 +294,8 @@ export default function VCEditTransfer() {
                                 <TextField
                                     name='fee'
                                     label="کمیشن"
-                                    required
                                     size="small"
                                     type="number"
-                                    error={formik.errors.fee ? true : false}
-                                    helperText={formik.errors.fee}
                                     value={formik.values.fee}
                                     onChange={(e) => formik.setFieldValue("fee", e.target.value ? e.target.value : 0)}
                                     InputProps={{
@@ -329,10 +326,7 @@ export default function VCEditTransfer() {
                                     label="کمیشن حواله دار"
                                     size="small"
                                     type="number"
-                                    required
                                     value={formik.values.receiverFee}
-                                    error={formik.errors.receiverFee ? true : false}
-                                    helperText={formik.errors.receiverFee}
                                     onChange={formik.handleChange}
                                     InputProps={{
                                         endAdornment: (
@@ -348,7 +342,6 @@ export default function VCEditTransfer() {
                                     label="مجموع پول طلب :"
                                     size="small"
                                     type="number"
-                                    required
                                     value={Number(formik.values.receiverFee) + Number(receivedAmount)}
                                     InputProps={{
                                         endAdornment: (
@@ -360,7 +353,6 @@ export default function VCEditTransfer() {
                                     }}
                                 />
                             </FieldSet>
-
                         </Grid>
                         <Grid item lg={12} md={12} sm={12} xs={12}>
                             <FieldSet label="معلومات حواله" className="bgWave">

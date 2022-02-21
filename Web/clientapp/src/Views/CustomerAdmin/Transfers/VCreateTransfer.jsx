@@ -1,4 +1,4 @@
-import { AskDialog, AutoComplete, CCard, CDialog, SearchFriendDropdown, SkeletonFull } from '../../../ui-componets'
+import { AskDialog, AutoComplete, CCard, CSelect, SearchFriendDropdown, SkeletonFull, SubCustomersDropdown } from '../../../ui-componets'
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
 import { Grid, Box, TextField, Stack, Typography, Divider, Alert, Grow, IconButton } from '@mui/material'
 import { useFormik } from 'formik'
@@ -26,11 +26,14 @@ const createModel = {
     amount: "",
     friendId: "",
     fee: 0,
-    receiverFee:0
+    receiverFee: 0,
+    subCustomerAccountId: "",
+    accountType: ""
 }
 const validationSchema = Yup.object().shape({
     fromName: Yup.string().required("نام ارسال کنننده ضروری میباشد"),
     fromFatherName: Yup.string().required("ولد ارسال کننده ضروری میباشد"),
+    accountType: Yup.number().required("انتخاب نوعیت حساب ضروری میباشد"),
     fromPhone: Yup.string().required("شماره تماس ارسال کننده ضروری میباشد"),
     toName: Yup.string().required("نام دریافت کننده ضروری میباشد"),
     toFatherName: Yup.string().required("ولد دریافت کننده ضروری میباشد"),
@@ -38,10 +41,14 @@ const validationSchema = Yup.object().shape({
     tCurrency: Yup.string().required("انتخاب ارز دریافت کننده ضروری میباشد"),
     amount: Yup.string().required("مقدار پول ارسالی ضروری میباشد"),
     friendId: Yup.string().required("انتخاب همکار شما ضروری میباشد"),
-    fee: Yup.number().required("کمیشن ضروری میباشد").min(0,"کمتر از 0 مجاز نیست"),
-    receiverFee: Yup.number().required("کمیشن ضروری میباشد").min(0,"کمتر از 0 مجاز نیست")
-    
+    fee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
+    receiverFee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
+    subCustomerAccountId: Yup.string().test('typeValidation', "انتخاب مشتری ضروری میباشد", (value, context) => {
+       console.log("value :",value)
+        return context.parent.accountType === 0 || value !== undefined;
+    })
 });
+
 export default function VCreateTransfer() {
     const [loading, setLoading] = React.useState(true)
     const [countriesRates, setCountriesRates] = React.useState([])
@@ -50,7 +57,7 @@ export default function VCreateTransfer() {
     const [transferCode, setTransferCode] = React.useState(0)
     const [exchangeRate, setExchangeRate] = React.useState(null)
     const [receivedAmount, setReceivedAmount] = React.useState(0)
-    const [askOpen,setAskOpen]=React.useState(false)
+    const [askOpen, setAskOpen] = React.useState(false)
     const navigate = useNavigate()
     const formik = useFormik({
         validationSchema: validationSchema,
@@ -62,7 +69,7 @@ export default function VCreateTransfer() {
                 await authAxiosApi.post('customer/transfers', formData)
                 navigate('/customer/transfers')
             } catch (errors) {
-                formikHelper.setErrors(errors)             
+                formikHelper.setErrors(errors)
             }
             return false
         }
@@ -79,22 +86,22 @@ export default function VCreateTransfer() {
         formik.handleChange(event)
         setReceivedAmount(exchangeRate ? (Number(exchangeRate.toExchangeRate) / Number(exchangeRate.fromAmount) * Number(event.target.value)).toFixed(2) : 0)
     }
-    React.useEffect( () => {
-       (async ()=>{
-        try {
-            await authAxiosApi.get('customer/rates/exchangeRate', {
-                params: {
-                    from: sourceRate.id,
-                    to: distRate.id
-                }
-            }).then(r => {
-                setExchangeRate(r)
-            })
-        } catch {
+    React.useEffect(() => {
+        (async () => {
+            try {
+                await authAxiosApi.get('customer/rates/exchangeRate', {
+                    params: {
+                        from: sourceRate.id,
+                        to: distRate.id
+                    }
+                }).then(r => {
+                    setExchangeRate(r)
+                })
+            } catch {
 
-        }
-       })()
-       return ()=>setExchangeRate(null)
+            }
+        })()
+        return () => setExchangeRate(null)
     }, [sourceRate, distRate])
     React.useEffect(() => {
         (async () => {
@@ -113,16 +120,16 @@ export default function VCreateTransfer() {
                 title="فورم ثبت حواله جدید"
                 headerIcon={<SyncAltOutlinedIcon />}
                 enableActions={true}
-                actions={<IconButton onClick={()=>navigate("/customer/transfers")}>
-                        <ArrowBack/>
-                    </IconButton>}>
-                        {exchangeRate&& !exchangeRate.updated?
-                        <AskDialog
-                         open={askOpen} 
-                         message="نرخ تبادل ارز آپدیت نمیباشد"
-                         onNo={()=>setAskOpen(false)} 
-                         onYes={()=>formik.submitForm()}/>
-                        :""}
+                actions={<IconButton onClick={() => navigate("/customer/transfers")}>
+                    <ArrowBack />
+                </IconButton>}>
+                {exchangeRate && !exchangeRate.updated ?
+                    <AskDialog
+                        open={askOpen}
+                        message="نرخ تبادل ارز آپدیت نمیباشد"
+                        onNo={() => setAskOpen(false)}
+                        onYes={() => formik.submitForm()} />
+                    : ""}
                 <Box component="form" noValidate onSubmit={formik.handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
@@ -164,8 +171,6 @@ export default function VCreateTransfer() {
                                     onChange={formik.handleChange}
                                 />
                             </FieldSet>
-
-
                         </Grid>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
                             <FieldSet label="معلومات دریافت کننده">
@@ -186,7 +191,7 @@ export default function VCreateTransfer() {
                                     type="text"
                                     onChange={formik.handleChange}
                                 />
-                                 <TextField
+                                <TextField
                                     name='toFatherName'
                                     label="ولد دریافت کننده"
                                     required
@@ -196,13 +201,13 @@ export default function VCreateTransfer() {
                                     helperText={formik.errors.toFatherName}
                                     onChange={formik.handleChange}
                                 />
-                                 <TextField
-                                name='toGrandFatherName'
-                                label="ولدیت دریافت کننده"
-                                size="small"
-                                type="text"
-                                onChange={formik.handleChange}
-                            />
+                                <TextField
+                                    name='toGrandFatherName'
+                                    label="ولدیت دریافت کننده"
+                                    size="small"
+                                    type="text"
+                                    onChange={formik.handleChange}
+                                />
 
                             </FieldSet>
                         </Grid>
@@ -285,8 +290,8 @@ export default function VCreateTransfer() {
                                 />
 
 
-                                {exchangeRate &&!exchangeRate.updated && 
-                                <Grow in={!exchangeRate.updated}>
+                                {exchangeRate && !exchangeRate.updated &&
+                                    <Grow in={!exchangeRate.updated}>
                                         <Alert variant='outlined' severity="warning">
                                             <Stack direction="column">
                                                 <Box>نرخ {exchangeRate.fromAmount} {sourceRate.priceName} </Box>
@@ -296,28 +301,25 @@ export default function VCreateTransfer() {
                                         </Alert>
                                     </Grow>}
                                 {exchangeRate && exchangeRate.updated &&
-                                 <Grow in={exchangeRate.updated}>
-                                    <Alert variant='outlined' severity="success">
-                                        <Stack direction="column">
-                                            <Box>نرخ {exchangeRate.fromAmount} {sourceRate.priceName} </Box>
-                                            <Box>معادل {exchangeRate.toExchangeRate} {distRate.priceName}</Box>
-                                            <Box sx={{ fontWeight: 900 }}>نرخ ارز آپدیت است</Box>
-                                        </Stack>
-                                    </Alert>
-                                </Grow>
+                                    <Grow in={exchangeRate.updated}>
+                                        <Alert variant='outlined' severity="success">
+                                            <Stack direction="column">
+                                                <Box>نرخ {exchangeRate.fromAmount} {sourceRate.priceName} </Box>
+                                                <Box>معادل {exchangeRate.toExchangeRate} {distRate.priceName}</Box>
+                                                <Box sx={{ fontWeight: 900 }}>نرخ ارز آپدیت است</Box>
+                                            </Stack>
+                                        </Alert>
+                                    </Grow>
                                 }
 
 
                                 <TextField
                                     name='fee'
                                     label="کمیشن"
-                                    required
                                     size="small"
                                     type="number"
-                                    error={formik.errors.fee ? true : false}
-                                    helperText={formik.errors.fee}
                                     value={formik.values.fee}
-                                    onChange={(e)=>formik.setFieldValue("fee",e.target.value?e.target.value:0)}
+                                    onChange={(e) => formik.setFieldValue("fee", e.target.value ? e.target.value : 0)}
                                     InputProps={{
                                         endAdornment: (
                                             <Stack direction="row">
@@ -340,16 +342,14 @@ export default function VCreateTransfer() {
                                     onValueChange={(newValue) => formik.setFieldValue("friendId", newValue ? newValue.id : "")}
                                     required
                                 />
-                                 <TextField
+                                <TextField
                                     name='receiverFee'
                                     label="کمیشن حواله دار"
                                     size="small"
                                     type="number"
-                                    required
-                                    
+
                                     defaultValue={formik.values.receiverFee}
-                                    error={formik.errors.receiverFee ? true : false}
-                                    helperText={formik.errors.receiverFee}
+
                                     onChange={formik.handleChange}
                                     InputProps={{
                                         endAdornment: (
@@ -365,8 +365,7 @@ export default function VCreateTransfer() {
                                     label="مجموع پول طلب :"
                                     size="small"
                                     type="number"
-                                    required
-                                    value={Number(formik.values.receiverFee)+Number(receivedAmount)}
+                                    value={Number(formik.values.receiverFee) + Number(receivedAmount)}
                                     InputProps={{
                                         endAdornment: (
                                             <Stack direction="row">
@@ -377,7 +376,35 @@ export default function VCreateTransfer() {
                                     }}
                                 />
                             </FieldSet>
-
+                        </Grid>
+                        <Grid item lg={6} md={6} sm={6} xs={12}>
+                            <FieldSet label="معلومات حساب">
+                                <CSelect
+                                    data={[
+                                        { label: "حساب مشتری", value: "1" },
+                                        { label:"حساب من", value: "0" }
+                                    ]}
+                                    name='accountType'
+                                    helperText={formik.errors.accountType}
+                                    size='small'
+                                    label='نوعیت حساب'
+                                    type='number'
+                                    required
+                                    
+                                    value={formik.values.accountType}
+                                    error={formik.errors.accountType ? true : false}
+                                    onChange={formik.handleChange}
+                                />
+                                {formik.values.accountType==="1"&&<SubCustomersDropdown
+                                    name="subCustomerAccountId"
+                                    size="small"
+                                    label="مشتری"
+                                    error={formik.errors.subCustomerAccountId ? true : false}
+                                    helperText={formik.errors.subCustomerAccountId}
+                                    onValueChange={(newValue) => formik.setFieldValue("subCustomerAccountId", newValue ? newValue.id : "")}
+                                    required
+                                />}
+                            </FieldSet>
                         </Grid>
                         <Grid item lg={12} md={12} sm={12} xs={12}>
                             <FieldSet label="معلومات حواله" className="bgWave">
@@ -387,8 +414,8 @@ export default function VCreateTransfer() {
                                 </Stack>
                                 <Stack direction="column" spacing={1}>
                                     <Typography variant="body1" fontWeight={900}>مجموع پول دریافتی از مشتری :</Typography>
-                                    <Typography variant="h4">{`${exchangeRate ?Number(Number(formik.values.amount)+Number(formik.values.fee)).toFixed(2): 0} ${sourceRate?sourceRate.priceName :"هیچ"}`}
-</Typography>
+                                    <Typography variant="h4">{`${exchangeRate ? Number(Number(formik.values.amount) + Number(formik.values.fee)).toFixed(2) : 0} ${sourceRate ? sourceRate.priceName : "هیچ"}`}
+                                    </Typography>
 
                                 </Stack>
                             </FieldSet>
@@ -400,11 +427,11 @@ export default function VCreateTransfer() {
                                 variant='contained'
                                 color='primary'
                                 startIcon={<CheckOutlinedIcon />}
-                                onClick={()=>{
-                                    if(exchangeRate && !exchangeRate.updated){
-                                        formik.isValid&&setAskOpen(true)
-                                    }else{
-                                       formik.submitForm()
+                                onClick={() => {
+                                    if (exchangeRate && !exchangeRate.updated) {
+                                        formik.isValid && setAskOpen(true)
+                                    } else {
+                                        formik.submitForm()
                                     }
                                 }}
                             >

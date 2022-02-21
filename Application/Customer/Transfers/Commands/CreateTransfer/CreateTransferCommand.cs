@@ -20,8 +20,8 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
         public double Amount { get; set; }
         public double Fee { get; set; } = 0;
         public double ReceiverFee { get; set; } = 0;
-
-
+        public int AccountType { get; set; }
+        public Guid SubCustomerAccountId { get; set; }
         public int CodeNumber { get; set; }
         public Guid FriendId { get; set; }
     }

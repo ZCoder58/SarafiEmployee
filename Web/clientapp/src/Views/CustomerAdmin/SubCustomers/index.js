@@ -1,13 +1,14 @@
 import { AddOutlined, EditOutlined } from '@mui/icons-material'
-import { Button, IconButton, Stack, Typography } from '@mui/material'
+import { Button, IconButton, Stack, Typography,ButtonGroup } from '@mui/material'
 import React from 'react'
 import { CCard, CDialog, CTable, CToolbar, CTooltip } from '../../../ui-componets'
 import BallotOutlinedIcon from '@mui/icons-material/BallotOutlined';
 import {useSelector} from 'react-redux'
 import { useNavigate } from 'react-router'
 import NewSubCustomerTransactionFrom from './NewSubCustomerTransactionFrom';
-import ReceiptIcon from '@mui/icons-material/Receipt';
+import AddCardIcon from '@mui/icons-material/AddCard';
 import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 export default function VCSubCustomers() {
     const [refreshTableState, setRefreshTableState] = React.useState(false)
     const [transactionDialogOpen,setTransactionDialogOpen]=React.useState(false)
@@ -31,9 +32,9 @@ export default function VCSubCustomers() {
         {
 
             sortField: "amount",
-            name: <Typography variant="body2" fontWeight={600}>مقدار پول در حساب</Typography>,
+            name: <Typography variant="body2" fontWeight={600}>تعداد حسابات</Typography>,
             selector: row => <Stack direction="column" spacing={1}>
-                <Typography>{row.amount} {row.ratesCountryPriceName}</Typography>
+                <Typography>{row.totalRatesAccounts}</Typography>
             </Stack>,
             sortable: true,
             reorder: true
@@ -51,7 +52,7 @@ export default function VCSubCustomers() {
                         <IconButton onClick={() => {
                             updateAmount(row)
                         }}>
-                            <ReceiptIcon />
+                            <AddCardIcon />
                         </IconButton>
                     </CTooltip>
                     <CTooltip title="تاریخچه انتقالات">
@@ -59,6 +60,13 @@ export default function VCSubCustomers() {
                             navigate('/customer/subCustomers/transactions/'+row.id)
                         }}>
                             <EventNoteOutlinedIcon />
+                        </IconButton>
+                    </CTooltip>
+                    <CTooltip title="حسابات">
+                        <IconButton onClick={() => {
+                            navigate('/customer/subCustomers/accounts/'+row.id)
+                        }}>
+                            <AccountBalanceIcon />
                         </IconButton>
                     </CTooltip>
                 </>
@@ -73,34 +81,35 @@ export default function VCSubCustomers() {
                 <Typography fontWeight={900}>{row.name} {row.fatherName}</Typography>
                 <Typography variant="body2">آدرس: {row.address}</Typography>
                 <Typography variant="body2">شماره تماس: {row.phone}</Typography>
-                <Typography variant="body2">مقدار پول در حساب: {row.amount} {row.ratesCountryPriceName}</Typography>
-                 <Stack direction="row" spacing={1}>
+                <Typography variant="body2">تعداد حسابات: {row.totalRatesAccounts}</Typography>
+                 <ButtonGroup fullWidth variant='text'>
                         <Button onClick={() => navigate('/customer/subCustomers/edit/' + row.id)} 
-                        variant="contained"
-                        color="primary"
                         size="small"
                         >
-                            ویرایش
+                            <EditOutlined/>
                         </Button>
                         <Button onClick={() => {
                             updateAmount(row)
                         }}
-                        variant="contained"
-                        color="primary"
                         size="small"
                         >
-                           ثبت انتقال
+                          <AddCardIcon/>
                         </Button>
                         <Button onClick={() => {
                            navigate('/customer/subCustomers/transactions/'+row.id)
                         }}
-                        variant="contained"
-                        color="primary"
                         size="small"
                         >
-                            تاریخچه انتقالات
+                           <EventNoteOutlinedIcon/>
                         </Button>
-                    </Stack>
+                        <Button onClick={() => {
+                           navigate('/customer/subCustomers/accounts/'+row.id)
+                        }}
+                        size="small"
+                        >
+                           <AccountBalanceIcon/>
+                        </Button>
+                    </ButtonGroup>
             </Stack>
         }
     ]
@@ -113,7 +122,6 @@ export default function VCSubCustomers() {
     }
     function handleAmountUpdated(){
         setTransactionDialogOpen(false)
-        refreshTable()
         setSubCustomerUpdateAmount(null)
     }
     return (
@@ -129,13 +137,14 @@ export default function VCSubCustomers() {
            {transactionDialogOpen&&<CDialog title="ثبت انتقال"
               open={transactionDialogOpen}
                onClose={()=>setTransactionDialogOpen(false)} >
-                   <NewSubCustomerTransactionFrom customer={subCustomerUpdateAmount} onSuccess={handleAmountUpdated}/>
+                   <NewSubCustomerTransactionFrom subCustomer={subCustomerUpdateAmount} onSuccess={handleAmountUpdated}/>
             </CDialog>}
             <CTable
                 serverUrl={'subCustomers'}
                 striped
                 columns={screenXs?mobileColumns:desktopColumns}
                 refreshState={refreshTableState}
+                
             />
         </CCard>
     )

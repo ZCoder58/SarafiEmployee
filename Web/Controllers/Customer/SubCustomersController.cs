@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Common.Models;
+using Application.SubCustomers.Commands.CreateAccountRate;
 using Application.SubCustomers.Commands.CreateSubCustomerAccount;
 using Application.SubCustomers.Commands.EditSubCustomerAccount;
 using Application.SubCustomers.Commands.UpdateAmount;
@@ -14,7 +15,7 @@ using Web.Controllers.Base;
 namespace Web.Controllers.Customer
 {
     [Authorize("customerSimple")]
-    [Route("api/[controller]")]
+    [Route("api/subCustomers")]
     public class SubCustomersController:ApiBaseController
     {
         [HttpGet]
@@ -29,7 +30,7 @@ namespace Web.Controllers.Customer
                 Search = search
             }));
         }
-
+        
         [HttpPost]
         public Task CreateSubCustomer([FromForm] CreateSubCustomerCommand request)
         {
@@ -58,10 +59,26 @@ namespace Web.Controllers.Customer
                 fromDate,
                 toDate));
         }
-        [HttpGet("/{id}")]
-        public Task GetSubCustomer(Guid id)
+        [HttpGet("{id}")]
+        public Task<SubCustomerAccountDTo> GetSubCustomer(Guid id)
         {
             return Mediator.Send(new GetSubCustomerAccountQuery(id));
         }
+        [HttpGet("list")]
+        public Task<IEnumerable<SubCustomerAccountDropdownListDTo>> GetSubCustomerList()
+        {
+            return Mediator.Send(new GetSubCustomersListDropdownQuery());
+        }
+        [HttpGet("accounts")]
+        public Task<IEnumerable<SubCustomerAccountRatesTableDTo>> GetSubCustomerAccountsRate(Guid id)
+        {
+            return Mediator.Send(new GetSubCustomerAccountsRatesQuery(id));
+        }
+        [HttpPost("accounts")]
+        public Task CreateSubCustomerAccountRate([FromForm] CreateAccountRateCommand request)
+        {
+            return Mediator.Send(request);
+        }
+        
     }
 }

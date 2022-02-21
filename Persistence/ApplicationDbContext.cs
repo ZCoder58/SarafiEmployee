@@ -19,6 +19,7 @@ namespace Persistence
 
         public DbSet<SubCustomerTransaction> SubCustomerTransactions { get; set; }
         public DbSet<CustomerAccount> CustomerAccounts { get; set; }
+        public DbSet<SubCustomerAccountRate> SubCustomerAccountRates { get; set; }
         public DbSet<SubCustomerAccount> SubCustomerAccounts { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
