@@ -31,12 +31,10 @@ export default function VCSubCustomers() {
         },
         {
 
-            sortField: "amount",
             name: <Typography variant="body2" fontWeight={600}>تعداد حسابات</Typography>,
             selector: row => <Stack direction="column" spacing={1}>
                 <Typography>{row.totalRatesAccounts}</Typography>
             </Stack>,
-            sortable: true,
             reorder: true
         },
         {

@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Application.Common.Models;
 using Application.SubCustomers.Commands.CreateAccountRate;
 using Application.SubCustomers.Commands.CreateSubCustomerAccount;
+using Application.SubCustomers.Commands.EditAccountRate;
 using Application.SubCustomers.Commands.EditSubCustomerAccount;
+using Application.SubCustomers.Commands.RollbackTransaction;
 using Application.SubCustomers.Commands.UpdateAmount;
 using Application.SubCustomers.DTOs;
 using Application.SubCustomers.Queries;
@@ -59,6 +61,11 @@ namespace Web.Controllers.Customer
                 fromDate,
                 toDate));
         }
+        [HttpPost("transactions/rollback")]
+        public Task RollbackTransaction([FromBody]RollbackTransactionCommand request)
+        {
+            return Mediator.Send(request);
+        }
         [HttpGet("{id}")]
         public Task<SubCustomerAccountDTo> GetSubCustomer(Guid id)
         {
@@ -69,15 +76,25 @@ namespace Web.Controllers.Customer
         {
             return Mediator.Send(new GetSubCustomersListDropdownQuery());
         }
-        [HttpGet("accounts")]
-        public Task<IEnumerable<SubCustomerAccountRatesTableDTo>> GetSubCustomerAccountsRate(Guid id)
+        [HttpGet("accounts/list")]
+        public Task<IEnumerable<SubCustomerAccountRateDTo>> GetSubCustomerAccountsRate(Guid id)
         {
             return Mediator.Send(new GetSubCustomerAccountsRatesQuery(id));
         }
         [HttpPost("accounts")]
-        public Task CreateSubCustomerAccountRate([FromForm] CreateAccountRateCommand request)
+        public Task<SubCustomerAccountRateDTo>  CreateSubCustomerAccountRate([FromForm] CreateAccountRateCommand request)
         {
             return Mediator.Send(request);
+        }
+        [HttpPut("accounts")]
+        public Task<SubCustomerAccountRateDTo> EditSubCustomerAccountRate([FromForm] EditAccountRateCommand request)
+        {
+            return Mediator.Send(request);
+        }
+        [HttpGet("accounts/edit")]
+        public Task<EditSubCustomerAccountRateDTo> EditSubCustomerAccountRate(Guid id)
+        {
+            return Mediator.Send(new GetEditAccountRateQuery(id));
         }
         
     }

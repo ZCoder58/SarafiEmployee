@@ -28,12 +28,15 @@ export default function VCTransactions() {
         initialValues: {
             fromDate: new Date(),
             toDate: new Date(),
-            subCustomerId: undefined
         },
         onSubmit: async (values, formikHelper) => {
+            
             setLoading(true)
             await authAxiosApi.get('subCustomers/transactions', {
-                params: values
+                params: {
+                    ...values,
+                    subCustomerId:subCustomerId
+                }
             }).then(r => {
                 setTransactions(r)
             }).catch(errors => {
@@ -79,6 +82,7 @@ export default function VCTransactions() {
                 <Grid container spacing={2}>
                     <Grid item lg={4} md={4} sm={6} xs={12}>
                         <Box component="form" noValidate onSubmit={formik.handleSubmit}>
+                            
                         <CDateTimeRange
                             value={[formik.values.fromDate, formik.values.toDate]}
                             onChange={(start, end) => {

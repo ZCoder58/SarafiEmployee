@@ -35,6 +35,7 @@ export default function CountriesDropdown({defaultId, onValueChange, ...props })
                 setValue(newValue)
                 onValueChange(newValue)
             }}
+            isOptionEqualToValue={(option,value)=>option.id===value.id}
             getOptionLabel={(option) => `${option.faName} (${option.priceName})`}
             renderInput={(params) => <TextField {...params} {...props}  />}
             renderOption={(props, option, { selected }) =>

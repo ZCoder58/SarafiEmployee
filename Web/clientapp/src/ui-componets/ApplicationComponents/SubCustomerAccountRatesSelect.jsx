@@ -9,7 +9,7 @@ export default function SubCustomerAccountRatesSelect({ subCustomerId,defaultAcc
     React.useEffect(() => {
         (async () => {
             setLoading(true)
-            await authAxiosApi.get('subCustomers/accounts',{
+            await authAxiosApi.get('subCustomers/accounts/list',{
                 params:{
                     id:subCustomerId
                 }

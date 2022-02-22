@@ -4,12 +4,13 @@ import { Avatar, Card, CardContent, CardHeader, Collapse, IconButton,useTheme } 
 import React from 'react'
 import { CTooltip } from '.'
 
- const CCard=({title,subHeader,headerIcon,actions,children,enableActions,...props})=> {
+ const CCard=({title,subHeader,headerIcon,actions,children,enableCollapse,enableActions,...props})=> {
     const [isShown,setCollapseCard]=React.useState(true)
     const theme=useTheme()
     return (
         <Card {...props} elevation={0} sx={{ 
           border:0,
+          my:2
          }}>
         <CardHeader
           avatar={
@@ -22,9 +23,9 @@ import { CTooltip } from '.'
           action={(
            enableActions&& <>
             {actions}
-           <CTooltip title={isShown?"بستن":"بازکردن"}>
+          {enableCollapse&& <CTooltip title={isShown?"بستن":"بازکردن"}>
            <IconButton onClick={()=>setCollapseCard(!isShown)}>{isShown?<ExpandMore/>:<ExpandLess/>}</IconButton>
-           </CTooltip>
+           </CTooltip>}
             </>
           )}
         />
@@ -37,6 +38,7 @@ import { CTooltip } from '.'
     )
 }
 CCard.defaultProps={
-  enableActions:false
+  enableActions:false,
+  enableCollapse:true
 }
 export default CCard

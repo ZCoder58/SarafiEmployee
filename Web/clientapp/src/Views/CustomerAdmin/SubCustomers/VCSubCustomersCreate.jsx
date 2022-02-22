@@ -79,6 +79,8 @@ export default function VCSubCustomersCreate() {
                             error={formik.errors.fatherName ? true : false}
                             onChange={formik.handleChange}
                         />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={6} xs={12}>
                         <TextField
                             variant='outlined'
                             name='phone'
@@ -90,8 +92,6 @@ export default function VCSubCustomersCreate() {
                             error={formik.errors.phone ? true : false}
                             onChange={formik.handleChange}
                         />
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={6} xs={12}>
                         <TextField
                             variant='outlined'
                             name='sId'

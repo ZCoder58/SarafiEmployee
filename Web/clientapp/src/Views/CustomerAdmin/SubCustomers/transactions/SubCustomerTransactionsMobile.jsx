@@ -1,13 +1,25 @@
 import React from 'react'
 import { ListItem, Box, ListItemText, Stack, Chip, Table, TableBody, TableCell, TableHead, TableRow, Typography, ButtonGroup, IconButton, Button } from '@mui/material'
-import { NotExist, CDialog } from '../../../../ui-componets'
+import { NotExist, CDialog, AskDialog } from '../../../../ui-componets'
+import authAxiosApi from '../../../../axios'
 
 export default function SubCustomerTransactionsMobile({ transactions }) {
     const [infoOpen, setInfoOpen] = React.useState(false)
     const [infoData, setInfoData] = React.useState(null)
+    const [transactionsList,setTransactionsList]=React.useState(transactions)
+    const [openAskRollback, setOpenAskRollback] = React.useState(false)
+    const [transactionId, setTransactionId] = React.useState(null)
     function handleInfoClick(info) {
         setInfoData(info)
         setInfoOpen(true)
+    }
+    async function rollback() {
+        await authAxiosApi.post('subCustomers/transactions/rollback', {
+            transactionId: transactionId
+        }).then(r => {
+            setTransactionsList(transactionsList.filter(t => t.id !== transactionId))
+            setOpenAskRollback(false)
+        })
     }
     return (
         <>
@@ -21,6 +33,10 @@ export default function SubCustomerTransactionsMobile({ transactions }) {
                     <Typography vaiant="body1">{infoData.comment}</Typography>
                 </Box>
             </CDialog>}
+            <AskDialog
+                open={openAskRollback}
+                onYes={() => rollback()}
+                onNo={() => setOpenAskRollback(false)} />
             <Table>
                 <TableHead>
                     <TableRow>
@@ -30,7 +46,7 @@ export default function SubCustomerTransactionsMobile({ transactions }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {transactions.length > 0 ? transactions.map((e, i) => (
+                    {transactionsList.length > 0 ? transactionsList.map((e, i) => (
                         <TableRow key={i}>
                             <TableCell>
                                 <ListItem>
@@ -53,6 +69,12 @@ export default function SubCustomerTransactionsMobile({ transactions }) {
                                                             <Button onClick={() => handleInfoClick(e)}>
                                                                 جزییات بیشتر
                                                             </Button>
+                                                           {e.canRollback&& <Button onClick={() => {
+                                                                setTransactionId(e.id)
+                                                                setOpenAskRollback(true)
+                                                            }}>
+                                                                بازگشت عملیه
+                                                            </Button>}
                                                         </ButtonGroup>
                                                     </Stack>
                                                 </Stack>

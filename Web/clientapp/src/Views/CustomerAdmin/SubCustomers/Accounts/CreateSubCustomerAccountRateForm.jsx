@@ -24,7 +24,12 @@ export default function CreateSubCustomerAccountRateForm({subCustomerId,onSubmit
             const formData=Util.ObjectToFormData(values)
             formData.set("subCustomerAccountId",subCustomerId)
             await authAxiosApi.post('subCustomers/accounts',formData).then(r=>{
-                onSubmit()
+                onSubmit({
+                    id:r.id,
+                    amount:r.amount,
+                    createdDate:r.createdDate,
+                    ratesCountryPriceName:r.ratesCountryPriceName
+                })
             }).catch(errors=>{
                 formikHelper.setErrors(errors)
             })
@@ -51,7 +56,9 @@ export default function CreateSubCustomerAccountRateForm({subCustomerId,onSubmit
                 label="ارز حساب"
                 required
                 error={formik.errors.ratesCountryId ? true : false}
-                onValueChange={(v) => formik.setFieldValue("ratesCountryId", v ? v.id : "")}
+                onValueChange={(v) =>{
+                     formik.setFieldValue("ratesCountryId", v ? v.id : "")
+                    }}
             />
             <LoadingButton
                 loading={formik.isSubmitting}

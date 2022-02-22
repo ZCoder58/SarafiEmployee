@@ -2,7 +2,7 @@
 
 namespace Application.SubCustomers.DTOs
 {
-    public class SubCustomerAccountRatesTableDTo
+    public class SubCustomerAccountRateDTo
     {
         public Guid Id { get; set; }
         public double Amount { get; set; }

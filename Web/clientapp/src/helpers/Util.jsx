@@ -1,3 +1,4 @@
+import update from 'immutability-helper';
 const Util ={
     ObjectToFormData:(object)=>{
         var formData=new FormData()
@@ -14,6 +15,11 @@ const Util ={
     },
     displayText:(text)=>{
         return text?text:"وجود ندارد"
+    },
+     updateArray(collection,newObject,id) {
+        const index = collection.findIndex((ac) => ac[id] === newObject[id]);
+        const updatedCollection = update(collection, {$splice: [[index, 1, newObject]]});  // array.splice(start, deleteCount, item1)
+        return updatedCollection
     }
 }
 

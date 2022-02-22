@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Extensions.DbContext;
+using Application.SubCustomers.DTOs;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -7,7 +9,7 @@ using MediatR;
 
 namespace Application.SubCustomers.Commands.CreateAccountRate
 {
-    public class CreateAccountRateHandler:IRequestHandler<CreateAccountRateCommand>
+    public class CreateAccountRateHandler:IRequestHandler<CreateAccountRateCommand,SubCustomerAccountRateDTo>
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IHttpUserContext _httpUserContext;
@@ -20,11 +22,13 @@ namespace Application.SubCustomers.Commands.CreateAccountRate
             _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(CreateAccountRateCommand request, CancellationToken cancellationToken)
+        public async Task<SubCustomerAccountRateDTo> Handle(CreateAccountRateCommand request, CancellationToken cancellationToken)
         {
-           await _dbContext.SubCustomerAccountRates.AddAsync(_mapper.Map<SubCustomerAccountRate>(request),cancellationToken);
+           var newAccount=(await _dbContext.SubCustomerAccountRates.AddAsync(_mapper.Map<SubCustomerAccountRate>(request),cancellationToken)).Entity;
            await _dbContext.SaveChangesAsync(cancellationToken);
-           return Unit.Value;
+           var targetRate = _dbContext.RatesCountries.GetById(request.RatesCountryId);
+           newAccount.RatesCountry = targetRate;
+           return _mapper.Map<SubCustomerAccountRateDTo>(newAccount);
         }
     }
 }

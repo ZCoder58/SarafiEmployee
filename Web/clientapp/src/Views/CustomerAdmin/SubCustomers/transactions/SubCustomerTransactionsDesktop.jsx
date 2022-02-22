@@ -1,13 +1,28 @@
 import React from 'react'
 import { Chip, Table, Box, TableBody, TableCell, TableHead, TableRow, IconButton, Typography } from '@mui/material'
-import { NotExist, CDialog, CTooltip } from '../../../../ui-componets'
+import { NotExist, CDialog, CTooltip,AskDialog } from '../../../../ui-componets'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-export default function SubCustomerTransactionsDesktop({ transactions }) {
+import Util from '../../../../helpers/Util';
+import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
+import authAxiosApi from '../../../../axios';
+export default function SubCustomerTransactionsDesktop({ transactions=[] }) {
     const [infoOpen, setInfoOpen] = React.useState(false)
     const [infoData, setInfoData] = React.useState(null)
+    const [openAskRollback,setOpenAskRollback]=React.useState(false)
+    const [transactionId,setTransactionId]=React.useState(null)
+    const [transactionsList,setTransactionsList]=React.useState(transactions)
+
     function handleInfoClick(info){
         setInfoData(info)
         setInfoOpen(true)
+    }
+    async function rollback(){
+        await authAxiosApi.post('subCustomers/transactions/rollback',{
+            transactionId:transactionId
+        }).then(r=>{
+            setTransactionsList(transactionsList.filter(t => t.id !== transactionId))
+            setOpenAskRollback(false)
+        })
     }
     return (
         <>
@@ -18,10 +33,14 @@ export default function SubCustomerTransactionsDesktop({ transactions }) {
             >
                 <Typography vaiant="body1" fontWeight={900}>ملاحظات :</Typography>
                 <Box>
-                <Typography vaiant="body1">{infoData.comment}</Typography>
+                <Typography vaiant="body1">{Util.displayText(infoData.comment)}</Typography>
                 </Box>
             </CDialog>}
-            <Table>
+            <AskDialog 
+            open={openAskRollback}
+            onYes={()=>rollback()}
+            onNo={()=>setOpenAskRollback(false)}/>
+            <Table size='small'>
                 <TableHead>
                     <TableRow>
                         <TableCell sx={{ typography: "body1", fontWeight: 900 }}>
@@ -39,7 +58,7 @@ export default function SubCustomerTransactionsDesktop({ transactions }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {transactions.length > 0 ? transactions.map((e, i) => (
+                    {transactionsList.length > 0 ? transactionsList.map((e, i) => (
                         <TableRow key={i}>
                             <TableCell>
                                 {e.amount} {e.priceName}
@@ -58,6 +77,16 @@ export default function SubCustomerTransactionsDesktop({ transactions }) {
                                     <InfoOutlinedIcon />
                                 </IconButton>
                                 </CTooltip>
+                               {e.canRollback&&
+                                    <CTooltip title="بازگشت عملیه">
+                                    <IconButton onClick={()=>{
+                                        setTransactionId(e.id)
+                                        setOpenAskRollback(true)
+                                        }}>
+                                        <SettingsBackupRestoreIcon />
+                                    </IconButton>
+                                    </CTooltip>
+                               }
                             </TableCell>
                         </TableRow>
                     )) :

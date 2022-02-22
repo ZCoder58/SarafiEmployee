@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Application.Countries.DTOs;
 using Application.Customer.ExchangeRates.Commands.UpdateExchangeRate;
 using Application.Customer.ExchangeRates.DTos;
@@ -11,6 +12,7 @@ using Application.Customer.Transfers.Commands.EditTransfer;
 using Application.Customer.Transfers.DTOs;
 using Application.SubCustomers.Commands.CreateAccountRate;
 using Application.SubCustomers.Commands.CreateSubCustomerAccount;
+using Application.SubCustomers.Commands.EditAccountRate;
 using Application.SubCustomers.Commands.EditSubCustomerAccount;
 using Application.SubCustomers.DTOs;
 using Application.SunriseSuperAdmin.Rates.Commands.CreateRate;
@@ -103,7 +105,11 @@ namespace Application.Common.Mappers
             CreateMap<SubCustomerAccount, SubCustomerEditDTo>();
             CreateMap<CreateSubCustomerCommand, SubCustomerAccount>();
             CreateMap<EditSubCustomerCommand, SubCustomerAccount>();
-            CreateMap<SubCustomerTransaction,SubCustomerTransactionDTo>();
+            CreateMap<SubCustomerTransaction,SubCustomerTransactionDTo>()
+                .ForMember(dist=>dist.CanRollback,option=>
+                    option.MapFrom(source=>
+                        source.CreatedDate.Value.Date>=DateTime.UtcNow.AddDays(-2).Date));
+                ;
             CreateMap<SubCustomerAccount,SubCustomerAccountDTo>();
             CreateMap<SubCustomerAccount,SubCustomerAccountDropdownListDTo>();
 
@@ -111,8 +117,12 @@ namespace Application.Common.Mappers
 
             #region SubCustomerAccountRate
 
-            CreateMap<SubCustomerAccountRate,SubCustomerAccountRatesTableDTo>();
+            CreateMap<SubCustomerAccountRate,SubCustomerAccountRateDTo>()
+                .ForMember(dist=>dist.RatesCountryPriceName,option=>
+                    option.MapFrom(source=>source.RatesCountry.PriceName));
             CreateMap<CreateAccountRateCommand,SubCustomerAccountRate>();
+            CreateMap<EditAccountRateCommand,SubCustomerAccountRate>();
+            CreateMap<SubCustomerAccountRate,EditSubCustomerAccountRateDTo>();
 
 
             #endregion

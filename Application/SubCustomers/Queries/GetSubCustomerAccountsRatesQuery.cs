@@ -14,9 +14,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.SubCustomers.Queries
 {
-    public record GetSubCustomerAccountsRatesQuery(Guid SubCustomerId) : IRequest<IEnumerable<SubCustomerAccountRatesTableDTo>>;
+    public record GetSubCustomerAccountsRatesQuery(Guid SubCustomerId) : IRequest<IEnumerable<SubCustomerAccountRateDTo>>;
 
-    public class GetSubCustomerAccountsRatesHandler:IRequestHandler<GetSubCustomerAccountsRatesQuery,IEnumerable<SubCustomerAccountRatesTableDTo>>
+    public class GetSubCustomerAccountsRatesHandler:IRequestHandler<GetSubCustomerAccountsRatesQuery,IEnumerable<SubCustomerAccountRateDTo>>
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -28,13 +28,13 @@ namespace Application.SubCustomers.Queries
             _httpUserContext = httpUserContext;
         }
 
-        public async Task<IEnumerable<SubCustomerAccountRatesTableDTo>> Handle(GetSubCustomerAccountsRatesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<SubCustomerAccountRateDTo>> Handle(GetSubCustomerAccountsRatesQuery request, CancellationToken cancellationToken)
         {
             return await _dbContext.SubCustomerAccountRates
                 .Include(a => a.SubCustomerAccount)
                 .Where(a => a.SubCustomerAccountId == request.SubCustomerId &&
                             a.SubCustomerAccount.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid())
-                .ProjectTo<SubCustomerAccountRatesTableDTo>(_mapper.ConfigurationProvider)
+                .ProjectTo<SubCustomerAccountRateDTo>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
         }
     }
