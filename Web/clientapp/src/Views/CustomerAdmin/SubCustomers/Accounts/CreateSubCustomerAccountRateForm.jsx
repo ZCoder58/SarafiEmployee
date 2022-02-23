@@ -24,12 +24,7 @@ export default function CreateSubCustomerAccountRateForm({subCustomerId,onSubmit
             const formData=Util.ObjectToFormData(values)
             formData.set("subCustomerAccountId",subCustomerId)
             await authAxiosApi.post('subCustomers/accounts',formData).then(r=>{
-                onSubmit({
-                    id:r.id,
-                    amount:r.amount,
-                    createdDate:r.createdDate,
-                    ratesCountryPriceName:r.ratesCountryPriceName
-                })
+                onSubmit(r)
             }).catch(errors=>{
                 formikHelper.setErrors(errors)
             })

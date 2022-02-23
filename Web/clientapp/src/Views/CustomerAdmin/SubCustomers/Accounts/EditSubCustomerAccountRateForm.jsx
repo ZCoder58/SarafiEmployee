@@ -29,12 +29,7 @@ export default function EditSubCustomerAccountRateForm({ subCustomerAcccountRate
             const formData = Util.ObjectToFormData(values)
             formData.set("id", subCustomerAcccountRateId)
             await authAxiosApi.put('subCustomers/accounts', formData).then(r => {
-                onSubmit({
-                    id:r.id,
-                    amount:r.amount,
-                    createdDate:r.createdDate,
-                    ratesCountryPriceName:r.ratesCountryPriceName
-                })
+                onSubmit(r)
             }).catch(errors => {
                 formikHelper.setErrors(errors)
             })
@@ -81,7 +76,7 @@ export default function EditSubCustomerAccountRateForm({ subCustomerAcccountRate
                 <AccordionDetails>
                     <Alert severity='warning'>
                         <AlertTitle>اخطار !</AlertTitle>
-                        <Typography>با تغیر نوع نرخ ارز حساب تمامی پول موجود در حساب به ارز جدید تبدیل خواهد شد.</Typography>
+                        <Typography>با تغیر نوع ارز حساب تمامی پول موجود در حساب مشتری به ارز جدید تبدیل خواهد شد.</Typography>
                     </Alert>
                     <RatesDropdown
                         name='ratesCountryId'

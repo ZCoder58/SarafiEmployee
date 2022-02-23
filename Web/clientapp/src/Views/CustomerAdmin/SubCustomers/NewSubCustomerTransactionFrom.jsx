@@ -9,14 +9,14 @@ import { LoadingButton } from '@mui/lab'
 import { CheckCircleOutline } from '@mui/icons-material'
 const initialModel = {
     subCustomerId: "",
-    subCustomerAccountRateId:"",
+    rateCountryId:"",
     comment: "",
     amount: 1,
     type: ''
 }
 const validationSchema = Yup.object().shape({
     amount: Yup.number().required("مقدار پول ضروری میباشد").moreThan(0,"کمتر از 1 مجاز نیست"),
-    subCustomerAccountRateId:Yup.string().required("انتخاب حساب ارز ضروری میباشد"),
+    rateCountryId:Yup.string().required("انتخاب حساب ارز ضروری میباشد"),
     type: Yup.string().required("انتخاب نوع انتقال ضروری میباشد")
 });
 export default function NewSubCustomerTransactionFrom({subCustomer, onSuccess}) {
@@ -66,7 +66,7 @@ export default function NewSubCustomerTransactionFrom({subCustomer, onSuccess}) 
                 onChange={formik.handleChange}
                 InputProps={{
                     endAdornment: <InputAdornment position="end">
-                        {accountRate?accountRate.ratesCountryPriceName:"هیچ"}
+                        {accountRate?accountRate.priceName:"هیچ"}
                     </InputAdornment>
                 }}
             />

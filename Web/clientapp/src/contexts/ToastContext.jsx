@@ -16,7 +16,7 @@ export const ToastContextProvider = ({ children }) => {
 
   const theme = useTheme()
   function TransitionLeft(props) {
-    return <Slide {...props} direction="left"></Slide>;
+    return <Slide {...props} direction="up"></Slide>;
   }
   function showToast(content, variant) {
     let cKey = Math.random();

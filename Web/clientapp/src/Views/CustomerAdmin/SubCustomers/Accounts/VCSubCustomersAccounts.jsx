@@ -18,10 +18,6 @@ export default function VCSubCustomerAccounts() {
     const [loading, setLoading] = React.useState(true)
     const { subCustomerId } = useParams()
     const navigate = useNavigate()
-   
-    function refreshTable() {
-        setRefreshTableState(!refreshTableState)
-    }
     function handleEditClick(subCustomerAccountRateId){
         setAccountRateId(subCustomerAccountRateId)
         setEditFormOpen(true)
@@ -92,7 +88,7 @@ export default function VCSubCustomerAccounts() {
                                 }>
                                     <ListItemText
                                         primary={
-                                            <Typography fontWeight={900}>{e.amount} {e.ratesCountryPriceName}</Typography>
+                                            <Typography fontWeight={900}>{e.amount} {e.priceName}</Typography>
                                         }
                                         secondary={
                                             <Typography variant="caption">تاریخ ایجاد حساب : {new Date(e.createdDate).toLocaleDateString()}</Typography>

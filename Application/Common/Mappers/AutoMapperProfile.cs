@@ -118,12 +118,11 @@ namespace Application.Common.Mappers
             #region SubCustomerAccountRate
 
             CreateMap<SubCustomerAccountRate,SubCustomerAccountRateDTo>()
-                .ForMember(dist=>dist.RatesCountryPriceName,option=>
+                .ForMember(dist=>dist.PriceName,option=>
                     option.MapFrom(source=>source.RatesCountry.PriceName));
             CreateMap<CreateAccountRateCommand,SubCustomerAccountRate>();
             CreateMap<EditAccountRateCommand,SubCustomerAccountRate>();
             CreateMap<SubCustomerAccountRate,EditSubCustomerAccountRateDTo>();
-
 
             #endregion
 

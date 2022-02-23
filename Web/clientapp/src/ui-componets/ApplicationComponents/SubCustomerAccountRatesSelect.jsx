@@ -9,16 +9,19 @@ export default function SubCustomerAccountRatesSelect({ subCustomerId,defaultAcc
     React.useEffect(() => {
         (async () => {
             setLoading(true)
-            await authAxiosApi.get('subCustomers/accounts/list',{
-                params:{
-                    id:subCustomerId
-                }
-            }).then(r => {
-                setSubCustomersAccountRate(r)
-                if (defaultAccountRateId) {
-                    setValue(r.find(a => a.id === defaultAccountRateId))
-                }
-            })
+            if(subCustomerId){
+                await authAxiosApi.get('subCustomers/accounts/list',{
+                    params:{
+                        id:subCustomerId
+                    }
+                }).then(r => {
+                    setSubCustomersAccountRate(r)
+                    if (defaultAccountRateId) {
+                        setValue(r.find(a => a.id === defaultAccountRateId))
+                    }
+                })
+            }
+           
             setLoading(false)
         })()
         return () => {
@@ -39,12 +42,12 @@ export default function SubCustomerAccountRatesSelect({ subCustomerId,defaultAcc
                 setValue(newValue)
                 onValueChange(newValue)
             }}
-            getOptionLabel={(option) => `${option.ratesCountryPriceName}`}
+            getOptionLabel={(option) => `${option.priceName}`}
             renderInput={(params) => <TextField {...params} {...props}  />}
             renderOption={(props, option, { selected }) =>
                 <ListItem {...props}>
                     <ListItemText
-                    primary={`${option.amount} ${option.ratesCountryPriceName}`}
+                    primary={`${option.amount} ${option.priceName}`}
                     />
                    
                 </ListItem>}

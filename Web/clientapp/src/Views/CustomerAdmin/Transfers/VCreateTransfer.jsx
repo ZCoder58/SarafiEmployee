@@ -1,16 +1,15 @@
-import { AskDialog, AutoComplete, CCard, CSelect, SearchFriendDropdown, SkeletonFull, SubCustomersDropdown } from '../../../ui-componets'
+import { AskDialog, CCard, CSelect, SearchFriendDropdown, SubCustomersDropdown } from '../../../ui-componets'
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
 import { Grid, Box, TextField, Stack, Typography, Divider, Alert, Grow, IconButton } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import React from 'react'
-import CountriesRatesStatics from '../../../helpers/statics/CountriesRatesStatic';
 import authAxiosApi from '../../../axios';
 import { LoadingButton } from '@mui/lab';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import Util from '../../../helpers/Util'
 import { useNavigate } from 'react-router';
-import { FieldSet } from '../../../ui-componets'
+import { FieldSet, RatesDropdown, SubCustomerAccountRatesSelect } from '../../../ui-componets'
 import { ArrowBack } from '@mui/icons-material';
 const createModel = {
     fromName: "",
@@ -21,19 +20,16 @@ const createModel = {
     toLastName: "",
     toFatherName: "",
     toGrandFatherName: "",
-    fCurrency: "",
-    tCurrency: "",
+    fCurrency: undefined,
+    tCurrency:undefined,
     amount: "",
-    friendId: "",
+    friendId: undefined,
     fee: 0,
     receiverFee: 0,
-    subCustomerAccountId: "",
-    accountType: ""
 }
 const validationSchema = Yup.object().shape({
     fromName: Yup.string().required("نام ارسال کنننده ضروری میباشد"),
     fromFatherName: Yup.string().required("ولد ارسال کننده ضروری میباشد"),
-    accountType: Yup.number().required("انتخاب نوعیت حساب ضروری میباشد"),
     fromPhone: Yup.string().required("شماره تماس ارسال کننده ضروری میباشد"),
     toName: Yup.string().required("نام دریافت کننده ضروری میباشد"),
     toFatherName: Yup.string().required("ولد دریافت کننده ضروری میباشد"),
@@ -42,16 +38,10 @@ const validationSchema = Yup.object().shape({
     amount: Yup.string().required("مقدار پول ارسالی ضروری میباشد"),
     friendId: Yup.string().required("انتخاب همکار شما ضروری میباشد"),
     fee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
-    receiverFee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
-    subCustomerAccountId: Yup.string().test('typeValidation', "انتخاب مشتری ضروری میباشد", (value, context) => {
-       console.log("value :",value)
-        return context.parent.accountType === 0 || value !== undefined;
-    })
+    receiverFee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),   
 });
 
 export default function VCreateTransfer() {
-    const [loading, setLoading] = React.useState(true)
-    const [countriesRates, setCountriesRates] = React.useState([])
     const [sourceRate, setSourceRate] = React.useState(null)
     const [distRate, setDistRate] = React.useState(null)
     const [transferCode, setTransferCode] = React.useState(0)
@@ -91,31 +81,24 @@ export default function VCreateTransfer() {
             try {
                 await authAxiosApi.get('customer/rates/exchangeRate', {
                     params: {
-                        from: sourceRate.id,
+                        from: formik.values.accountType==="1"?sourceRate.ratesCountryId:sourceRate.id,
                         to: distRate.id
                     }
                 }).then(r => {
                     setExchangeRate(r)
                 })
+                setTransferCode(Util.GenerateRandom(50, 5000))
+
             } catch {
 
             }
         })()
         return () => setExchangeRate(null)
     }, [sourceRate, distRate])
-    React.useEffect(() => {
-        (async () => {
-            await authAxiosApi.get('general/rates').then(r => {
-                setCountriesRates(r)
-            })
-            setTransferCode(Util.GenerateRandom(50, 5000))
-            setLoading(false)
-        })()
-        return () => setCountriesRates([])
-    }, [])
+  
 
     return (
-        loading ? <SkeletonFull /> :
+        // loading ? <SkeletonFull /> :
             <CCard
                 title="فورم ثبت حواله جدید"
                 headerIcon={<SyncAltOutlinedIcon />}
@@ -212,49 +195,88 @@ export default function VCreateTransfer() {
                             </FieldSet>
                         </Grid>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <FieldSet label="معلومات ارز">
-                                <AutoComplete
-                                    loading={loading}
+                            <FieldSet label="معلومات حواله دار">
+                                <SearchFriendDropdown
+                                    name="friendId"
                                     size="small"
-                                    disableClearable
-                                    error={formik.errors.fCurrency ? true : false}
-                                    helperText={formik.errors.fCurrency}
-                                    data={countriesRates}
-                                    label="واحد پول ارسالی"
-                                    name="fCurrency"
+                                    error={formik.errors.friendId ? true : false}
+                                    helperText={formik.errors.friendId}
+                                    onValueChange={(newValue) => formik.setFieldValue("friendId", newValue ? newValue.id : "")}
                                     required
-                                    onChange={(newValue) => handleSourceChange(newValue)}
-                                    getOptionLabel={(option) => `${option.faName} (${option.priceName})`}
-                                    renderOption={(option, selected) => {
-                                        return (
-                                            <Stack direction="row" spacing={1} justifyContent="space-between" width="100%">
-                                                <Typography variant="caption">{option.faName} ({option.priceName})</Typography>
-                                                <img width="20px" height="20px" alt="" src={CountriesRatesStatics.flagPath(option.flagPhoto)} />
+                                />
+                                <TextField
+                                    name='receiverFee'
+                                    label="کمیشن حواله دار"
+                                    size="small"
+                                    type="number"
+
+                                    defaultValue={formik.values.receiverFee}
+
+                                    onChange={formik.handleChange}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <Stack direction="row">
+                                                <Divider orientation='vertical' flexItem ></Divider>
+                                                <Typography sx={{ ml: 1 }} variant="body1" >{distRate ? distRate.priceName : "هیچ"}</Typography>
                                             </Stack>
                                         )
                                     }}
                                 />
-                                <AutoComplete
-                                    loading={loading}
+                                <TextField
+                                    name='receiverFee'
+                                    label="مجموع پول طلب :"
                                     size="small"
-                                    disableClearable
+                                    type="number"
+                                    value={Number(formik.values.receiverFee) + Number(receivedAmount)}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <Stack direction="row">
+                                                <Divider orientation='vertical' flexItem ></Divider>
+                                                <Typography sx={{ ml: 1 }} variant="body1" >{distRate ? distRate.priceName : "هیچ"}</Typography>
+                                            </Stack>
+                                        )
+                                    }}
+                                />
+                            </FieldSet>
+                        </Grid>
+                        <Grid item lg={6} md={6} sm={6} xs={12}>
+                            <FieldSet label="معلومات ارز">
+                                {formik.values.accountType === "1" ?
+                                     <SubCustomerAccountRatesSelect
+                                     subCustomerId={formik.values.subCustomerAccountId}
+                                      name='fCurrency'
+                                      helperText={formik.errors.fCurrency}
+                                      size='small'
+                                      label='حساب ارز'
+                                      value={formik.values.fCurrency}
+                                      type='text'
+                                      required
+                                      error={formik.errors.fCurrency ? true : false}
+                                      onValueChange={(v)=>{
+                                         formik.setFieldValue("fCurrency",v?v.ratesCountryId:undefined)
+                                         setSourceRate(v)
+                                      }}
+                                     />
+                                    : <RatesDropdown
+                                        error={formik.errors.fCurrency ? true : false}
+                                        helperText={formik.errors.fCurrency}
+                                        label="واحد پول ارسالی"
+                                        name="fCurrency"
+                                        required
+                                        size="small"
+                                        onValueChange={(newValue) => handleSourceChange(newValue)}
+                                    />}
+
+                                <RatesDropdown
                                     error={formik.errors.tCurrency ? true : false}
                                     helperText={formik.errors.tCurrency}
-                                    data={countriesRates}
                                     label="واحد پول دریافتی"
                                     name="tCurrency"
                                     required
-                                    onChange={(newValue) => handleDistChange(newValue)}
-                                    getOptionLabel={(option) => `${option.faName} (${option.priceName})`}
-                                    renderOption={(option, selected) => {
-                                        return (
-                                            <Stack direction="row" spacing={1} justifyContent="space-between" width="100%">
-                                                <Typography variant="caption">{option.faName} ({option.priceName})</Typography>
-                                                <img width="20px" height="20px" alt="" src={CountriesRatesStatics.flagPath(option.flagPhoto)} />
-                                            </Stack>
-                                        )
-                                    }}
+                                    size="small"
+                                    onValueChange={(newValue) => handleDistChange(newValue)}
                                 />
+
                                 <TextField
                                     name='amount'
                                     label="مقدار پول ارسالی"
@@ -331,80 +353,6 @@ export default function VCreateTransfer() {
                                 />
                             </FieldSet>
 
-                        </Grid>
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <FieldSet label="معلومات حواله دار">
-                                <SearchFriendDropdown
-                                    name="friendId"
-                                    size="small"
-                                    error={formik.errors.friendId ? true : false}
-                                    helperText={formik.errors.friendId}
-                                    onValueChange={(newValue) => formik.setFieldValue("friendId", newValue ? newValue.id : "")}
-                                    required
-                                />
-                                <TextField
-                                    name='receiverFee'
-                                    label="کمیشن حواله دار"
-                                    size="small"
-                                    type="number"
-
-                                    defaultValue={formik.values.receiverFee}
-
-                                    onChange={formik.handleChange}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <Stack direction="row">
-                                                <Divider orientation='vertical' flexItem ></Divider>
-                                                <Typography sx={{ ml: 1 }} variant="body1" >{distRate ? distRate.priceName : "هیچ"}</Typography>
-                                            </Stack>
-                                        )
-                                    }}
-                                />
-                                <TextField
-                                    name='receiverFee'
-                                    label="مجموع پول طلب :"
-                                    size="small"
-                                    type="number"
-                                    value={Number(formik.values.receiverFee) + Number(receivedAmount)}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <Stack direction="row">
-                                                <Divider orientation='vertical' flexItem ></Divider>
-                                                <Typography sx={{ ml: 1 }} variant="body1" >{distRate ? distRate.priceName : "هیچ"}</Typography>
-                                            </Stack>
-                                        )
-                                    }}
-                                />
-                            </FieldSet>
-                        </Grid>
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <FieldSet label="معلومات حساب">
-                                <CSelect
-                                    data={[
-                                        { label: "حساب مشتری", value: "1" },
-                                        { label:"حساب من", value: "0" }
-                                    ]}
-                                    name='accountType'
-                                    helperText={formik.errors.accountType}
-                                    size='small'
-                                    label='نوعیت حساب'
-                                    type='number'
-                                    required
-                                    
-                                    value={formik.values.accountType}
-                                    error={formik.errors.accountType ? true : false}
-                                    onChange={formik.handleChange}
-                                />
-                                {formik.values.accountType==="1"&&<SubCustomersDropdown
-                                    name="subCustomerAccountId"
-                                    size="small"
-                                    label="مشتری"
-                                    error={formik.errors.subCustomerAccountId ? true : false}
-                                    helperText={formik.errors.subCustomerAccountId}
-                                    onValueChange={(newValue) => formik.setFieldValue("subCustomerAccountId", newValue ? newValue.id : "")}
-                                    required
-                                />}
-                            </FieldSet>
                         </Grid>
                         <Grid item lg={12} md={12} sm={12} xs={12}>
                             <FieldSet label="معلومات حواله" className="bgWave">
