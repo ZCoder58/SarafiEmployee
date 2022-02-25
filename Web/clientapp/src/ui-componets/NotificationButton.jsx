@@ -9,12 +9,14 @@ import { SkeletonFull } from '.'
 import { CloseOutlined } from '@mui/icons-material';
 import useNotifications from '../hooks/useNotifications'
 import { useNavigate } from 'react-router';
+import useAuth from '../hooks/useAuth'
 const formatter = buildFormatter(faString)
 export default function NotificationButton() {
     const { loading, notifications, notificationCount,unSeensCount,seenNotifications } = useNotifications()
     const theme = useTheme()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const navigate=useNavigate()
+    const auth=useAuth()
     const screenMachedXS = useMediaQuery(theme.breakpoints.down("sm"))
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -31,10 +33,10 @@ export default function NotificationButton() {
         {notifications.map((d, i) =>
             <ListItemButton key={i} sx={{ width: "100%", minWidth: 280 }} onClick={()=>{
                 if(d.type==="newTransfer" || d.type==="deniedTransfer"){
-                    navigate(`/company/transfers/inbox/${d.baseId}`)
+                    navigate(`/${auth.isCompany()?"company":"customer"}/transfers/inbox/${d.baseId}`)
                     handleClose()
                 }else if(d.type==="request"){
-                    navigate(`/company/profile/${d.baseId}`)
+                    navigate(`/${auth.isCompany()?"company":"customer"}/profile/${d.baseId}`)
                     handleClose()
                 }
             }}>

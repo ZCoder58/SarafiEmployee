@@ -89,6 +89,7 @@ namespace Application
             services.AddTransient<IAuthorizationHandler, HandleTokenValidationRequirement>();
             services.AddTransient<IAuthorizationHandler, CompanyAuthRequirementHandler>();
             services.AddTransient<IAuthorizationHandler, CustomerAuthRequirementLimitFriendsForSimpleCustomerHandler>();
+            services.AddTransient<IAuthorizationHandler, CompanyLimitEmployeesRequirementHandler>();
             services.AddTransient<IAuthorizationHandler, CustomerAuthRequirementSimpleHandler>();
             services.AddTransient<IAuthorizationHandler, AdminUserAuthRequirementHandler>();
             services.AddAuthorization(options =>
@@ -102,6 +103,10 @@ namespace Application
                 options.AddPolicy("limitRequest", policy =>
                 {
                     policy.AddRequirements(new CustomerAuthRequirementLimitFriendsForSimpleCustomer(1));
+                });
+                options.AddPolicy("limitEmployees", policy =>
+                {
+                    policy.AddRequirements(new CompanyLimitEmployeesRequirement(3));
                 });
                 
                 options.AddPolicy("customerSimple", policy =>

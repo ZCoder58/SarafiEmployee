@@ -40,7 +40,7 @@ const validationSchema = Yup.object().shape({
     subCustomerAccountRateId: Yup.string().required("انتخاب حساب مشتری ضروری میباشد"),
     tCurrency: Yup.string().required("انتخاب ارز دریافت کننده ضروری میباشد"),
     amount: Yup.string().required("مقدار پول ارسالی ضروری میباشد"),
-    friendId: Yup.string().required("انتخاب همکار شما ضروری میباشد"),
+    friendId: Yup.string().required("انتخاب کارمند شما ضروری میباشد"),
     fee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
     receiverFee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
 });
@@ -331,6 +331,7 @@ export default function SubCustomerEditTransfer() {
                             <SearchFriendDropdown
                                 name="friendId"
                                 size="small"
+                                label="کارمند"
                                 defaultFriendId={formik.values.friendId}
                                 error={formik.errors.friendId ? true : false}
                                 helperText={formik.errors.friendId}
@@ -339,7 +340,7 @@ export default function SubCustomerEditTransfer() {
                             />
                             <TextField
                                 name='receiverFee'
-                                label="کمیشن حواله دار"
+                                label="کمیشن کارمند"
                                 size="small"
                                 type="number"
                                 defaultValue={formik.values.receiverFee}

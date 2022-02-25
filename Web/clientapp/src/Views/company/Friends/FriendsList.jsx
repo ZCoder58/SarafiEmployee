@@ -17,6 +17,7 @@ export default function FriendsList() {
     const [hasNext, setHasNext] = React.useState(false)
     const [hasPrevious, setHasPrevious] = React.useState(false)
     const navigate=useNavigate()
+
     const [filterList, setFilterList] = React.useState({
         page: 1,
         search: ""

@@ -1,6 +1,6 @@
 import {  ListItem, Popper } from '@mui/material';
 import { AccountCircleOutlined, LogoutOutlined } from '@mui/icons-material';
-import { Avatar, Chip, Divider, List, ListItemText, Paper } from '@mui/material';
+import { Avatar, Chip, Divider, List, ListItemText, Paper,Box } from '@mui/material';
 import React from 'react'
 import ClickAwayListener from '@mui/core/ClickAwayListener';
 import { CListItemButton, CListItemIcon } from '../../../ui-componets/List';
@@ -8,7 +8,8 @@ import useAuth from '../../../hooks/useAuth'
 import { useNavigate } from 'react-router';
 import { CTooltip } from '../../../ui-componets';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
-import {  getLastName, getName } from '../../../services/JWTAuthService';
+import {  getLastName, getName,getAccountType } from '../../../services/JWTAuthService';
+
 const ProfileAccount = (props) => {
   const [isOpenMenu, setIsOpenMenu] = React.useState(false);
   const togglerRef = React.useRef(null);
@@ -52,7 +53,7 @@ const ProfileAccount = (props) => {
               <ListItem>
                 <ListItemText
                   primary={`${getName()} ${getLastName()} `}
-                  // secondary={<Box component="span" >نوع حساب : <Box component="span" sx={{ color: "green" }}>{getAccountType()}</Box></Box>}
+                  secondary={<Box component="span" >نوع حساب : <Box component="span" sx={{ color: "green" }}>{getAccountType()}</Box></Box>}
                 />
               </ListItem>
               <CListItemButton onClick={() => {
@@ -66,7 +67,7 @@ const ProfileAccount = (props) => {
               </CListItemButton>
               <CListItemButton onClick={() => {
                 toggleMenu()
-                navigate("/cumpany/friends/1")}}>
+                navigate("/company/friends/1")}}>
                 <CListItemIcon>
                   <GroupOutlinedIcon />
                 </CListItemIcon>

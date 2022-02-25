@@ -2,12 +2,18 @@ import React from 'react'
 import { Card, Grid, Tab } from '@mui/material'
 import { TabsList } from '../../../ui-componets'
 import { TabContext, TabPanel } from '@mui/lab'
-import { useParams } from 'react-router'
+import { Navigate, useParams } from 'react-router'
 import FriendsList from './FriendsList'
 import FriendsRequestList from './FriendsRequestList'
+import useAuth from '../../../hooks/useAuth'
 export default function VCFriends() {
     const { queryTab } = useParams()
+    const auth=useAuth()
     const [activeTab, setActiveTab] = React.useState(queryTab)
+    if(auth.isEmployee()){
+        console.log("is employee:",auth.isEmployee())
+       return <Navigate to={auth.getRelatedLayoutPath()}/>
+    }
     return (
        
                 <Card>

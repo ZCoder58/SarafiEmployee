@@ -81,7 +81,7 @@ export default function VCSubCustomers() {
                 <Typography variant="body2">شماره تماس: {row.phone}</Typography>
                 <Typography variant="body2">تعداد حسابات: {row.totalRatesAccounts}</Typography>
                  <ButtonGroup fullWidth variant='text'>
-                        <Button onClick={() => navigate('/customer/subCustomers/edit/' + row.id)} 
+                        <Button onClick={() => navigate('/company/subCustomers/edit/' + row.id)} 
                         size="small"
                         >
                             <EditOutlined/>
@@ -94,14 +94,14 @@ export default function VCSubCustomers() {
                           <AddCardIcon/>
                         </Button>
                         <Button onClick={() => {
-                           navigate('/customer/subCustomers/transactions/'+row.id)
+                           navigate('/company/subCustomers/transactions/'+row.id)
                         }}
                         size="small"
                         >
                            <EventNoteOutlinedIcon/>
                         </Button>
                         <Button onClick={() => {
-                           navigate('/customer/subCustomers/accounts/'+row.id)
+                           navigate('/company/subCustomers/accounts/'+row.id)
                         }}
                         size="small"
                         >
@@ -142,7 +142,6 @@ export default function VCSubCustomers() {
                 striped
                 columns={screenXs?mobileColumns:desktopColumns}
                 refreshState={refreshTableState}
-                
             />
         </CCard>
     )

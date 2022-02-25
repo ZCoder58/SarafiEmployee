@@ -27,7 +27,7 @@ namespace Web.Controllers.Company
                 Column = column
             }));
         }
-
+        [Authorize("limitEmployees")]
         [HttpPost]
         public Task CreateEmployee([FromForm] CreateEmployeeCommand request)
         {

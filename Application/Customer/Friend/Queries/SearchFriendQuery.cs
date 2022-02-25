@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
+using Application.Common.Statics;
 using Application.Customer.Friend.DTOs;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -31,7 +32,9 @@ namespace Application.Customer.Friend.Queries
         {
             var search = request.SearchText.ToEmptyStringIfNull();
             return await _dbContext.Friends
+                .Include(a=>a.CustomerFriend)
                 .Where(a => a.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid() &&
+                            a.CustomerFriend.UserType!=UserTypes.EmployeeType &&
                             a.CustomerFriendApproved)
                 .Where(a => a.CustomerFriend.Name.Contains(search) ||
                             a.CustomerFriend.LastName.Contains(search) ||

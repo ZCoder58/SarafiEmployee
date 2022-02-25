@@ -69,7 +69,7 @@ export default function FriendsRequestList() {
                             <Box key={i}>
                                 <ListItemViewDetect request={request}>
                                     <ListItemAvatar>
-                                        <CAvatar src={CustomerStatics.profilePituresPath(request.custm, request.customerPhoto)}
+                                        <CAvatar src={CustomerStatics.profilePituresPath(request.customerId, request.customerPhoto)}
                                             variant="rounded"
                                             size={50} />
                                     </ListItemAvatar>

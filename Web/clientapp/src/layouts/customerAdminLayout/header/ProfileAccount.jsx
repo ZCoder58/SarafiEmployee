@@ -1,4 +1,4 @@
-import { Box, ListItem, Popper, Typography } from '@mui/material';
+import { Box, ListItem, Popper } from '@mui/material';
 import { AccountCircleOutlined, LogoutOutlined } from '@mui/icons-material';
 import { Avatar, Chip, Divider, List, ListItemText, Paper } from '@mui/material';
 import React from 'react'
@@ -13,7 +13,7 @@ const ProfileAccount = (props) => {
   const [isOpenMenu, setIsOpenMenu] = React.useState(false);
   const togglerRef = React.useRef(null);
   const navigate = useNavigate()
-  const { logout, userName, photo } = useAuth()
+  const { logout, userName, photo,isCustomer } = useAuth()
   async function handleLogout() {
     await logout()
     navigate('/')
@@ -64,14 +64,14 @@ const ProfileAccount = (props) => {
                 </CListItemIcon>
                 <ListItemText>پروفایل کاربری</ListItemText>
               </CListItemButton>
-              <CListItemButton onClick={() => {
+             {isCustomer()&& <CListItemButton onClick={() => {
                 toggleMenu()
                 navigate("/customer/friends/1")}}>
                 <CListItemIcon>
                   <GroupOutlinedIcon />
                 </CListItemIcon>
                 <ListItemText>همکاران</ListItemText>
-              </CListItemButton>
+              </CListItemButton>}
               {/* <CListItemButton >
                 <CListItemIcon>
                   <SettingsApplicationsOutlined />

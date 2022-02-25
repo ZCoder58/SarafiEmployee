@@ -16,7 +16,7 @@ export const CustomerAuthLayout = () => {
   const auth = useAuth()
   const { menuOpen } = useSelector(state => state.R_AdminLayout)
   const isMachedDownMd = useMediaQuery(theme.breakpoints.down("md"))
-  if (!auth.isCustomer()) {
+  if (!auth.isCustomer() && !auth.isEmployee()) {
     return <Navigate to="/" />
   }
   return (

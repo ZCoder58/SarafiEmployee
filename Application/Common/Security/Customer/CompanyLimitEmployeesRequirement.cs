@@ -15,17 +15,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common.Security.Customer
 {
-    public record CustomerAuthRequirementLimitFriendsForSimpleCustomer(int Limit) : IAuthorizationRequirement;
+    public record CompanyLimitEmployeesRequirement(int Limit) : IAuthorizationRequirement;
 
     public class
-        CustomerAuthRequirementLimitFriendsForSimpleCustomerHandler : AuthorizationHandler<
-            CustomerAuthRequirementLimitFriendsForSimpleCustomer>
+        CompanyLimitEmployeesRequirementHandler : AuthorizationHandler<
+            CompanyLimitEmployeesRequirement>
     {
         private readonly JwtService _jwtService;
         private readonly IApplicationDbContext _dbContext;
         private readonly INotifyHubAccessor _notifyHub;
 
-        public CustomerAuthRequirementLimitFriendsForSimpleCustomerHandler(JwtService jwtService,
+        public CompanyLimitEmployeesRequirementHandler(JwtService jwtService,
             IApplicationDbContext dbContext, INotifyHubAccessor notifyHub)
         {
             _jwtService = jwtService;
@@ -34,7 +34,7 @@ namespace Application.Common.Security.Customer
         }
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-            CustomerAuthRequirementLimitFriendsForSimpleCustomer requirementLimitFriendsForSimpleCustomer)
+            CompanyLimitEmployeesRequirement companyLimitEmployeesRequirement)
         {
             var httpContext = context.Resource as DefaultHttpContext;
             string accessToken = httpContext?.GetTokenAsync("access_token").Result;
@@ -44,38 +44,28 @@ namespace Application.Common.Security.Customer
                 {
                     var claimsIdentity = securityClaims.Identity as ClaimsIdentity;
 
-                    if (claimsIdentity.HasClaim("userType", UserTypes.CustomerType) ||
-                        claimsIdentity.HasClaim("userType", UserTypes.CompanyType))
+                    if (claimsIdentity.HasClaim("userType", UserTypes.CompanyType))
                     {
                         var customerId = claimsIdentity.FindFirst("userId").Value.ToGuid();
-                        var targetCustomer = _dbContext.Customers.Include(a => a.Company)
-                            .ThenInclude(a => a.EmployeeSetting).GetById(customerId);
+                        var targetCustomer = _dbContext.Customers.FirstOrDefault(a=>
+                            a.Id==customerId &&
+                            a.UserType==UserTypes.CompanyType);
                         if (targetCustomer.IsPremiumAccount)
                         {
-                            if (targetCustomer.UserType == UserTypes.CustomerType ||
-                                targetCustomer.UserType==UserTypes.CompanyType 
-                                // (targetCustomer.UserType == UserTypes.EmployeeType &&
-                                //  targetCustomer.Company.EmployeeSetting.CanBeFriendWithOthers)
-                                )
-                            {
-                                context.Succeed(requirementLimitFriendsForSimpleCustomer);
+                           
+                                context.Succeed(companyLimitEmployeesRequirement);
                                 return Task.CompletedTask;
-                            }
-
-                            // _notifyHub.NotifySelfAsync(
-                            //     "انجام این عملیه از طرف شرکت غیر فعال شده است",
-                            //     "error");
+                           
                         }
 
-                        var friendsCount = _dbContext.Friends.Include(a=>a.CustomerFriend).Count(a => a.CustomerId == customerId &&
-                                                                         a.CustomerFriend.UserType!=UserTypes.EmployeeType &&
-                                                                         a.CustomerFriendApproved);
-                        if (friendsCount < requirementLimitFriendsForSimpleCustomer.Limit)
+                        var employeesCount = _dbContext.Customers.Count(a =>
+                            a.UserType==UserTypes.EmployeeType &&
+                            a.CompanyId == targetCustomer.CompanyId);
+                        if (employeesCount < companyLimitEmployeesRequirement.Limit)
                         {
-                            context.Succeed(requirementLimitFriendsForSimpleCustomer);
+                            context.Succeed(companyLimitEmployeesRequirement);
                             return Task.CompletedTask;
                         }
-
                         _notifyHub.NotifySelfAsync(
                             "کاربری گرامی.لطفا برای انجام این عملیه حساب کاربری خود را به نوع طلایی ارتقا دهید",
                             "error");

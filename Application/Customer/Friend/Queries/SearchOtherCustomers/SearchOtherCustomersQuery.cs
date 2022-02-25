@@ -32,6 +32,7 @@ namespace Application.Customer.Friend.Queries.SearchOtherCustomers
             var customers = new List<SearchOtherCustomerDTo>();
             foreach (var customer in _dbContext.Customers.Include(a=>a.Country)
                 .Where(a => a.Phone.Contains(request.Phone) &&
+                            a.UserType!=UserTypes.EmployeeType &&
                             a.Id!=_httpUserContext.GetCurrentUserId().ToGuid()).ToList())
             {
                 var tempCustomer = _mapper.Map<SearchOtherCustomerDTo>(customer);

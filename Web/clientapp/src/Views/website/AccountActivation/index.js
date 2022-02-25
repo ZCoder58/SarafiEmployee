@@ -35,7 +35,7 @@ export default function VAcountActivation() {
                             <HowToRegOutlinedIcon sx={{ fontSize:150 }} color="success" />
                             <Typography variant='body1' fontWeight={900}>{customer.userName} تشکر از شما!</Typography>
                             <Typography variant='body1' fontWeight={900}>ایمیل آدرس {customer.email} موفقانه فعال شد برای رفتن به صفحه مدیریت بر روی دکمه زیر کلیک کنید</Typography>
-                            <Button variant="contained" color="primary" onClick={() => navigate('/customer/dashboard')}>داشبورد مدیریت</Button>
+                            <Button variant="contained" color="primary" onClick={() => navigate(auth.getRelatedLayoutPath())}>داشبورد مدیریت</Button>
                         </Stack> :
                             <Stack spacing={2} direection="column" alignItems="center" justifyContent="center">
                                 <SentimentVeryDissatisfiedRoundedIcon  sx={{ fontSize:150 }} color="error" />

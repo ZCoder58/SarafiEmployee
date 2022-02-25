@@ -46,7 +46,7 @@ export default function SearchFriendDropdown({ defaultFriendId, onValueChange, .
             renderOption={(props, option, { selected }) =>
                 <ListItem {...props}>
                    <ListItemAvatar>
-                   <CAvatar src={CustomerStatic.profilePituresPath(option.customerFriendId,option.customerFriendPhoto)}/>
+                   <CAvatar src={CustomerStatic.profilePituresPath(option.customerFriendId,option.customerFriendPhoto)} size={50}/>
                    </ListItemAvatar>
                     <ListItemText
                     primary={`${option.customerFriendName} ${option.customerFriendLastName}`}

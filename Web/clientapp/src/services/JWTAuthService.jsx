@@ -55,10 +55,16 @@ export const getAccountType=()=>{
     return "";
   }
   const decodedToken = jwtDecode(token);
-  if(decodedToken.isPremiumAccount==="True"){
+  if(decodedToken.isPremiumAccount==="True" && getUserType()==="Customer"){
     return "طلایی"
+  }else if(decodedToken.isPremiumAccount==="False" && getUserType()==="Customer"){
+    return "ساده"
+  }else if(getUserType()==="Employee"){
+    return "کارمند"
+  }else if(getUserType()==="Company"){
+    return "شرکت"
   }
-  return "ساده"
+  return "پیدا نشد"
 }
 export const getLastName=()=>{
   const token=getToken()

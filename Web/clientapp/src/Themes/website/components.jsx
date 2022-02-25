@@ -120,11 +120,11 @@ export default function themeComponents(theme) {
     // },
     MuiTableCell:{
       styleOverrides:{
-        root:{
+        
          '& .MuiListItem-root':{
            paddingLeft:0,
            paddingRight:0
-         }
+         
         }
       }
     },

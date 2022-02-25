@@ -4,11 +4,13 @@ using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
 using Application.Common.Models;
+using Application.Common.Statics;
 using Application.Customer.Friend.DTOs;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Customer.Friend.Queries.GetFriendsListTable
 {
@@ -28,7 +30,9 @@ namespace Application.Customer.Friend.Queries.GetFriendsListTable
         {
             var search = request.Model.Search.ToEmptyStringIfNull();
             return _dbContext.Friends
+                .Include(a=>a.CustomerFriend)
                 .Where(a => a.CustomerId ==_httpUserContext.GetCurrentUserId().ToGuid() &&
+                            a.CustomerFriend.UserType!=UserTypes.EmployeeType &&
                             a.CustomerFriendApproved)
                 .Where(a=>a.CustomerFriend.Name.Contains(search) ||
                           a.CustomerFriend.LastName.Contains(search) ||

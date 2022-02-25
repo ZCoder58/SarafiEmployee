@@ -23,7 +23,7 @@ namespace Application.RefreshToken
         public Task<RefreshTokenDto> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
             string newToken = "";
-            if (_httpContext.GetUserType() == UserTypes.CustomerType)
+            if (_httpContext.GetUserType() == UserTypes.CustomerType ||_httpContext.GetUserType() == UserTypes.EmployeeType )
             {
                 newToken = _jwtOptions.RefreshToken(new CustomerRefreshTokenModel(request.Token,_httpContext));
             }else if (_httpContext.GetUserType() == UserTypes.CompanyType)

@@ -6,12 +6,13 @@ import ProfileAccount from './ProfileAccount'
 import Friends from './Friends'
 import { SearchOutlined } from '@mui/icons-material'
 import { useNavigate } from 'react-router'
+import useAuth from '../../../hooks/useAuth'
 export const Header = ({ sidebarWidth }) => {
   const theme = useTheme()
   const { menuOpen } = useSelector(state => state.R_AdminLayout)
   const isMachedDownMd = useMediaQuery(theme.breakpoints.down("md"))
   const isMachedXs = useMediaQuery(theme.breakpoints.only("xs"))
-
+  const {isCustomer}=useAuth()
   const navigate = useNavigate()
   return (
     <AppBar
@@ -28,13 +29,13 @@ export const Header = ({ sidebarWidth }) => {
       <Toolbar>
         {!menuOpen && (!isMachedXs ? <SunriseNavLogo /> : "")}
         <AdminSideMenuToggler />
-        <CTooltip title="جستجوی همکار">
+       {isCustomer()&& <CTooltip title="جستجوی همکار">
           <IconButton size="small" onClick={() => navigate("/customer/search")}>
             <SearchOutlined />
           </IconButton>
-        </CTooltip>
+        </CTooltip>}
         <Box sx={{ flexGrow: 1 }} />
-        <Friends />
+        {isCustomer()&& <Friends />}
         <NotificationButton />
         <ProfileAccount />
       </Toolbar>

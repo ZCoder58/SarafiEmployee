@@ -36,7 +36,7 @@ const validationSchema = Yup.object().shape({
     fCurrency: Yup.string().required("انتخاب ارز ضروری میباشد"),
     tCurrency: Yup.string().required("انتخاب ارز دریافت کننده ضروری میباشد"),
     amount: Yup.string().required("مقدار پول ارسالی ضروری میباشد"),
-    friendId: Yup.string().required("انتخاب همکار شما ضروری میباشد"),
+    friendId: Yup.string().required("انتخاب کارمند شما ضروری میباشد"),
     fee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
     receiverFee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),   
 });
@@ -295,6 +295,7 @@ export default function CreateTransfer() {
                                 <SearchFriendDropdown
                                     name="friendId"
                                     size="small"
+                                    label="کارمند"
                                     error={formik.errors.friendId ? true : false}
                                     helperText={formik.errors.friendId}
                                     onValueChange={(newValue) => formik.setFieldValue("friendId", newValue ? newValue.id : "")}
@@ -302,7 +303,7 @@ export default function CreateTransfer() {
                                 />
                                 <TextField
                                     name='receiverFee'
-                                    label="کمیشن حواله دار"
+                                    label="کمیشن کارمند"
                                     size="small"
                                     type="number"
 
