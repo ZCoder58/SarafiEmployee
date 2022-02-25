@@ -36,7 +36,7 @@ namespace Application.Common.Security.Customer
                 {
                     var claimsIdentity = securityClaims.Identity as ClaimsIdentity;
 
-                    if (claimsIdentity.HasClaim("userType", UserTypes.CustomerType))
+                    if (claimsIdentity.HasClaim("userType", UserTypes.CustomerType) || claimsIdentity.HasClaim("userType", UserTypes.CompanyType))
                     {
                         context.Succeed(requirementGold);
                         return Task.CompletedTask;

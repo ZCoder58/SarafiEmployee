@@ -2,6 +2,7 @@
 using System.Linq;
 using Application.Common.Extensions;
 using Application.Common.Statics;
+using Application.Customer.Transfers.Statics;
 using Domain.Interfaces;
 using FluentValidation;
 
@@ -16,6 +17,7 @@ namespace Application.Customer.Transfers.Queries.GetEditTransfer
                 .Must(id => dbContext.Transfers.Any(a =>
                     a.Id == id &&
                     a.State == TransfersStatusTypes.InProgress &&
+                    a.AccountType==TransferAccountTypesStatic.MyAccount &&
                     a.SenderId == httpUserContext.GetCurrentUserId().ToGuid())).WithMessage("درخواست نامعتبر");
         }
     }

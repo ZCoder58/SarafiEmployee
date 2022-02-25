@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Linq;
+using Application.Company.Employees.Commands.CreateEmployees;
+using Application.Company.Employees.Commands.EditEmployees;
+using Application.Company.Employees.DTOs;
 using Application.Countries.DTOs;
 using Application.Customer.ExchangeRates.Commands.UpdateExchangeRate;
 using Application.Customer.ExchangeRates.DTos;
@@ -12,13 +15,16 @@ using Application.Customer.Transfers.Commands.EditTransfer;
 using Application.Customer.Transfers.DTOs;
 using Application.SubCustomers.Commands.CreateAccountRate;
 using Application.SubCustomers.Commands.CreateSubCustomerAccount;
+using Application.SubCustomers.Commands.CreateTransfer;
 using Application.SubCustomers.Commands.EditAccountRate;
 using Application.SubCustomers.Commands.EditSubCustomerAccount;
+using Application.SubCustomers.Commands.EditTransfer;
 using Application.SubCustomers.DTOs;
 using Application.SunriseSuperAdmin.Rates.Commands.CreateRate;
 using Application.SunriseSuperAdmin.Rates.Commands.UpdateRate;
 using Application.SunriseSuperAdmin.Rates.DTos;
 using Application.Website.Customers.Auth.Command.CreateCustomer;
+using Application.Website.Customers.Auth.Command.CreateCustomerCompany;
 using AutoMapper;
 using Domain.Entities;
 
@@ -32,7 +38,12 @@ namespace Application.Common.Mappers
 
             CreateMap<Domain.Entities.Customer, SearchOtherCustomerDTo>();
             CreateMap<Domain.Entities.Customer, FriendProfileDTo>();
+            CreateMap<Domain.Entities.Customer, EmployeeTableDTo>();
             CreateMap<CreateCustomerCommand, Domain.Entities.Customer>();
+            CreateMap<CreateCustomerCompanyCommand, Domain.Entities.Customer>();
+            CreateMap<CreateEmployeeCommand, Domain.Entities.Customer>();
+            CreateMap<EditEmployeeCommand, Domain.Entities.Customer>();
+            CreateMap<Domain.Entities.Customer,EditEmployeeDTo>();
             // CreateMap<UserDto, Customer>().ReverseMap();
             // CreateMap<CreateUserCommand, Customer>().ReverseMap();
 
@@ -79,12 +90,17 @@ namespace Application.Common.Mappers
             #region Transfer
 
             CreateMap<CreateTransferCommand, Transfer>().ReverseMap();
+            CreateMap<SubCustomerCreateTransferCommand, Transfer>().ReverseMap();
+            CreateMap<SubCustomerEditTransferCommand, Transfer>().ReverseMap();
             CreateMap<Transfer, TransferInboxTableDTo>();
             CreateMap<Transfer, TransferOutboxTableDTo>();
             CreateMap<Transfer, TransferInboxDetailDTo>();
             CreateMap<Transfer, TransferOutboxDetailDTo>();
             CreateMap<EditTransferCommand, Transfer>();
             CreateMap<Transfer, EditTransferDTo>()
+                .ForMember(dist => dist.Amount, option =>
+                    option.MapFrom(source => source.SourceAmount));
+            CreateMap<Transfer, SubCustomerEditTransferDTo>()
                 .ForMember(dist => dist.Amount, option =>
                     option.MapFrom(source => source.SourceAmount));
             #endregion
@@ -116,7 +132,7 @@ namespace Application.Common.Mappers
             #endregion
 
             #region SubCustomerAccountRate
-
+            
             CreateMap<SubCustomerAccountRate,SubCustomerAccountRateDTo>()
                 .ForMember(dist=>dist.PriceName,option=>
                     option.MapFrom(source=>source.RatesCountry.PriceName));

@@ -54,7 +54,7 @@ export default function TransferOutbox() {
                                 ارسال دوباره
                             </Button>}
                         {row.state === 0 &&
-                            <Button variant="contained" size="small" onClick={() => navigate("/customer/transfers/edit/" + row.id)}>
+                            <Button variant="contained" size="small" onClick={() =>navigate(`/customer${row.accountType===1?"/subCustomers":""}/transfers/edit/${row.id}`)}>
                                 ویرایش
                             </Button>}
                     </Stack>
@@ -123,7 +123,7 @@ export default function TransferOutbox() {
                         </CTooltip>}
                     {row.state === 0 &&
                         <CTooltip title="ویرایش">
-                            <IconButton onClick={() => navigate("/customer/transfers/edit/" + row.id)}>
+                            <IconButton onClick={() => navigate(`/customer${row.accountType===1?"/subCustomers":""}/transfers/edit/${row.id}`)}>
                                 <ModeEditOutlineOutlinedIcon />
                             </IconButton>
                         </CTooltip>}

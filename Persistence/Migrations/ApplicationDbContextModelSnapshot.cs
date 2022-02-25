@@ -45,6 +45,34 @@ namespace Persistence.Migrations
                     b.ToTable("AdminUsers");
                 });
 
+            modelBuilder.Entity("Domain.Entities.CompanyInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("About")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("EmployeeSettingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeSettingId");
+
+                    b.ToTable("CompaniesInfos");
+                });
+
             modelBuilder.Entity("Domain.Entities.Country", b =>
                 {
                     b.Property<Guid>("Id")
@@ -76,6 +104,9 @@ namespace Persistence.Migrations
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CountryId")
                         .HasColumnType("uniqueidentifier");
@@ -122,7 +153,12 @@ namespace Persistence.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("CountryId");
 
@@ -241,6 +277,26 @@ namespace Persistence.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("CustomerNotifications");
+                });
+
+            modelBuilder.Entity("Domain.Entities.EmployeeSetting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("CanBeFriendWithOthers")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmployeeSettings");
                 });
 
             modelBuilder.Entity("Domain.Entities.Friend", b =>
@@ -431,12 +487,17 @@ namespace Persistence.Migrations
                     b.Property<int>("TransactionType")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("TransferId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("SubCustomerAccountRateId");
+
+                    b.HasIndex("TransferId");
 
                     b.ToTable("SubCustomerTransactions");
                 });
@@ -545,13 +606,30 @@ namespace Persistence.Migrations
                     b.ToTable("Transfers");
                 });
 
+            modelBuilder.Entity("Domain.Entities.CompanyInfo", b =>
+                {
+                    b.HasOne("Domain.Entities.EmployeeSetting", "EmployeeSetting")
+                        .WithMany()
+                        .HasForeignKey("EmployeeSettingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EmployeeSetting");
+                });
+
             modelBuilder.Entity("Domain.Entities.Customer", b =>
                 {
+                    b.HasOne("Domain.Entities.CompanyInfo", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId");
+
                     b.HasOne("Domain.Entities.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Company");
 
                     b.Navigation("Country");
                 });
@@ -666,7 +744,13 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.Transfer", "Transfer")
+                        .WithMany()
+                        .HasForeignKey("TransferId");
+
                     b.Navigation("SubCustomerAccountRate");
+
+                    b.Navigation("Transfer");
                 });
 
             modelBuilder.Entity("Domain.Entities.Transfer", b =>

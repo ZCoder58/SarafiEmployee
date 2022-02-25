@@ -8,5 +8,6 @@ namespace Application.SubCustomers.Commands.UpdateAmount
         Guid SubCustomerAccountRateId,
         double Amount,
         string Comment,
-        int Type) : IRequest;
+        int Type,
+        Guid? TransferId=null) : IRequest;
 }

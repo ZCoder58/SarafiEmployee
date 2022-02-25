@@ -6,7 +6,7 @@ namespace Application.Common.Statics
 {
     public static class CustomerStatics
     {
-        public static string FilesSavePath(Guid customerId)
+        public static string PhotoSavePath(Guid customerId)
         {
                 
             return Path.Combine("images","customers",customerId.ToString(),"photos");
@@ -20,6 +20,16 @@ namespace Application.Common.Statics
                 new Claim("name", name),
                 new Claim("lastName", lastName??""),
                 new Claim("isPremiumAccount", isPremiumAccount)
+            };
+        }
+        public static Claim[] DefaultCompanyClaim(Guid companyId,string photo,string name,string lastName)
+        {
+            return new[]
+            {
+                new Claim("photo", photo??""),
+                new Claim("name", name),
+                new Claim("lastName", lastName??""),
+                new Claim("companyId", companyId.ToString())
             };
         }
     }

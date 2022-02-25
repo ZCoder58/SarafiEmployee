@@ -97,8 +97,8 @@ namespace Web.Filters
             var details = new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
-                Title = "An error occurred while processing your request.",
-                Detail = context.Exception.Message,
+                Title = context.Exception.Message,
+                Detail = context.Exception.InnerException?.Message,
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1"
             };
             

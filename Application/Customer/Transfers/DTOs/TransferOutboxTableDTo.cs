@@ -22,5 +22,6 @@ namespace Application.Customer.Transfers.DTOs
         public int State { get; set; }
         public string ReceiverName { get; set; }
         public string ReceiverLastName { get; set; }
+        public int AccountType { get; set; }
     }
 }

@@ -39,8 +39,8 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
             var targetExchangeRate=_dbContext.CustomerExchangeRates.GetExchangeRateById(_httpUserContext.GetCurrentUserId().ToGuid(),
                 request.FCurrency, request.TCurrency);
             newTransfer.SourceAmount = request.Amount;
-            newTransfer.DestinationAmount = (request.Amount/targetExchangeRate.FromAmount)*targetExchangeRate.ToExchangeRate;
-            newTransfer.ToRate = targetExchangeRate.ToExchangeRate;
+            newTransfer.DestinationAmount =
+                ((request.Amount / targetExchangeRate.FromAmount) * targetExchangeRate.ToExchangeRate).ToString().ToDoubleFormatted();            newTransfer.ToRate = targetExchangeRate.ToExchangeRate;
             newTransfer.FromRate = targetExchangeRate.FromAmount;
             newTransfer.RateUpdated = targetExchangeRate.Updated;
             newTransfer.ToCurrency = toCurrency.PriceName;
@@ -48,6 +48,7 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
             newTransfer.State = TransfersStatusTypes.InProgress;
             newTransfer.ReceiverId = receiver.CustomerFriendId;
             newTransfer.SenderId = receiver.CustomerId;
+            newTransfer.AccountType =TransferAccountTypesStatic.MyAccount;
             await _dbContext.Transfers.AddAsync(newTransfer, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             await _mediator.Publish(new TransferCreated(receiver.CustomerFriendId.ToGuid(),newTransfer.Id), cancellationToken);

@@ -1,6 +1,9 @@
 import { Autocomplete, ListItem, ListItemText, TextField } from '@mui/material'
 import React from 'react'
-import authAxiosApi from '../../axios'
+import {axiosApi} from '../../axios'
+CountriesDropdown.defaultProps={
+    onValueChange:()=>{}
+}
 export default function CountriesDropdown({ defaultId, onValueChange, ...props }) {
     const [countries, setCountries] = React.useState([])
     const [value, setValue] = React.useState(null)
@@ -8,10 +11,12 @@ export default function CountriesDropdown({ defaultId, onValueChange, ...props }
     React.useEffect(() => {
         (async () => {
             setLoading(true)
-            await authAxiosApi.get('general/GetCountries').then(r => {
+            await axiosApi.get('general/GetCountries').then(r => {
                 setCountries(r)
                 if (defaultId) {
-                    setValue(r.find(a => a.id === defaultId))
+                    const defaultValue=r.find(a => a.id === defaultId)
+                    setValue(defaultValue)
+                    onValueChange(defaultValue)
                 }
             })
             setLoading(false)

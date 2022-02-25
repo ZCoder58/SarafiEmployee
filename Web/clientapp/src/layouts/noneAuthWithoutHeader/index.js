@@ -4,7 +4,6 @@ import { Box } from '@mui/material';
 import useAuth from '../../hooks/useAuth';
 export const NoneAuthLayoutWithoutHeader = () => {
   const {isAuthenticated}=useAuth()
-  console.log("NoneAuthLayoutWithoutHeader layout rendered")
   if(isAuthenticated){
     <Navigate to="/"/>
   }

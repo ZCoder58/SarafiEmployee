@@ -8,7 +8,6 @@ namespace Domain.Entities
 {
     public class Customer:BaseEntity,IAuthUser
     {
-      
         public string Name { get; set; }
         public string LastName { get; set; }
         public string FatherName { get; set; }
@@ -25,5 +24,9 @@ namespace Domain.Entities
         public string ActivationAccountCode { get; set; }
         public Guid CountryId { get; set; }
         public Country Country { get; set; }
+        public string UserType { get; set; }
+        public Guid? CompanyId { get; set; }
+        public CompanyInfo Company { get; set; }
+        
     }
 }

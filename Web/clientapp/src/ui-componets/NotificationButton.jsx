@@ -31,10 +31,10 @@ export default function NotificationButton() {
         {notifications.map((d, i) =>
             <ListItemButton key={i} sx={{ width: "100%", minWidth: 280 }} onClick={()=>{
                 if(d.type==="newTransfer" || d.type==="deniedTransfer"){
-                    navigate(`/customer/transfers/inbox/${d.baseId}`)
+                    navigate(`/company/transfers/inbox/${d.baseId}`)
                     handleClose()
                 }else if(d.type==="request"){
-                    navigate(`/customer/profile/${d.baseId}`)
+                    navigate(`/company/profile/${d.baseId}`)
                     handleClose()
                 }
             }}>

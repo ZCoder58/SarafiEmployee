@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Statics;
 using Application.Website.Customers.EventHandlers;
 using AutoMapper;
 using Domain.Interfaces;
@@ -24,6 +25,7 @@ namespace Application.Website.Customers.Auth.Command.CreateCustomer
         {
             var newCustomer = _mapper.Map<Domain.Entities.Customer>(request);
             newCustomer.ActivationAccountCode = $"{Guid.NewGuid()}{Guid.NewGuid()}";
+            newCustomer.UserType = UserTypes.CustomerType;
             await _dbContext.Customers.AddAsync(newCustomer,cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             await _mediator.Publish(new CustomerCreated(newCustomer), cancellationToken);

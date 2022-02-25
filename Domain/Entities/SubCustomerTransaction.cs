@@ -9,6 +9,8 @@ namespace Domain.Entities
         public string PriceName { get; set; }
         public int TransactionType { get; set; }
         public string Comment { get; set; }
+        public Guid? TransferId { get; set; }
+        public Transfer Transfer { get; set; }
         public Guid SubCustomerAccountRateId { get; set; }
         public SubCustomerAccountRate SubCustomerAccountRate { get; set; }
     }

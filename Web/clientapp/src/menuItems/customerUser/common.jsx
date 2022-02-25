@@ -44,7 +44,7 @@ const common = {
       url:"report"
     },
     {
-      title: "مشتریان",
+      title: "مشتریان داعمی",
       type: "item",
       icon: BadgeOutlinedIcon,
       url:"subCustomers"

@@ -5,7 +5,6 @@ import {LoadablePage} from "../ui-componets";
 const VDashboard= LoadablePage(React.lazy(() => import("../Views/CustomerAdmin/dashboards/VDashboard.jsx")))
 //rates
 const VCExchangeRates= LoadablePage(React.lazy(() => import("../Views/CustomerAdmin/Rates")))
-
 const VCProfile= LoadablePage(React.lazy(() => import("../Views/CustomerAdmin/profile")))
 //Friends
 const VCFriends= LoadablePage(React.lazy(() => import("../Views/CustomerAdmin/Friends")))
@@ -13,10 +12,11 @@ const VCFriends= LoadablePage(React.lazy(() => import("../Views/CustomerAdmin/Fr
 const VCSearch= LoadablePage(React.lazy(() => import("../Views/CustomerAdmin/SearchCustomers")))
 //transfers
 const VCTransfers=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers")))
-const VCreateTransfe=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/VCreateTransfer")))
+const VCCreateTransferIndex=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/VCCreateTransferIndex")))
 const VCTransferInboxDetail=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/VCTransferInboxInfo")))
 const VCTransferOutboxDetail=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/VCTransferOutboxInfo")))
 const VCEditTransfer=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/VCEditTransfer")))
+const SubCustomerEditTransfer=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/SubCustomerEditTransfer")))
 //roznamche
 const VCRoznamcha=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Roznamcha")))
 //general
@@ -31,6 +31,10 @@ export const CustomerAuthRoutes={
     path:"/customer",
     element:<CustomerAuthLayout/>,
     children:[
+        {
+            path:"",
+            element:<VDashboard/>
+        },
         {
             path:"dashboard",
             element:<VDashboard/>
@@ -56,6 +60,10 @@ export const CustomerAuthRoutes={
             path:"subCustomers/accounts/:subCustomerId",
             element:<VCSubCustomersAccounts/>
         },
+        {
+            path:"subCustomers/transfers/edit/:transferId",
+            element:<SubCustomerEditTransfer/>
+        },
         //roznamcha
         {
             path:"report",
@@ -68,12 +76,13 @@ export const CustomerAuthRoutes={
         },
         {
             path:"transfers/newTransfer",
-            element:<VCreateTransfe/>
+            element:<VCCreateTransferIndex/>
         },
         {
             path:"transfers/edit/:transferId",
             element:<VCEditTransfer/>
         },
+        
         {
             path:"transfers/inbox/:transferId",
             element:<VCTransferInboxDetail/>

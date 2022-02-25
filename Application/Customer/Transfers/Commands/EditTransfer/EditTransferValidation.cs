@@ -3,6 +3,7 @@ using System.Linq;
 using Application.Common.Extensions;
 using Application.Common.Statics;
 using Application.Customer.Friend.Extensions;
+using Application.Customer.Transfers.Statics;
 using Domain.Interfaces;
 using FluentValidation;
 
@@ -18,7 +19,8 @@ namespace Application.Customer.Transfers.Commands.EditTransfer
                 .Must(id=>dbContext.Transfers.Any(a=>
                     a.Id==id &&
                     a.SenderId==httpUserContext.GetCurrentUserId().ToGuid() &&
-                    a.State==TransfersStatusTypes.InProgress)).WithMessage("درخواست شما رد شد");
+                    a.State==TransfersStatusTypes.InProgress &&
+                    a.AccountType==TransferAccountTypesStatic.MyAccount)).WithMessage("درخواست شما رد شد");
             RuleFor(a => a.Amount)
                 .Cascade(CascadeMode.Stop)
                 .NotNull().WithMessage("مقدار پول ارسالی ضروری میباشد")

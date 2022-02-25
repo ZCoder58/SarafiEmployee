@@ -48,5 +48,10 @@ namespace Persistence.Implementations
         {
             return _httpContextAccessor.HttpContext?.User.FindFirstValue("isPremiumAccount");
         }
+
+        public string GetCompanyId()
+        {
+            return _httpContextAccessor.HttpContext?.User.FindFirstValue("companyId");
+        }
     }
 }

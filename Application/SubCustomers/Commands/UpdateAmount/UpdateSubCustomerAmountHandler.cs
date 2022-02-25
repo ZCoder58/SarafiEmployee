@@ -42,7 +42,8 @@ namespace Application.SubCustomers.Commands.UpdateAmount
                 Amount = request.Amount,
                 Comment = request.Comment,
                 PriceName = targetSubCustomerAccountRate.RatesCountry.PriceName,
-                TransactionType = request.Type
+                TransactionType = request.Type,
+                TransferId = request.TransferId
             }, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return Unit.Value;

@@ -37,7 +37,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required("رمز عبور ضروری میباشد")
 });
 export default function VLogin() {
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated ,getRelatedLayoutPath} = useAuth();
   const navigate = useNavigate();
   const formik = useFormik({
     validationSchema: validationSchema,
@@ -50,7 +50,7 @@ export default function VLogin() {
         );
         if (token) {
           await login(token, values.rememberMe);
-          navigate("/customer/dashboard");
+          navigate(getRelatedLayoutPath())
         }
       } catch (errors) {
         formikHelper.setErrors(errors);
@@ -59,7 +59,7 @@ export default function VLogin() {
     }
   });
   if (isAuthenticated) {
-    return <Navigate to="/customer/dashboard" />
+    return <Navigate to={getRelatedLayoutPath()}/>
   }
   return (
     <Container component="main" maxWidth="xs" sx={{ py:4 }}>

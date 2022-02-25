@@ -166,8 +166,6 @@ export default function VCEditTransfer() {
                                     onChange={formik.handleChange}
                                 />
                             </FieldSet>
-
-
                         </Grid>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
                             <FieldSet label="معلومات دریافت کننده">

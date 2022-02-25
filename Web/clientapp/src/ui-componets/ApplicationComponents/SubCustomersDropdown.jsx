@@ -1,7 +1,10 @@
 import { Autocomplete, ListItem, ListItemText, TextField } from '@mui/material'
 import React from 'react'
 import authAxiosApi from '../../axios'
-
+SubCustomersDropdown.defaultProps={
+    onValueChange:()=>{},
+    defaultSubCustomerId:undefined
+}
 export default function SubCustomersDropdown({ defaultSubCustomerId, onValueChange, ...props }) {
     const [subCustomers, setSubCustomers] = React.useState([])
     const [value, setValue] = React.useState(null)
@@ -10,9 +13,16 @@ export default function SubCustomersDropdown({ defaultSubCustomerId, onValueChan
         (async () => {
             setLoading(true)
             await authAxiosApi.get('subCustomers/list').then(r => {
-                setSubCustomers(r)
                 if (defaultSubCustomerId) {
-                    setValue(r.find(a => a.id === defaultSubCustomerId))
+                    const defaultValue=r.find(a => a.id === defaultSubCustomerId)
+                    setValue(defaultValue)
+                    if(props.disabled){
+                        setSubCustomers([defaultValue,...subCustomers])
+                    }else{
+                        setSubCustomers(r)
+                    }
+                }else{
+                    setSubCustomers(r)
                 }
             })
             setLoading(false)
@@ -30,7 +40,7 @@ export default function SubCustomersDropdown({ defaultSubCustomerId, onValueChan
             loading={loading}
             loadingText="در حال بارگیری..."
             value={value}
-            // disableClearable
+            disableClearable
             onChange={(event, newValue) => {
                 setValue(newValue)
                 onValueChange(newValue)

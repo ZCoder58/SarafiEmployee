@@ -29,7 +29,6 @@ namespace Web.Controllers
             return Mediator.Send(new GetFriendProfileQuery(customerId));
         }
         [Authorize]
-        [HttpGet]
         public Task<IEnumerable<RateDTo>> Rates()
         {
             return Mediator.Send(new GetRatesListQuery());

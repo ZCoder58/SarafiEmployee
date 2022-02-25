@@ -26,6 +26,9 @@ namespace Application.RefreshToken
             if (_httpContext.GetUserType() == UserTypes.CustomerType)
             {
                 newToken = _jwtOptions.RefreshToken(new CustomerRefreshTokenModel(request.Token,_httpContext));
+            }else if (_httpContext.GetUserType() == UserTypes.CompanyType)
+            {
+                newToken = _jwtOptions.RefreshToken(new CompanyRefreshTokenModel(request.Token,_httpContext));
             }else if (_httpContext.GetUserType() == UserTypes.ManagementType)
             {
                 newToken = _jwtOptions.RefreshToken(new SunriseAdminUserRefreshTokenModel(request.Token));

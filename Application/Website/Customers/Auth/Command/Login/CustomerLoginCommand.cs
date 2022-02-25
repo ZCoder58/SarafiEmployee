@@ -27,8 +27,17 @@ namespace Application.Website.Customers.Auth.Command.Login
         public Task<AuthResult> Handle(CustomerLoginCommand request, CancellationToken cancellationToken)
         {
             var targetUser = _dbContext.Customers.GetUser(request.UserName, request.Password);
-            var token = _jwtOptions.GenerateToken(targetUser.UserName,targetUser.Id,UserTypes.CustomerType,
-                CustomerStatics.DefaultCustomerClaim(targetUser.Photo,targetUser.Name,targetUser.LastName,targetUser.IsPremiumAccount.ToString()));
+            string token = "";
+            if (targetUser.UserType == UserTypes.CompanyType)
+            {
+                token = _jwtOptions.GenerateToken(targetUser.UserName,targetUser.Id,targetUser.UserType,
+                    CustomerStatics.DefaultCompanyClaim(targetUser.CompanyId.ToGuid(),targetUser.Photo,targetUser.Name,targetUser.LastName));
+            }
+            else
+            {
+                token = _jwtOptions.GenerateToken(targetUser.UserName,targetUser.Id,targetUser.UserType,
+                    CustomerStatics.DefaultCustomerClaim(targetUser.Photo,targetUser.Name,targetUser.LastName,targetUser.IsPremiumAccount.ToString()));
+            }
             return Task.FromResult(new AuthResult()
             {
                 Token = token

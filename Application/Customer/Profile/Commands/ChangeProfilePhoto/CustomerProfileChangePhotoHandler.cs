@@ -28,7 +28,7 @@ namespace Application.Customer.Profile.Commands.ChangeProfilePhoto
         public async Task<string> Handle(CustomerProfileChangePhotoCommand request, CancellationToken cancellationToken)
         {
             var targetCustomer = _dbContext.Customers.GetById(_httpUserContext.GetCurrentUserId().ToGuid());
-            targetCustomer.Photo = await request.PhotoFile.SaveToAsync(CustomerStatics.FilesSavePath(targetCustomer.Id));
+            targetCustomer.Photo = await request.PhotoFile.SaveToAsync(CustomerStatics.PhotoSavePath(targetCustomer.Id));
             await _dbContext.SaveChangesAsync(cancellationToken);
             var newToken = _jwtService.GenerateToken(
                 targetCustomer.UserName,

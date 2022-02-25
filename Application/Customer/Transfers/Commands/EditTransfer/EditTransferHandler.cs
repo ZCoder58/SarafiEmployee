@@ -38,8 +38,8 @@ namespace Application.Customer.Transfers.Commands.EditTransfer
                 _httpUserContext.GetCurrentUserId().ToGuid(),
                 request.FCurrency, request.TCurrency);
             targetTransfer.SourceAmount = request.Amount;
-            targetTransfer.DestinationAmount= (request.Amount / targetExchangeRate.FromAmount) * targetExchangeRate.ToExchangeRate;
-            targetTransfer.ToRate = targetExchangeRate.ToExchangeRate;
+            targetTransfer.DestinationAmount =
+                ((request.Amount / targetExchangeRate.FromAmount) * targetExchangeRate.ToExchangeRate).ToString().ToDoubleFormatted();            targetTransfer.ToRate = targetExchangeRate.ToExchangeRate;
             targetTransfer.FromRate = targetExchangeRate.FromAmount;
             targetTransfer.RateUpdated = targetExchangeRate.Updated;
             targetTransfer.ToCurrency = toCurrency.PriceName;

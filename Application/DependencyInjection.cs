@@ -87,7 +87,7 @@ namespace Application
             services.AddHttpContextAccessor();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IAuthorizationHandler, HandleTokenValidationRequirement>();
-            services.AddTransient<IAuthorizationHandler, CustomerAuthRequirementGoldHandler>();
+            services.AddTransient<IAuthorizationHandler, CompanyAuthRequirementHandler>();
             services.AddTransient<IAuthorizationHandler, CustomerAuthRequirementLimitFriendsForSimpleCustomerHandler>();
             services.AddTransient<IAuthorizationHandler, CustomerAuthRequirementSimpleHandler>();
             services.AddTransient<IAuthorizationHandler, AdminUserAuthRequirementHandler>();
@@ -95,9 +95,9 @@ namespace Application
             {
                 options.AddPolicy("tokenValidation", policy => policy.AddRequirements(new TokenValidationRequirement()));
                 options.DefaultPolicy =options.GetPolicy("tokenValidation");
-                options.AddPolicy("customerGold", policy =>
+                options.AddPolicy("company", policy =>
                 {
-                    policy.AddRequirements(new CustomerAuthRequirementGold());
+                    policy.AddRequirements(new CompanyAuthRequirement());
                 });
                 options.AddPolicy("limitRequest", policy =>
                 {

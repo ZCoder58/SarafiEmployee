@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Application.Common.Statics;
 using Domain.Common;
 using Domain.Interfaces;
 
@@ -93,6 +94,13 @@ namespace Application.Common.Extensions.DbContext
         {
             return model.Any(a => a.Id==customerId && a.IsPremiumAccount);
         }
-
+        public static bool IsCompany<T>(this IQueryable<T> model,Guid customerId) where T :Domain.Entities.Customer
+        {
+            return model.Any(a => a.Id==customerId && a.UserType==UserTypes.CompanyType);
+        }
+        public static bool IsEmployee<T>(this IQueryable<T> model,Guid customerId) where T :Domain.Entities.Customer
+        {
+            return model.Any(a => a.Id==customerId && a.UserType==UserTypes.EmployeeType);
+        }
     }
 }

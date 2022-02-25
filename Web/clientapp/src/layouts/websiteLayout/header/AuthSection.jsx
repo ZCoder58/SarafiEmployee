@@ -1,31 +1,57 @@
-import { Box, Button, Grid } from "@mui/material";
+import { Button, Grid, List, ListItemButton, ListItemText, useMediaQuery, useTheme } from "@mui/material";
 import { useNavigate } from "react-router";
-import useAuth from "../../../hooks/useAuth.jsx";
-import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
+import { MenuAndToggleButton, MenuListToggle } from '../../../ui-componets'
+import useAuth from "../../../hooks/useAuth";
 import React from 'react';
-import { ThemeSettings } from "../../../ui-componets";
 export default function AuthSection() {
-  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const auth = useAuth()
+  const theme = useTheme()
+  const screenXs = useMediaQuery(theme.breakpoints.down("md"))
   const signInSection = (
     <>
-      <Grid item>
-      <Button
-          variant="text"
-          color="primary"
-          fullWidth
-          onClick={() => navigate("/login")}
-        >
-          ورود
-        </Button>
-      </Grid>
-      <Grid item>
-        <Button variant="text" color="primary" onClick={() => navigate("signUp")} fullWidth>
-          ایجاد حساب
-        </Button>
-      </Grid>
 
+      {screenXs ?
+        <Grid item>
+          <ListItemButton onClick={() => navigate("/login")}>
+            <ListItemText primary="ورود" />
+          </ListItemButton>
+          <MenuListToggle text="ساخت حساب">
+            <ListItemButton onClick={() => navigate(`/company/signup`)}>
+              <ListItemText primary="برای شرکت" />
+            </ListItemButton>
+            <ListItemButton onClick={() => navigate(`/signup`)}>
+              <ListItemText primary="برای خودم" />
+            </ListItemButton>
+          </MenuListToggle>
+        </Grid>
+        :
+         <>
+          <Grid item>
+            <Button
+              variant="text"
+              color="primary"
+              fullWidth
+              size="small"
+              onClick={() => navigate("/login")}
+            >
+              ورود
+            </Button>
+            </Grid>
+            <Grid item>
+            <MenuAndToggleButton text="ساخت حساب">
+              <List>
+                <ListItemButton onClick={() => navigate(`/company/signup`)}>
+                  <ListItemText>برای شرکت</ListItemText>
+                </ListItemButton>
+                <ListItemButton onClick={() => navigate(`/signup`)}>
+                  <ListItemText>برای خودم</ListItemText>
+                </ListItemButton>
+              </List>
+            </MenuAndToggleButton>
+          </Grid>
+         </>
+      }
     </>
   );
   const authenticatedSection = (
@@ -36,7 +62,7 @@ export default function AuthSection() {
           color="primary"
           fullWidth
           size="small"
-          onClick={() => auth.navigateToRelatedLayout()}
+          onClick={() => navigate(auth.getRelatedLayoutPath())}
         >
           مدیریت
         </Button>
@@ -57,5 +83,5 @@ export default function AuthSection() {
       </Grid> */}
     </>
   );
-  return <>{isAuthenticated ? authenticatedSection : signInSection}</>;
+  return <>{auth.isAuthenticated ? authenticatedSection : signInSection}</>;
 }

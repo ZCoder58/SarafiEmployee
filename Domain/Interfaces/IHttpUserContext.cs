@@ -9,5 +9,6 @@
         string GetName();
         string GetLastName();
         string IsPremiumAccount();
+        string GetCompanyId();
     }
 }

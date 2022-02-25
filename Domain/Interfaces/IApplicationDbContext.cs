@@ -7,6 +7,8 @@ namespace Domain.Interfaces
 {
     public interface IApplicationDbContext
     {
+         DbSet<CompanyInfo> CompaniesInfos { get; set; }
+         DbSet<EmployeeSetting> EmployeeSettings { get; set; }
          DbSet<SubCustomerTransaction> SubCustomerTransactions { get; set; }
          DbSet<CustomerAccount> CustomerAccounts { get; set; }
          DbSet<SubCustomerAccountRate> SubCustomerAccountRates { get; set; }

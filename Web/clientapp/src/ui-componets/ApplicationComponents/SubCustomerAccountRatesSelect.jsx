@@ -1,4 +1,4 @@
-import { Autocomplete, ListItem, ListItemText, TextField } from '@mui/material'
+import { Autocomplete, ListItem, ListItemText, TextField,Typography } from '@mui/material'
 import React from 'react'
 import authAxiosApi from '../../axios'
 
@@ -6,6 +6,11 @@ export default function SubCustomerAccountRatesSelect({ subCustomerId,defaultAcc
     const [subCustomersAccountRate, setSubCustomersAccountRate] = React.useState([])
     const [value, setValue] = React.useState(null)
     const [loading, setLoading] = React.useState(true)
+    function handleValueChange(newValue){
+        setValue(newValue)
+        onValueChange(newValue)
+    }
+    
     React.useEffect(() => {
         (async () => {
             setLoading(true)
@@ -17,9 +22,15 @@ export default function SubCustomerAccountRatesSelect({ subCustomerId,defaultAcc
                 }).then(r => {
                     setSubCustomersAccountRate(r)
                     if (defaultAccountRateId) {
-                        setValue(r.find(a => a.id === defaultAccountRateId))
+                        const defaultValue=r.find(a => a.id === defaultAccountRateId)
+                        setValue(defaultValue)
+                        onValueChange(defaultValue)
                     }
                 })
+            }else{
+                if(value){
+                    handleValueChange(null)
+                }
             }
            
             setLoading(false)
@@ -37,12 +48,12 @@ export default function SubCustomerAccountRatesSelect({ subCustomerId,defaultAcc
             loading={loading}
             loadingText="در حال بارگیری..."
             value={value}
+            disablePortal
             // disableClearable
             onChange={(event, newValue) => {
-                setValue(newValue)
-                onValueChange(newValue)
+                handleValueChange(newValue)
             }}
-            getOptionLabel={(option) => `${option.priceName}`}
+            getOptionLabel={(option) => `حساب ${option.priceName}`}
             renderInput={(params) => <TextField {...params} {...props}  />}
             renderOption={(props, option, { selected }) =>
                 <ListItem {...props}>
@@ -52,7 +63,7 @@ export default function SubCustomerAccountRatesSelect({ subCustomerId,defaultAcc
                    
                 </ListItem>}
         />
-
+        <Typography variant="caption">{value&&`موجودی حساب : ${value.amount} ${value.priceName}`}</Typography>
         </React.Fragment>
         
     )

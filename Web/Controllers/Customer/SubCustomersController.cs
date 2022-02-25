@@ -4,12 +4,15 @@ using System.Threading.Tasks;
 using Application.Common.Models;
 using Application.SubCustomers.Commands.CreateAccountRate;
 using Application.SubCustomers.Commands.CreateSubCustomerAccount;
+using Application.SubCustomers.Commands.CreateTransfer;
 using Application.SubCustomers.Commands.EditAccountRate;
 using Application.SubCustomers.Commands.EditSubCustomerAccount;
+using Application.SubCustomers.Commands.EditTransfer;
 using Application.SubCustomers.Commands.RollbackTransaction;
 using Application.SubCustomers.Commands.UpdateAmount;
 using Application.SubCustomers.DTOs;
 using Application.SubCustomers.Queries;
+using Application.SubCustomers.Queries.GetEditTransfer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
@@ -96,6 +99,20 @@ namespace Web.Controllers.Customer
         {
             return Mediator.Send(new GetEditAccountRateQuery(id));
         }
-        
+        [HttpPost("transfers")]
+        public Task CreateSubCustomerTransfer([FromForm] SubCustomerCreateTransferCommand request)
+        {
+            return Mediator.Send(request);
+        }
+        [HttpPut("transfers")]
+        public Task EditSubCustomerTransfer([FromForm] SubCustomerEditTransferCommand request)
+        {
+            return Mediator.Send(request);
+        }
+        [HttpGet("transfers/edit")]
+        public Task<SubCustomerEditTransferDTo> GetEditSubCustomerTransfer(Guid id)
+        {
+            return Mediator.Send(new GetSubCustomerEditTransferQuery(id));
+        }
     }
 }

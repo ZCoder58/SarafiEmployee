@@ -6,7 +6,6 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.Common.Interfaces;
-using Application.Common.Models.CurrencyExchange;
 using Domain.Interfaces;
 using Infrastructure.Models.CurrencyExchangeApi;
 using Newtonsoft.Json;
@@ -26,36 +25,36 @@ namespace Infrastructure.Services
             _baseUrl = "https://api.fastforex.io/";
         }
 
-        public async Task<ConvertCurrencyAndReverseResult> ConvertCurrencyAndReverseAsync(string source, string destination, double amount)
-        {
-            using var client = _client.CreateClient();
-            client.BaseAddress = new Uri(_baseUrl);
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            try
-            {
-                HttpResponseMessage response = await client.GetAsync(
-                    $"convert?from={source}&to={destination}&amount={amount}&api_key={_apiAuthorization}");
-
-                var objResponse = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<ConvertModel>(objResponse);
-                var destinationRate = await GetExchangeRateAsync(destination,source);
-                return new ConvertCurrencyAndReverseResult()
-                {
-                    DestinationAmount = result.Result[destination].ToDoubleFormatted(),
-                    DestinationName = destination,
-                    DestinationRate = destinationRate.ToString(CultureInfo.InvariantCulture).ToDoubleFormatted(),
-                    SourceAmount = amount.ToString(CultureInfo.InvariantCulture).ToDoubleFormatted(),
-                    SourceName = source,
-                    SourceRate = result.Result["rate"].ToDoubleFormatted()
-                };
-            }
-            catch
-            {
-                client.CancelPendingRequests();
-                throw new Exception("field to fetch data");
-            }
-        }
+        // public async Task<ConvertCurrencyAndReverseResult> ConvertCurrencyAndReverseAsync(string source, string destination, double amount)
+        // {
+        //     using var client = _client.CreateClient();
+        //     client.BaseAddress = new Uri(_baseUrl);
+        //     client.DefaultRequestHeaders.Clear();
+        //     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //     try
+        //     {
+        //         HttpResponseMessage response = await client.GetAsync(
+        //             $"convert?from={source}&to={destination}&amount={amount}&api_key={_apiAuthorization}");
+        //
+        //         var objResponse = await response.Content.ReadAsStringAsync();
+        //         var result = JsonConvert.DeserializeObject<ConvertModel>(objResponse);
+        //         var destinationRate = await GetExchangeRateAsync(destination,source);
+        //         return new ConvertCurrencyAndReverseResult()
+        //         {
+        //             DestinationAmount = result.Result[destination].ToDoubleFormatted(),
+        //             DestinationName = destination,
+        //             DestinationRate = destinationRate.ToString(CultureInfo.InvariantCulture).ToDoubleFormatted(),
+        //             SourceAmount = amount.ToString(CultureInfo.InvariantCulture).ToDoubleFormatted(),
+        //             SourceName = source,
+        //             SourceRate = result.Result["rate"].ToDoubleFormatted()
+        //         };
+        //     }
+        //     catch
+        //     {
+        //         client.CancelPendingRequests();
+        //         throw new Exception("field to fetch data");
+        //     }
+        // }
         public async Task<double> GetExchangeRateAsync(string source, string destination)
         {
             using var client = _client.CreateClient();

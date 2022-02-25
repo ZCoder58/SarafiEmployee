@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Extensions;
 using Domain.Common;
 using Domain.Entities;
 using Domain.Interfaces;
-using Domain.Interfaces.IHubs.IAccessors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
@@ -17,6 +15,8 @@ namespace Persistence
         {
         }
 
+        public DbSet<CompanyInfo> CompaniesInfos { get; set; }
+        public DbSet<EmployeeSetting> EmployeeSettings { get; set; }
         public DbSet<SubCustomerTransaction> SubCustomerTransactions { get; set; }
         public DbSet<CustomerAccount> CustomerAccounts { get; set; }
         public DbSet<SubCustomerAccountRate> SubCustomerAccountRates { get; set; }

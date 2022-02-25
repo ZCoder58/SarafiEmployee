@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.Common.Statics;
+using Application.Customer.Friend.Commands.CreateFriendRequest;
 using Application.Customer.Friend.DTOs;
 using Application.Customer.Friend.EventHandlers;
 using Domain.Interfaces;
@@ -24,23 +25,17 @@ namespace Application.Customer.Friend.Commands.SendFriendRequest
 
         public async Task<RequestDto> Handle(SendFriendRequestCommand request, CancellationToken cancellationToken)
         {
-            var newRequest=await _dbContext.Friends.AddAsync(new Domain.Entities.Friend()
-            {
-                CustomerId = _httpUserContext.GetCurrentUserId().ToGuid(),
-                CustomerFriendId = request.CustomerId,
-                State = FriendRequestStates.Pending
-            }, cancellationToken);
-            var newRequestReverse=await _dbContext.Friends.AddAsync(new Domain.Entities.Friend()
-            {
-                CustomerFriendId = _httpUserContext.GetCurrentUserId().ToGuid(),
-                CustomerId = request.CustomerId,
-                State = FriendRequestStates.Received
-            }, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
-            await _mediator.Publish(new FriendRequestSent(newRequest.Entity.CustomerFriendId.ToString().ToGuid()), cancellationToken);
+            var newRequest=await _mediator.Send(new CreateFriendRequestCommand(
+                _httpUserContext.GetCurrentUserId().ToGuid(),
+                request.CustomerId,
+                false,
+                false,
+                FriendRequestStates.Received,
+                FriendRequestStates.Pending),cancellationToken);
+            await _mediator.Publish(new FriendRequestSent(request.CustomerId), cancellationToken);
             return new RequestDto()
             {
-                State = newRequest.Entity.State,
+                State = newRequest.State,
             };
         }
     }

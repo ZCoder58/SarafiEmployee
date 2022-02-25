@@ -37,6 +37,7 @@ namespace Application.Common.Extensions
 
             return  Double.Parse(doubleStr);
         }
+       
         public static Guid ToGuid(this string value)
         {
             return Guid.Parse(value);

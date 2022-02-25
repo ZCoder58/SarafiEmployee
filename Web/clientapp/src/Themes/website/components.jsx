@@ -10,7 +10,7 @@ export default function themeComponents(theme) {
     MuiTabPanel:{
       styleOverrides:{
         root:{
-          padding:0
+          // padding:0
         }
       }
     },

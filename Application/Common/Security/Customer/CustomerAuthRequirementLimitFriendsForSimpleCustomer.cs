@@ -11,6 +11,7 @@ using Domain.Interfaces.IHubs.IAccessors;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common.Security.Customer
 {
@@ -23,6 +24,7 @@ namespace Application.Common.Security.Customer
         private readonly JwtService _jwtService;
         private readonly IApplicationDbContext _dbContext;
         private readonly INotifyHubAccessor _notifyHub;
+
         public CustomerAuthRequirementLimitFriendsForSimpleCustomerHandler(JwtService jwtService,
             IApplicationDbContext dbContext, INotifyHubAccessor notifyHub)
         {
@@ -45,10 +47,22 @@ namespace Application.Common.Security.Customer
                     if (claimsIdentity.HasClaim("userType", UserTypes.CustomerType))
                     {
                         var customerId = claimsIdentity.FindFirst("userId").Value.ToGuid();
-                        if (_dbContext.Customers.IsPremiumAccount(customerId))
+                        var targetCustomer = _dbContext.Customers.Include(a => a.Company)
+                            .ThenInclude(a => a.EmployeeSetting).GetById(customerId);
+                        if (targetCustomer.IsPremiumAccount)
                         {
-                            context.Succeed(requirementLimitFriendsForSimpleCustomer);
-                            return Task.CompletedTask;
+                            if (targetCustomer.UserType == UserTypes.CustomerType ||
+                                targetCustomer.UserType==UserTypes.CompanyType ||
+                                (targetCustomer.UserType == UserTypes.EmployeeType &&
+                                 targetCustomer.Company.EmployeeSetting.CanBeFriendWithOthers))
+                            {
+                                context.Succeed(requirementLimitFriendsForSimpleCustomer);
+                                return Task.CompletedTask;
+                            }
+
+                            // _notifyHub.NotifySelfAsync(
+                            //     "انجام این عملیه از طرف شرکت غیر فعال شده است",
+                            //     "error");
                         }
 
                         var friendsCount = _dbContext.Friends.Count(a => a.CustomerId == customerId &&
