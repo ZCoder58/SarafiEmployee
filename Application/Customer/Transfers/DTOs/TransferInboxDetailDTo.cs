@@ -33,5 +33,6 @@ namespace Application.Customer.Transfers.DTOs
         public string SenderCountryName { get; set; }
         public DateTime CreatedDate { get; set; }
         public double ReceiverFee { get; set; }
+        public string Comment { get; set; }
     }
 }

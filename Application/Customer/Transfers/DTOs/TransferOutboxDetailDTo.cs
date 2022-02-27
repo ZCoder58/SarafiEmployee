@@ -35,6 +35,7 @@ namespace Application.Customer.Transfers.DTOs
         public double ReceiverFee { get; set; }
         public DateTime CompleteDate { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string Comment { get; set; }
 
     }
 }

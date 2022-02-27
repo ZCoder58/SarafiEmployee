@@ -20,6 +20,7 @@ using Application.SubCustomers.Commands.EditAccountRate;
 using Application.SubCustomers.Commands.EditSubCustomerAccount;
 using Application.SubCustomers.Commands.EditTransfer;
 using Application.SubCustomers.DTOs;
+using Application.SunriseSuperAdmin.Customers.DTOs;
 using Application.SunriseSuperAdmin.Rates.Commands.CreateRate;
 using Application.SunriseSuperAdmin.Rates.Commands.UpdateRate;
 using Application.SunriseSuperAdmin.Rates.DTos;
@@ -44,7 +45,7 @@ namespace Application.Common.Mappers
             CreateMap<CreateEmployeeCommand, Domain.Entities.Customer>();
             CreateMap<EditEmployeeCommand, Domain.Entities.Customer>();
             CreateMap<Domain.Entities.Customer,EditEmployeeDTo>();
-            // CreateMap<UserDto, Customer>().ReverseMap();
+            CreateMap<Domain.Entities.Customer,MCustomerTableDTo>().ReverseMap();
             // CreateMap<CreateUserCommand, Customer>().ReverseMap();
 
             #endregion

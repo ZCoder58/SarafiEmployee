@@ -9,7 +9,7 @@ import { LoadingButton } from '@mui/lab';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import Util from '../../../helpers/Util'
 import { useNavigate } from 'react-router';
-import { FieldSet, RatesDropdown, SubCustomerAccountRatesSelect } from '../../../ui-componets'
+import { FieldSet, RatesDropdown } from '../../../ui-componets'
 import { ArrowBack } from '@mui/icons-material';
 const createModel = {
     fromName: "",
@@ -26,6 +26,7 @@ const createModel = {
     friendId: undefined,
     fee: 0,
     receiverFee: 0,
+    comment:""
 }
 const validationSchema = Yup.object().shape({
     fromName: Yup.string().required("نام ارسال کنننده ضروری میباشد"),
@@ -246,8 +247,6 @@ export default function CreateTransfer() {
                                         )
                                     }}
                                 />
-
-
                                 {exchangeRate && !exchangeRate.updated &&
                                     <Grow in={!exchangeRate.updated}>
                                         <Alert variant='outlined' severity="warning">
@@ -269,8 +268,6 @@ export default function CreateTransfer() {
                                         </Alert>
                                     </Grow>
                                 }
-
-
                                 <TextField
                                     name='fee'
                                     label="کمیشن"
@@ -335,7 +332,17 @@ export default function CreateTransfer() {
                                 />
                             </FieldSet>
                         </Grid>
-                        
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <TextField
+                                    name='comment'
+                                    label="ملاحضات"
+                                    size="small"
+                                    multiline
+                                    rows={4}
+                                    defaultValue={formik.values.comment}
+                                    onChange={formik.handleChange}
+                                />
+                        </Grid>
                         <Grid item lg={12} md={12} sm={12} xs={12}>
                             <FieldSet label="معلومات حواله" className="bgWave">
                                 <Stack direction="column" spacing={1}>

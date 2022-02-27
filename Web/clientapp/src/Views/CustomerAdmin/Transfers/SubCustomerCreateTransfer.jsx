@@ -27,6 +27,7 @@ const createModel = {
     friendId: undefined,
     fee: 0,
     receiverFee: 0,
+    comment:""
 }
 const validationSchema = Yup.object().shape({
     fromName: Yup.string().required("نام ارسال کنننده ضروری میباشد"),
@@ -363,7 +364,17 @@ export default function SubCustomerCreateTransfer() {
                             />
                         </FieldSet>
                     </Grid>
-
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <TextField
+                                    name='comment'
+                                    label="ملاحضات"
+                                    size="small"
+                                    multiline
+                                    rows={4}
+                                    defaultValue={formik.values.comment}
+                                    onChange={formik.handleChange}
+                                />
+                        </Grid>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
                         <FieldSet label="معلومات حواله" className="bgWave">
                             <Stack direction="column" spacing={1}>

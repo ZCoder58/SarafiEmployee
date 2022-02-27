@@ -129,7 +129,12 @@ export default function VCTransferInfo() {
                             <StyledRowDark>
                                 <Typography variant="body1" fontWeight={900}>مقدار پول دریافتی :</Typography>
                                 <Typography variant="body2">{transfer.destinationAmount} {transfer.toCurrency}</Typography>
-                            </StyledRowDark>                           
+                            </StyledRowDark> 
+                            <StyledRowLight>
+                                <Typography variant="body1" fontWeight={900}>ملاحظات :</Typography>
+                                <Typography variant="body2">{transfer.comment}</Typography>
+
+                            </StyledRowLight>                          
                         </CardContent>
                     }
                 </Card>

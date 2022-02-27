@@ -96,10 +96,7 @@ export default function VCTransferInfo() {
                                 <Typography variant="body1" fontWeight={900}>شماره تماس :</Typography>
                                 <Typography variant="body2">{transfer.fromPhone}</Typography>
                             </StyledRowLight>
-                            <StyledRowDark>
-                                <Typography variant="body1" fontWeight={900}>مقدار پول ارسالی :</Typography>
-                                <Typography variant="body2">{transfer.sourceAmount} {transfer.fromCurrency}</Typography>
-                            </StyledRowDark>
+                           
                             <Typography variant="h6" color="primary">معلومات دریافت کننده</Typography>
                             <Divider />
                             <StyledRowLight>
@@ -131,6 +128,11 @@ export default function VCTransferInfo() {
                                 <Typography variant="body1" fontWeight={900}>مقدار پول دریافتی :</Typography>
                                 <Typography variant="body2">{transfer.destinationAmount} {transfer.toCurrency}</Typography>
                             </StyledRowDark>
+                            <StyledRowLight>
+                                <Typography variant="body1" fontWeight={900}>ملاحظات :</Typography>
+                                <Typography variant="body2">{transfer.comment}</Typography>
+
+                            </StyledRowLight>   
                             <StyledRowLight>
                                 {transfer.state===0&&
                                 <Button

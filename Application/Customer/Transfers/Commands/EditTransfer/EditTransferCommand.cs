@@ -23,5 +23,6 @@ namespace Application.Customer.Transfers.Commands.EditTransfer
         public double ReceiverFee { get; set; } = 0;
         
         public Guid FriendId { get; set; }
+        public string Comment { get; set; }
     }
 }
