@@ -5,5 +5,6 @@
         public static int Withdrawal = -1;
         public static int Deposit = 1;
         public static int TransferToAccount = 2;
+        public static int ReceivedFromAccount = 3;
     }
 }

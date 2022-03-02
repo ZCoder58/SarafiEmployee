@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grow, Alert, Stack, Box, TextField, InputAdornment, Divider } from '@mui/material'
+import { Grow, Alert, Stack, Box, TextField, InputAdornment } from '@mui/material'
 ExchangeRateAlert.defaultProps={
     label:"مقدار پول دریافتی"
 }
@@ -31,7 +31,7 @@ export default function ExchangeRateAlert({ exchangeRate, sourceRate, distRate,a
                     </Alert>
                 </Grow>}
                 <TextField
-                label="مقدار پول دریافتی"
+                label={label}
                 required
                 size="small"
                 value={amountResult}

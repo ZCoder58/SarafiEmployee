@@ -1,10 +1,10 @@
 import React from 'react'
-import { Box, Divider, InputAdornment, TextField } from '@mui/material'
+import { Box, Divider, InputAdornment, TextField, Typography } from '@mui/material'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import authAxiosApi from '../../../../axios'
 import Util from '../../../../helpers/Util'
-import { ExchangeRateAlert, SubCustomerAccountRatesSelect, SubCustomersDropdown } from '../../../../ui-componets'
+import { CTitle, ExchangeRateAlert, SubCustomerAccountRatesSelect, SubCustomersDropdown } from '../../../../ui-componets'
 import { LoadingButton } from '@mui/lab'
 import { CheckCircleOutline } from '@mui/icons-material'
 const initialModel = {
@@ -57,7 +57,7 @@ export default function SCNewTransactionFormTransferToAccount({ subCustomer, onS
     }, [sourceRate, distRate])
     return (
         <Box component="form" noValidate onSubmit={formik.handleSubmit}>
-            <Divider>انتقال پول از مشتری به مشتری دیگر</Divider>
+            <CTitle>انتقال پول از مشتری به مشتری دیگر</CTitle>
             <SubCustomerAccountRatesSelect
                 subCustomerId={subCustomer.id}
                 name='subCustomerAccountRateId'

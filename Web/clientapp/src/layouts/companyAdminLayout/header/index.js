@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, useTheme, Box, useMediaQuery, IconButton } from '@mui/material'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { AdminSideMenuToggler, CTooltip, NotificationButton, SunriseNavLogo } from '../../../ui-componets'
+import { AdminSideMenuToggler, ConvertCurrencyButton, CTooltip, NotificationButton, SunriseNavLogo } from '../../../ui-componets'
 import ProfileAccount from './ProfileAccount'
 import Friends from './Friends'
 import { SearchOutlined } from '@mui/icons-material'
@@ -28,6 +28,7 @@ export const Header = ({ sidebarWidth }) => {
       <Toolbar>
         {!menuOpen && (!isMachedXs ? <SunriseNavLogo /> : "")}
         <AdminSideMenuToggler />
+        <ConvertCurrencyButton/>
         <CTooltip title="جستجوی کارمند">
           <IconButton size="small" onClick={() => navigate("/company/search")}>
             <SearchOutlined />

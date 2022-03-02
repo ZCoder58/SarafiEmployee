@@ -10,7 +10,7 @@ export default function themeComponents(theme) {
     MuiTabPanel:{
       styleOverrides:{
         root:{
-          // padding:0
+          padding:0
         }
       }
     },
@@ -132,6 +132,13 @@ export default function themeComponents(theme) {
       styleOverrides:{
         root:{
           fontSize:"1.1rem"
+        }
+      }
+    },
+    MuiTab:{
+      styleOverrides:{
+        root:{
+          minWidth:"50px"
         }
       }
     }

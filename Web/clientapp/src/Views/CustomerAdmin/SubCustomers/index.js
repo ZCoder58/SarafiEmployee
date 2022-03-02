@@ -12,6 +12,9 @@ import { TabContext, TabPanel } from '@mui/lab';
 import SCNewTransactionFormWithdrawal from './TransactionTypesForm/SCNewTransactionFormWithdrawal';
 import SCNewTransactionFormDeposit from './TransactionTypesForm/SCNewTransactionFormDeposit';
 import SCNewTransactionFormTransferToAccount from './TransactionTypesForm/SCNewTransactionFormTransferToAccount';
+import TextDecreaseIcon from '@mui/icons-material/TextDecrease';
+import TextIncreaseIcon from '@mui/icons-material/TextIncrease';
+import MoveDownOutlinedIcon from '@mui/icons-material/MoveDownOutlined';
 export default function VCSubCustomers() {
     const [refreshTableState, setRefreshTableState] = React.useState(false)
     const [transactionDialogOpen,setTransactionDialogOpen]=React.useState(false)
@@ -141,17 +144,17 @@ export default function VCSubCustomers() {
                onClose={()=>setTransactionDialogOpen(false)} >
                   <TabContext value={activeTab}>
                         <TabsList onChange={(e,t)=>setActiveTab(t)}>
-                          <Tab label="برداشت از حساب" value="0" />
-                          <Tab label="اضافه به حساب" value="1" />
-                          <Tab label="انتقال به مشتری" value="2" />
+                          <Tab label={<TextDecreaseIcon/>} value="0" />
+                          <Tab label={<TextIncreaseIcon/>} value="1" />
+                          <Tab label={<MoveDownOutlinedIcon/>} value="2" />
                         </TabsList>
-                        <TabPanel value="0">
+                        <TabPanel value="0" sx={{ p:0 }}>
                             <SCNewTransactionFormWithdrawal subCustomer={subCustomerUpdateAmount} onSuccess={handleAmountUpdated}/>
                         </TabPanel>
-                        <TabPanel value="1">
+                        <TabPanel value="1" sx={{ p:0 }}>
                             <SCNewTransactionFormDeposit subCustomer={subCustomerUpdateAmount} onSuccess={handleAmountUpdated}/>
                         </TabPanel>
-                        <TabPanel value="2">
+                        <TabPanel value="2" sx={{ p:0 }}>
                             <SCNewTransactionFormTransferToAccount subCustomer={subCustomerUpdateAmount} onSuccess={handleAmountUpdated}/>
                         </TabPanel>
                   </TabContext>

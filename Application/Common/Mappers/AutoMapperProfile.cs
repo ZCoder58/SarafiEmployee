@@ -146,6 +146,7 @@ namespace Application.Common.Mappers
                 .ForMember(dist=>dist.CanRollback,option=>
                     option.MapFrom(source=>
                         source.TransactionType!=SubCustomerTransactionTypes.TransferToAccount &&
+                        source.TransactionType!=SubCustomerTransactionTypes.ReceivedFromAccount &&
                         source.CreatedDate.Value.Date>=DateTime.UtcNow.AddDays(-2).Date));
             CreateMap<CreateTransactionCommand, SubCustomerTransaction>();
 

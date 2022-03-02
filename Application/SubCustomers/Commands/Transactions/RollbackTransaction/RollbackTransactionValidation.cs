@@ -17,6 +17,7 @@ namespace Application.SubCustomers.Commands.Transactions.RollbackTransaction
                 .Must(transactionId => dbContext.SubCustomerTransactions.Include(a => a.SubCustomerAccountRate)
                     .ThenInclude(a => a.SubCustomerAccount).Any(a =>
                         a.TransactionType!=SubCustomerTransactionTypes.TransferToAccount &&
+                        a.TransactionType!=SubCustomerTransactionTypes.ReceivedFromAccount &&
                         a.SubCustomerAccountRate.SubCustomerAccount.CustomerId ==
                         httpUserContext.GetCurrentUserId().ToGuid() &&
                         a.CreatedDate.Value.Date>=DateTime.UtcNow.AddDays(-2).Date &&

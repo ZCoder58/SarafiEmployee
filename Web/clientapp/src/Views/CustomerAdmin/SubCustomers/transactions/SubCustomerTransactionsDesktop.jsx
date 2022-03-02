@@ -67,8 +67,13 @@ export default function SubCustomerTransactionsDesktop({ transactions=[] }) {
                             </TableCell>
                             <TableCell>
                                 {e.transactionType === 1 ?
-                                    <Chip label="انتقال به حساب" size="small" color="primary"></Chip> :
-                                    <Chip label="برداشت از حساب" size="small" color="error"></Chip>}
+                                    <Chip label="اضافه شده به حساب" size="small" color="primary"></Chip> :
+                                    e.transactionType === 2?
+                                    <Chip label="انتقال به حساب" size="small" color="warning"></Chip>:
+                                    e.transactionType === 3?
+                                    <Chip label="انتقال از حساب" size="small" color="success"></Chip>:
+                                    <Chip label="برداشت از حساب" size="small" color="error"></Chip>
+                                    }
                             </TableCell>
                             <TableCell>
                                 {new Date(e.createdDate).toLocaleDateString()}

@@ -46,12 +46,12 @@ export default function SubCustomersDropdown({ exceptCustomerId,defaultSubCustom
                 setValue(newValue)
                 onValueChange(newValue)
             }}
-            getOptionLabel={(option) => `${option.name} ${option.lastName}`}
+            getOptionLabel={(option) => `${option.name} ${option.fatherName}`}
             renderInput={(params) => <TextField {...params} {...props}  />}
             renderOption={(props, option, { selected }) =>
                 <ListItem {...props}>
                     <ListItemText
-                    primary={`${option.name} ${option.lastName}`}
+                    primary={`${option.name} ${option.lastName?option.lastName:""}`}
                     secondary={`نام پدر : ${option.fatherName}`}
                     />
                    

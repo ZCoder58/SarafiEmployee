@@ -4,7 +4,7 @@ import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import authAxiosApi from '../../../../axios'
 import Util from '../../../../helpers/Util'
-import {SubCustomerAccountRatesSelect } from '../../../../ui-componets'
+import {CTitle, SubCustomerAccountRatesSelect } from '../../../../ui-componets'
 import { LoadingButton } from '@mui/lab'
 import { CheckCircleOutline } from '@mui/icons-material'
 const initialModel = {
@@ -36,7 +36,7 @@ export default function SCNewTransactionFormWithdrawal({subCustomer, onSuccess})
     })
     return (
         <Box component="form" noValidate onSubmit={formik.handleSubmit}>
-            <Divider>برداشت کردن پول از حساب مشتری</Divider>
+            <CTitle>برداشت کردن پول از حساب مشتری</CTitle>
             <SubCustomerAccountRatesSelect
             subCustomerId={subCustomer.id}
              name='subCustomerAccountRateId'
