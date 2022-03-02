@@ -10,7 +10,6 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.Withdrawal
     {
         public WithdrawalSubCustomerAccountAmountValidation(IApplicationDbContext dbContext,IHttpUserContext httpUserContext)
         {
-            
             RuleFor(a => a.SubCustomerId)
                 .NotEqual(Guid.Empty).WithMessage("ای دی مشتری ضروری میباشد")
                 .Must(subCustomerId => dbContext.SubCustomerAccounts.Any(a =>
@@ -23,11 +22,7 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.Withdrawal
                     a.SubCustomerAccountId == model.SubCustomerId)).WithMessage("حساب ارز مشتری پیدا نشد");
             RuleFor(a => a.Amount)
                 .NotNull().WithMessage("مقدار پول ضروری میباشد")
-                .GreaterThanOrEqualTo(1).WithMessage("کم تر از 1 مجاز نیست")
-                .Must((model,amount)=>dbContext.SubCustomerAccountRates
-                    .Any(a=>a.Id==model.SubCustomerAccountRateId &&
-                            a.Amount >= amount)).WithMessage("این مقدار پول در حساب مشتری موجود نیست");
-          
+                .GreaterThanOrEqualTo(1).WithMessage("کم تر از 1 مجاز نیست");
         }
     }
 }

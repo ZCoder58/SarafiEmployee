@@ -4,7 +4,6 @@ using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
 using Domain.Interfaces;
 using FluentValidation;
-
 namespace Application.SubCustomers.Commands.CreateAccountRate
 {
     public class CreateAccountRateValidation:AbstractValidator<CreateAccountRateCommand>

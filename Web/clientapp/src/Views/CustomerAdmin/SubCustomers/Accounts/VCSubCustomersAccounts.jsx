@@ -88,6 +88,8 @@ export default function VCSubCustomerAccounts() {
                                 }>
                                     <ListItemText
                                         primary={
+                                            e.amount<0?
+                                            <Typography fontWeight={900} color="error">{e.amount} {e.priceName}</Typography>:
                                             <Typography fontWeight={900}>{e.amount} {e.priceName}</Typography>
                                         }
                                         secondary={

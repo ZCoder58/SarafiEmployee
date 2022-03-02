@@ -35,11 +35,8 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.TransferToAccoun
                     a.SubCustomerAccountId == model.ToSubCustomerId)).WithMessage("حساب ارز مشتری دوم پیدا نشد");
             RuleFor(a => a.Amount)
                 .NotNull().WithMessage("مقدرار ضروری میباشد")
-                .GreaterThanOrEqualTo(1).WithMessage("کمتر از 1 مجاز نیست")
-                .Must((model,amount)=>dbContext.SubCustomerAccountRates.Any(a=>
-                    a.Id==model.SubCustomerAccountRateId &&
-                    a.Amount>=amount)).WithMessage("این مقدار پول در حساب مشتری وجود ندارد");
-            
+                .GreaterThanOrEqualTo(1).WithMessage("کمتر از 1 مجاز نیست");
+
         }
     }
 }

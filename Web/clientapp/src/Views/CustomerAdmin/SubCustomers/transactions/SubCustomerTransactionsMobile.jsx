@@ -6,7 +6,7 @@ import authAxiosApi from '../../../../axios'
 export default function SubCustomerTransactionsMobile({ transactions }) {
     const [infoOpen, setInfoOpen] = React.useState(false)
     const [infoData, setInfoData] = React.useState(null)
-    const [transactionsList,setTransactionsList]=React.useState(transactions)
+    const [transactionsList, setTransactionsList] = React.useState(transactions)
     const [openAskRollback, setOpenAskRollback] = React.useState(false)
     const [transactionId, setTransactionId] = React.useState(null)
     function handleInfoClick(info) {
@@ -61,8 +61,13 @@ export default function SubCustomerTransactionsMobile({ transactions }) {
                                             <React.Fragment>
                                                 <Stack component="span" spacing={1} direction="column">
                                                     <Typography variant="body2" component="span">نوعیت انتقال - {e.transactionType === 1 ?
-                                                        <Chip component="span" size="small" label="انتقال به حساب" color="primary"></Chip> :
-                                                        <Chip component="span" size='small' label="برداشت از حساب" color="error"></Chip>}
+                                                        <Chip label="اضافه شده به حساب" component="span" size="small" color="primary"></Chip> :
+                                                        e.transactionType === 2 ?
+                                                            <Chip label="انتقال به حساب" component="span" size="small" color="warning"></Chip> :
+                                                            e.transactionType === 3 ?
+                                                                <Chip label="انتقال از حساب" component="span" size="small" color="success"></Chip> :
+                                                                <Chip label="برداشت از حساب" component="span" size="small" color="error"></Chip>
+                                                    }
                                                     </Typography>
                                                     <Typography variant="body2" component="span">تاریخ انتقال - {new Date(e.createdDate).toLocaleDateString()}</Typography>
                                                     <Stack component="span" direction="row">
@@ -70,7 +75,7 @@ export default function SubCustomerTransactionsMobile({ transactions }) {
                                                             <Button onClick={() => handleInfoClick(e)}>
                                                                 جزییات بیشتر
                                                             </Button>
-                                                           {e.canRollback&& <Button onClick={() => {
+                                                            {e.canRollback && <Button onClick={() => {
                                                                 setTransactionId(e.id)
                                                                 setOpenAskRollback(true)
                                                             }}>

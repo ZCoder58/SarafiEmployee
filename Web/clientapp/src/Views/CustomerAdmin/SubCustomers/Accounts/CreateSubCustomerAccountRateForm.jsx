@@ -13,9 +13,9 @@ const initialModel = {
     ratesCountryId: ""
 }
 const validationSchema = Yup.object().shape({
-    amount: Yup.number().required("مقدار پول اولیه حساب ضروری میباشد").moreThan(0, "کمتر از صفر مجاز نیست"),
+    amount: Yup.number().required("مقدار پول اولیه حساب ضروری میباشد"),
     ratesCountryId: Yup.string().required("انتخاب ارز حساب ضروری میباشد")
-});
+})
 export default function CreateSubCustomerAccountRateForm({subCustomerId,onSubmit}) {
     const formik = useFormik({
         validationSchema: validationSchema,

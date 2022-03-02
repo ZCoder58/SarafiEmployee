@@ -16,11 +16,9 @@ namespace Application.Customer.Transfers.DTOs
         public string ToGrandFatherName { get; set; }
         public string ToPhone { get; set; }
         public string ToSId { get; set; }
-        public string FromCurrency { get; set; }
         public string ToCurrency { get; set; }
 
         // public double ToRate { get; set; }
-        public double SourceAmount { get; set; }
         public double DestinationAmount { get; set; }
         
         public DateTime CompleteDate { get; set; }
