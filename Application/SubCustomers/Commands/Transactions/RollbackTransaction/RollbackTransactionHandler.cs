@@ -6,7 +6,7 @@ using Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.SubCustomers.Commands.RollbackTransaction
+namespace Application.SubCustomers.Commands.Transactions.RollbackTransaction
 {
     public class RollbackTransactionHandler:IRequestHandler<RollbackTransactionCommand>
     {

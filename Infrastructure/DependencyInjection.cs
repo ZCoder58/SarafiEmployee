@@ -23,7 +23,7 @@ namespace Infrastructure
                 .AddSmtpSender(new SmtpClient(configuration["AppSettings:Host"],int.Parse(configuration["AppSettings:Port"]))
                 {
                     Credentials = new NetworkCredential(configuration["AppSettings:Mail"], configuration["AppSettings:Password"]),
-                    EnableSsl = true,
+                    EnableSsl = false,
                     DeliveryMethod = SmtpDeliveryMethod.Network, 
                     UseDefaultCredentials = false
                 });

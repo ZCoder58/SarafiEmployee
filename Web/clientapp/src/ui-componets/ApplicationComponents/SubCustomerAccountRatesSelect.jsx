@@ -2,7 +2,8 @@ import { Autocomplete, ListItem, ListItemText, TextField,Typography } from '@mui
 import React from 'react'
 import authAxiosApi from '../../axios'
 
-export default function SubCustomerAccountRatesSelect({ subCustomerId,defaultAccountRateId, onValueChange, ...props }) {
+
+export default function SubCustomerAccountRatesSelect({subCustomerId,defaultAccountRateId, onValueChange, ...props }) {
     const [subCustomersAccountRate, setSubCustomersAccountRate] = React.useState([])
     const [value, setValue] = React.useState(null)
     const [loading, setLoading] = React.useState(true)

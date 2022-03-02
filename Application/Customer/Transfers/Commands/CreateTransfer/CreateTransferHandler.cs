@@ -7,7 +7,6 @@ using Application.Common.Statics;
 using Application.Customer.ExchangeRates.Extensions;
 using Application.Customer.Transfers.EventHandlers;
 using Application.Customer.Transfers.Statics;
-using Application.SubCustomers.Commands.UpdateAmount;
 using Application.SubCustomers.Statics;
 using AutoMapper;
 using Domain.Entities;
@@ -40,7 +39,8 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
                 request.FCurrency, request.TCurrency);
             newTransfer.SourceAmount = request.Amount;
             newTransfer.DestinationAmount =
-                ((request.Amount / targetExchangeRate.FromAmount) * targetExchangeRate.ToExchangeRate).ToString().ToDoubleFormatted();            newTransfer.ToRate = targetExchangeRate.ToExchangeRate;
+                ((request.Amount / targetExchangeRate.FromAmount) * targetExchangeRate.ToExchangeRate).ToString().ToDoubleFormatted();      
+            newTransfer.ToRate = targetExchangeRate.ToExchangeRate;
             newTransfer.FromRate = targetExchangeRate.FromAmount;
             newTransfer.RateUpdated = targetExchangeRate.Updated;
             newTransfer.ToCurrency = toCurrency.PriceName;

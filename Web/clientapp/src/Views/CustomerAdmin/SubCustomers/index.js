@@ -1,18 +1,22 @@
 import { AddOutlined, EditOutlined } from '@mui/icons-material'
-import { Button, IconButton, Stack, Typography,ButtonGroup } from '@mui/material'
+import { Button, IconButton, Stack, Typography,ButtonGroup, Tab } from '@mui/material'
 import React from 'react'
-import { CCard, CDialog, CTable, CToolbar, CTooltip } from '../../../ui-componets'
+import { CCard, CDialog, CTable, CToolbar, CTooltip, TabsList } from '../../../ui-componets'
 import BallotOutlinedIcon from '@mui/icons-material/BallotOutlined';
 import {useSelector} from 'react-redux'
 import { useNavigate } from 'react-router'
-import NewSubCustomerTransactionFrom from './NewSubCustomerTransactionFrom';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import { TabContext, TabPanel } from '@mui/lab';
+import SCNewTransactionFormWithdrawal from './TransactionTypesForm/SCNewTransactionFormWithdrawal';
+import SCNewTransactionFormDeposit from './TransactionTypesForm/SCNewTransactionFormDeposit';
+import SCNewTransactionFormTransferToAccount from './TransactionTypesForm/SCNewTransactionFormTransferToAccount';
 export default function VCSubCustomers() {
     const [refreshTableState, setRefreshTableState] = React.useState(false)
     const [transactionDialogOpen,setTransactionDialogOpen]=React.useState(false)
     const [subCustomerUpdateAmount,setSubCustomerUpdateAmount]=React.useState(null)
+    const [activeTab,setActiveTab]=React.useState("0")
     const {screenXs}=useSelector(states=>states.R_AdminLayout)
     const navigate = useNavigate()
     const desktopColumns = [
@@ -135,7 +139,22 @@ export default function VCSubCustomers() {
            {transactionDialogOpen&&<CDialog title="ثبت انتقال"
               open={transactionDialogOpen}
                onClose={()=>setTransactionDialogOpen(false)} >
-                   <NewSubCustomerTransactionFrom subCustomer={subCustomerUpdateAmount} onSuccess={handleAmountUpdated}/>
+                  <TabContext value={activeTab}>
+                        <TabsList onChange={(e,t)=>setActiveTab(t)}>
+                          <Tab label="برداشت از حساب" value="0" />
+                          <Tab label="اضافه به حساب" value="1" />
+                          <Tab label="انتقال به مشتری" value="2" />
+                        </TabsList>
+                        <TabPanel value="0">
+                            <SCNewTransactionFormWithdrawal subCustomer={subCustomerUpdateAmount} onSuccess={handleAmountUpdated}/>
+                        </TabPanel>
+                        <TabPanel value="1">
+                            <SCNewTransactionFormDeposit subCustomer={subCustomerUpdateAmount} onSuccess={handleAmountUpdated}/>
+                        </TabPanel>
+                        <TabPanel value="2">
+                            <SCNewTransactionFormTransferToAccount subCustomer={subCustomerUpdateAmount} onSuccess={handleAmountUpdated}/>
+                        </TabPanel>
+                  </TabContext>
             </CDialog>}
             <CTable
                 serverUrl={'subCustomers'}

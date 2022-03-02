@@ -5,8 +5,8 @@ using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
 using Application.Customer.ExchangeRates.Extensions;
 using Application.Customer.Transfers.EventHandlers;
-using Application.SubCustomers.Commands.RollbackTransaction;
-using Application.SubCustomers.Commands.UpdateAmount;
+using Application.SubCustomers.Commands.Transactions.RollbackTransaction;
+using Application.SubCustomers.Commands.UpdateAccountAmount.Withdrawal;
 using Application.SubCustomers.Statics;
 using AutoMapper;
 using Domain.Interfaces;
@@ -61,12 +61,11 @@ namespace Application.SubCustomers.Commands.EditTransfer
                     a.TransferId==targetTransfer.Id);
                 await _mediator.Send(new RollbackTransactionCommand(lastSubCustomerTransaction.Id), cancellationToken);
                 
-                await _mediator.Send(new UpdateSubCustomerAmountCommand(request.SubCustomerAccountId,
+                await _mediator.Send(new WithdrawalSubCustomerAccountAmountCommand(request.SubCustomerAccountId,
                     request.SubCustomerAccountRateId,
                     request.Amount + request.Fee,
                     string.Concat("برای حواله با کد نمبر ", targetTransfer.CodeNumber, "به ", 
                         request.ToName," ",request.ToLastName," ولد",request.ToFatherName," ارسال گردید"),
-                    SubCustomerTransactionTypes.Withdrawal,
                     targetTransfer.Id),cancellationToken);
             }
             targetTransfer.SourceAmount = request.Amount;

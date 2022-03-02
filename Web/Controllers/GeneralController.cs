@@ -19,6 +19,10 @@ namespace Web.Controllers
     [Route("api/general/[action]")]
     public class GeneralController : ApiBaseController
     {
+        // public Task SendMail(string email)
+        // {
+        //     return Mediator.Send(new EmailSendCommand(email));
+        // }
         public Task<IEnumerable<CountryListDTo>> GetCountries()
         {
             return Mediator.Send(new GetCountriesListQuery());

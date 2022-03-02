@@ -8,8 +8,10 @@ using Application.SubCustomers.Commands.CreateTransfer;
 using Application.SubCustomers.Commands.EditAccountRate;
 using Application.SubCustomers.Commands.EditSubCustomerAccount;
 using Application.SubCustomers.Commands.EditTransfer;
-using Application.SubCustomers.Commands.RollbackTransaction;
-using Application.SubCustomers.Commands.UpdateAmount;
+using Application.SubCustomers.Commands.Transactions.RollbackTransaction;
+using Application.SubCustomers.Commands.UpdateAccountAmount.Deposit;
+using Application.SubCustomers.Commands.UpdateAccountAmount.TransferToAccount;
+using Application.SubCustomers.Commands.UpdateAccountAmount.Withdrawal;
 using Application.SubCustomers.DTOs;
 using Application.SubCustomers.Queries;
 using Application.SubCustomers.Queries.GetEditTransfer;
@@ -51,8 +53,18 @@ namespace Web.Controllers.Customer
         {
             return Mediator.Send(request);
         }
-        [HttpPut("updateAmount")]
-        public Task UpdateAmount([FromForm] UpdateSubCustomerAmountCommand request)
+        [HttpPut("accounts/withdrawal")]
+        public Task Withdrawal([FromForm] WithdrawalSubCustomerAccountAmountCommand request)
+        {
+            return Mediator.Send(request);
+        }
+        [HttpPut("accounts/deposit")]
+        public Task Deposit([FromForm] DepositSubCustomerAccountAmountCommand request)
+        {
+            return Mediator.Send(request);
+        }
+        [HttpPut("accounts/transferToAccount")]
+        public Task TransferToAmount([FromForm] TransferToAccountCommand request)
         {
             return Mediator.Send(request);
         }

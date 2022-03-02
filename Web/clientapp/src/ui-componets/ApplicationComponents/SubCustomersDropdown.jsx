@@ -3,9 +3,9 @@ import React from 'react'
 import authAxiosApi from '../../axios'
 SubCustomersDropdown.defaultProps={
     onValueChange:()=>{},
-    defaultSubCustomerId:undefined
+    defaultSubCustomerId:undefined,
 }
-export default function SubCustomersDropdown({ defaultSubCustomerId, onValueChange, ...props }) {
+export default function SubCustomersDropdown({ exceptCustomerId,defaultSubCustomerId, onValueChange, ...props }) {
     const [subCustomers, setSubCustomers] = React.useState([])
     const [value, setValue] = React.useState(null)
     const [loading, setLoading] = React.useState(true)
@@ -13,16 +13,17 @@ export default function SubCustomersDropdown({ defaultSubCustomerId, onValueChan
         (async () => {
             setLoading(true)
             await authAxiosApi.get('subCustomers/list').then(r => {
+                const data=exceptCustomerId?r.filter(c=>c.id!==exceptCustomerId):r
                 if (defaultSubCustomerId) {
-                    const defaultValue=r.find(a => a.id === defaultSubCustomerId)
+                    const defaultValue=data.find(a => a.id === defaultSubCustomerId)
                     setValue(defaultValue)
                     if(props.disabled){
                         setSubCustomers([defaultValue,...subCustomers])
                     }else{
-                        setSubCustomers(r)
+                        setSubCustomers(data)
                     }
                 }else{
-                    setSubCustomers(r)
+                    setSubCustomers(data)
                 }
             })
             setLoading(false)
@@ -30,7 +31,7 @@ export default function SubCustomersDropdown({ defaultSubCustomerId, onValueChan
         return () => {
             setSubCustomers([])
         }
-    }, [defaultSubCustomerId])
+    }, [defaultSubCustomerId,exceptCustomerId,props.disabled])
 
     return (
         <React.Fragment>

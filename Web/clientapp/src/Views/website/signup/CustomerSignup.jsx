@@ -21,7 +21,7 @@ export default function CustomerSignup() {
         initialValues: signUpModel,
         onSubmit: async (values, formikHelper) => {
             try {
-                await axiosApi.post('customerAuth/signUp', Util.ObjectToFormData(values))
+                await axiosApi.post('customerAuth/customerSignUp', Util.ObjectToFormData(values))
                 navigate("/signUpDone")
             } catch (e) {
                 formikHelper.setErrors(e)

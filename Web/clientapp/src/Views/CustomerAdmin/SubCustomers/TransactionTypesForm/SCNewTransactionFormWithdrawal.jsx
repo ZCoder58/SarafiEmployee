@@ -1,10 +1,10 @@
 import React from 'react'
-import { Box, InputAdornment, TextField } from '@mui/material'
+import { Box, Divider, InputAdornment, TextField,Typography } from '@mui/material'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import authAxiosApi from '../../../axios'
-import Util from '../../../helpers/Util'
-import { CSelect,SubCustomerAccountRatesSelect } from '../../../ui-componets'
+import authAxiosApi from '../../../../axios'
+import Util from '../../../../helpers/Util'
+import {SubCustomerAccountRatesSelect } from '../../../../ui-componets'
 import { LoadingButton } from '@mui/lab'
 import { CheckCircleOutline } from '@mui/icons-material'
 const initialModel = {
@@ -12,14 +12,12 @@ const initialModel = {
     subCustomerAccountRateId:"",
     comment: "",
     amount: 1,
-    type: ''
 }
 const validationSchema = Yup.object().shape({
     amount: Yup.number().required("مقدار پول ضروری میباشد").moreThan(0,"کمتر از 1 مجاز نیست"),
     subCustomerAccountRateId:Yup.string().required("انتخاب حساب ارز ضروری میباشد"),
-    type: Yup.string().required("انتخاب نوع انتقال ضروری میباشد")
 });
-export default function NewSubCustomerTransactionFrom({subCustomer, onSuccess}) {
+export default function SCNewTransactionFormWithdrawal({subCustomer, onSuccess}) {
     const [accountRate,setAccountRate]=React.useState(null)
     const formik = useFormik({
         validationSchema: validationSchema,
@@ -27,7 +25,7 @@ export default function NewSubCustomerTransactionFrom({subCustomer, onSuccess}) 
         onSubmit: async (values, formikHelper) => {
             const formData=Util.ObjectToFormData(values);
             formData.set('subCustomerId',subCustomer.id)
-            await authAxiosApi.put('subCustomers/updateAmount',formData )
+            await authAxiosApi.put('subCustomers/accounts/withdrawal',formData )
                 .then(r => {
                     onSuccess()
                 }).catch(errors=>{
@@ -38,6 +36,7 @@ export default function NewSubCustomerTransactionFrom({subCustomer, onSuccess}) 
     })
     return (
         <Box component="form" noValidate onSubmit={formik.handleSubmit}>
+            <Divider>برداشت کردن پول از حساب مشتری</Divider>
             <SubCustomerAccountRatesSelect
             subCustomerId={subCustomer.id}
              name='subCustomerAccountRateId'
@@ -66,24 +65,9 @@ export default function NewSubCustomerTransactionFrom({subCustomer, onSuccess}) 
                 onChange={formik.handleChange}
                 InputProps={{
                     endAdornment: <InputAdornment position="end">
-                        {accountRate?accountRate.ratesCountryPriceName:"هیچ"}
+                        {accountRate?accountRate.priceName:"هیچ"}
                     </InputAdornment>
                 }}
-            />
-            <CSelect
-                data={[
-                    { label: "برداشت از حساب", value: "-1" },
-                    { label: "انتقال به حساب", value: "1" }
-                ]}
-                name='type'
-                helperText={formik.errors.type}
-                size='small'
-                label='نوعیت انتقال'
-                type='number'
-                required
-                value={formik.values.type}
-                error={formik.errors.type ? true : false}
-                onChange={formik.handleChange}
             />
             <TextField
                 variant='outlined'

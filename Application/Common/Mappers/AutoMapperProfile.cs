@@ -19,7 +19,9 @@ using Application.SubCustomers.Commands.CreateTransfer;
 using Application.SubCustomers.Commands.EditAccountRate;
 using Application.SubCustomers.Commands.EditSubCustomerAccount;
 using Application.SubCustomers.Commands.EditTransfer;
+using Application.SubCustomers.Commands.Transactions.CreateTransaction;
 using Application.SubCustomers.DTOs;
+using Application.SubCustomers.Statics;
 using Application.SunriseSuperAdmin.Customers.DTOs;
 using Application.SunriseSuperAdmin.Rates.Commands.CreateRate;
 using Application.SunriseSuperAdmin.Rates.Commands.UpdateRate;
@@ -122,11 +124,7 @@ namespace Application.Common.Mappers
             CreateMap<SubCustomerAccount, SubCustomerEditDTo>();
             CreateMap<CreateSubCustomerCommand, SubCustomerAccount>();
             CreateMap<EditSubCustomerCommand, SubCustomerAccount>();
-            CreateMap<SubCustomerTransaction,SubCustomerTransactionDTo>()
-                .ForMember(dist=>dist.CanRollback,option=>
-                    option.MapFrom(source=>
-                        source.CreatedDate.Value.Date>=DateTime.UtcNow.AddDays(-2).Date));
-                ;
+           
             CreateMap<SubCustomerAccount,SubCustomerAccountDTo>();
             CreateMap<SubCustomerAccount,SubCustomerAccountDropdownListDTo>();
 
@@ -143,6 +141,15 @@ namespace Application.Common.Mappers
 
             #endregion
 
+            #region SubCustomerTransaction
+            CreateMap<SubCustomerTransaction,SubCustomerTransactionDTo>()
+                .ForMember(dist=>dist.CanRollback,option=>
+                    option.MapFrom(source=>
+                        source.TransactionType!=SubCustomerTransactionTypes.TransferToAccount &&
+                        source.CreatedDate.Value.Date>=DateTime.UtcNow.AddDays(-2).Date));
+            CreateMap<CreateTransactionCommand, SubCustomerTransaction>();
+
+            #endregion
             #region customerProfile
 
             CreateMap<Domain.Entities.Customer, CustomerEditProfileDTo>();

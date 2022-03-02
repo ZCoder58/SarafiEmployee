@@ -1,4 +1,4 @@
-import { AskDialog, CCard, SearchFriendDropdown, SubCustomersDropdown } from '../../../ui-componets'
+import { AskDialog, CCard, ExchangeRateAlert, SearchFriendDropdown, SubCustomersDropdown } from '../../../ui-componets'
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
 import { Grid, Box, TextField, Stack, Typography, Divider, Alert, Grow, IconButton } from '@mui/material'
 import { useFormik } from 'formik'
@@ -27,7 +27,7 @@ const createModel = {
     friendId: undefined,
     fee: 0,
     receiverFee: 0,
-    comment:""
+    comment: ""
 }
 const validationSchema = Yup.object().shape({
     fromName: Yup.string().required("نام ارسال کنننده ضروری میباشد"),
@@ -68,7 +68,7 @@ export default function SubCustomerCreateTransfer() {
     const handleAccountRateChange = (newAccountRate) => {
         formik.setFieldValue("subCustomerAccountRateId", newAccountRate ? newAccountRate.id : "")
         setAcountRate(newAccountRate)
-        if(!newAccountRate){
+        if (!newAccountRate) {
             setExchangeRate(null)
         }
     }
@@ -77,16 +77,16 @@ export default function SubCustomerCreateTransfer() {
         setDistRate(s => s = newDistValue)
     }
 
-    const handleSubCustomerChange=async(newSubCustomer) =>{
-       await formik.setFieldValue("subCustomerAccountId", newSubCustomer ? newSubCustomer.id : undefined)
-       await formik.setFieldValue("fromName", newSubCustomer ? newSubCustomer.name : "")
-       await formik.setFieldValue("fromLastName", newSubCustomer ? newSubCustomer.lastName : "")
-       await formik.setFieldValue("fromFatherName", newSubCustomer ? newSubCustomer.fatherName : "")        
-       await formik.setFieldValue("fromPhone", newSubCustomer ? newSubCustomer.phone : "")
+    const handleSubCustomerChange = async (newSubCustomer) => {
+        await formik.setFieldValue("subCustomerAccountId", newSubCustomer ? newSubCustomer.id : undefined)
+        await formik.setFieldValue("fromName", newSubCustomer ? newSubCustomer.name : "")
+        await formik.setFieldValue("fromLastName", newSubCustomer ? newSubCustomer.lastName : "")
+        await formik.setFieldValue("fromFatherName", newSubCustomer ? newSubCustomer.fatherName : "")
+        await formik.setFieldValue("fromPhone", newSubCustomer ? newSubCustomer.phone : "")
     }
     const receivedAmount = React.useMemo(() => {
         return exchangeRate ? (Number(exchangeRate.toExchangeRate) / Number(exchangeRate.fromAmount) * Number(formik.values.amount)).toFixed(2) : 0
-    },[exchangeRate,formik.values.amount])
+    }, [exchangeRate, formik.values.amount])
     React.useEffect(() => {
         (async () => {
             try {
@@ -135,7 +135,7 @@ export default function SubCustomerCreateTransfer() {
                                 required
                                 error={formik.errors.subCustomerAccountId ? true : false}
                                 helperText={formik.errors.subCustomerAccountId}
-                                onValueChange={(v)=>handleSubCustomerChange(v)}
+                                onValueChange={(v) => handleSubCustomerChange(v)}
                             />
                             <TextField
                                 size="small"
@@ -229,7 +229,7 @@ export default function SubCustomerCreateTransfer() {
                                 value={formik.values.subCustomerAccountRateId}
                                 required
                                 error={formik.errors.subCustomerAccountRateId ? true : false}
-                                onValueChange={(v)=>handleAccountRateChange(v)}
+                                onValueChange={(v) => handleAccountRateChange(v)}
                             />
 
                             <RatesDropdown
@@ -260,44 +260,13 @@ export default function SubCustomerCreateTransfer() {
                                     )
                                 }}
                             />
-                            <TextField
-                                label="مقدار پول دریافتی"
-                                required
-                                size="small"
-                                value={receivedAmount}
-                                InputProps={{
-                                    readOnly: true,
-                                    endAdornment: (
-                                        <Stack direction="row">
-                                            <Divider orientation='vertical' flexItem ></Divider>
-                                            <Typography sx={{ ml: 1 }} variant="body1" >{distRate ? distRate.priceName : "هیچ"}</Typography>
-                                        </Stack>
-                                    )
-                                }}
+                            <ExchangeRateAlert
+                                exchangeRate={exchangeRate}
+                                sourceRate={accountRate}
+                                distRate={distRate}
+                                amount={formik.values.amount}
                             />
 
-
-                            {exchangeRate && !exchangeRate.updated &&
-                                <Grow in={!exchangeRate.updated}>
-                                    <Alert variant='outlined' severity="warning">
-                                        <Stack direction="column">
-                                            <Box>نرخ {exchangeRate.fromAmount} {accountRate&&accountRate.priceName} </Box>
-                                            <Box>معادل {exchangeRate.toExchangeRate} {distRate&&distRate.priceName}</Box>
-                                            <Box>نرخ ارز آپدیت نمیباشد!</Box>
-                                        </Stack>
-                                    </Alert>
-                                </Grow>}
-                            {exchangeRate && exchangeRate.updated &&
-                                <Grow in={exchangeRate.updated}>
-                                    <Alert variant='outlined' severity="success">
-                                        <Stack direction="column">
-                                            <Box>نرخ {exchangeRate.fromAmount} {accountRate&&accountRate.priceName} </Box>
-                                            <Box>معادل {exchangeRate.toExchangeRate} {distRate&&distRate.priceName}</Box>
-                                            <Box sx={{ fontWeight: 900 }}>نرخ ارز آپدیت است</Box>
-                                        </Stack>
-                                    </Alert>
-                                </Grow>
-                            }
 
 
                             <TextField
@@ -366,15 +335,15 @@ export default function SubCustomerCreateTransfer() {
                     </Grid>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
-                                    name='comment'
-                                    label="ملاحضات"
-                                    size="small"
-                                    multiline
-                                    rows={4}
-                                    defaultValue={formik.values.comment}
-                                    onChange={formik.handleChange}
-                                />
-                        </Grid>
+                            name='comment'
+                            label="ملاحضات"
+                            size="small"
+                            multiline
+                            rows={4}
+                            defaultValue={formik.values.comment}
+                            onChange={formik.handleChange}
+                        />
+                    </Grid>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
                         <FieldSet label="معلومات حواله" className="bgWave">
                             <Stack direction="column" spacing={1}>

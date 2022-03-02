@@ -1,4 +1,4 @@
-import { AskDialog, CCard, SearchFriendDropdown } from '../../../ui-componets'
+import { AskDialog, CCard, ExchangeRateAlert, SearchFriendDropdown } from '../../../ui-componets'
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
 import { Grid, Box, TextField, Stack, Typography, Divider, Alert, Grow, IconButton } from '@mui/material'
 import { useFormik } from 'formik'
@@ -232,42 +232,13 @@ export default function CreateTransfer() {
                                         )
                                     }}
                                 />
-                                <TextField
-                                    label="مقدار پول دریافتی"
-                                    required
-                                    size="small"
-                                    value={receivedAmount}
-                                    InputProps={{
-                                        readOnly: true,
-                                        endAdornment: (
-                                            <Stack direction="row">
-                                                <Divider orientation='vertical' flexItem ></Divider>
-                                                <Typography sx={{ ml: 1 }} variant="body1" >{distRate ? distRate.priceName : "هیچ"}</Typography>
-                                            </Stack>
-                                        )
-                                    }}
-                                />
-                                {exchangeRate && !exchangeRate.updated &&
-                                    <Grow in={!exchangeRate.updated}>
-                                        <Alert variant='outlined' severity="warning">
-                                            <Stack direction="column">
-                                                <Box>نرخ {exchangeRate.fromAmount} {sourceRate&&sourceRate.priceName} </Box>
-                                                <Box>معادل {exchangeRate.toExchangeRate} {distRate&&distRate.priceName}</Box>
-                                                <Box>نرخ ارز آپدیت نمیباشد!</Box>
-                                            </Stack>
-                                        </Alert>
-                                    </Grow>}
-                                {exchangeRate && exchangeRate.updated &&
-                                    <Grow in={exchangeRate.updated}>
-                                        <Alert variant='outlined' severity="success">
-                                            <Stack direction="column">
-                                                <Box>نرخ {exchangeRate.fromAmount} {sourceRate&&sourceRate.priceName} </Box>
-                                                <Box>معادل {exchangeRate.toExchangeRate} {distRate&&distRate.priceName}</Box>
-                                                <Box sx={{ fontWeight: 900 }}>نرخ ارز آپدیت است</Box>
-                                            </Stack>
-                                        </Alert>
-                                    </Grow>
-                                }
+                               
+                                <ExchangeRateAlert
+                exchangeRate={exchangeRate}
+                sourceRate={sourceRate}
+                distRate={distRate}
+                amount={formik.values.amount}
+            />
                                 <TextField
                                     name='fee'
                                     label="کمیشن"
