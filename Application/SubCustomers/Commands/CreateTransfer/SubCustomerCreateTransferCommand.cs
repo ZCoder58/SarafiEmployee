@@ -15,7 +15,7 @@ namespace Application.SubCustomers.Commands.CreateTransfer
         public string ToGrandFatherName { get; set; }
 
         public Guid TCurrency { get; set; }
-
+        public string Comment { get; set; }
         public double Amount { get; set; }
         public double Fee { get; set; } = 0;
         public double ReceiverFee { get; set; } = 0;

@@ -7,6 +7,5 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.Withdrawal
         Guid SubCustomerId,
         Guid SubCustomerAccountRateId,
         double Amount,
-        string Comment,
-        Guid? TransferId) : IRequest;
+        string Comment) : IRequest;
 }

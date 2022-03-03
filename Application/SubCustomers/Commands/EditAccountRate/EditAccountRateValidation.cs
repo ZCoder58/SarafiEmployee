@@ -29,8 +29,9 @@ namespace Application.SubCustomers.Commands.EditAccountRate
                 .NotEqual(Guid.Empty).WithMessage("انتخاب نوع ارز ضروری میباشد")
                 .Must(dbContext.RatesCountries.IsExists).WithMessage("ارز نامعتبر")
                 .Must((model, ratesCountryId)=>!dbContext.SubCustomerAccountRates
-                    .Include(a=>a.SubCustomerAccount).Any(a=>
+                    .Include(a=>a.SubCustomerAccount).Any(a =>
                    a.Id!=model.Id &&
+                   a.SubCustomerAccountId==model.SubCustomerAccountId &&
                    a.RatesCountryId==ratesCountryId)).WithMessage("حساب با این ارز قبلا اضافه شده است");
         }   
     }

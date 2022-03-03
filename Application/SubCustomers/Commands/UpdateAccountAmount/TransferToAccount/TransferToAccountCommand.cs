@@ -11,5 +11,6 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.TransferToAccoun
         public string Comment { get; set; }
         public Guid ToSubCustomerId { get; set; }
         public Guid ToSubCustomerAccountRateId { get; set; }
+        public int Type { get; set; }
     }
 }

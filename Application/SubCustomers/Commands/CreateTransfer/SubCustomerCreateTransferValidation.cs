@@ -54,10 +54,7 @@ namespace Application.SubCustomers.Commands.CreateTransfer
             RuleFor(a => a.Amount)
                 .Cascade(CascadeMode.Stop)
                 .NotNull().WithMessage("مقدار پول ارسالی ضروری میباشد")
-                .GreaterThan(10).WithMessage("کمتر از 10 مجاز نیست")
-                .Must((model,amount)=>dbContext.SubCustomerAccountRates.Any(a=>
-                    a.Id==model.SubCustomerAccountRateId &&
-                    a.Amount>= (amount+model.Fee))).WithMessage("این مقدار پول در حساب مشتری وجود ندارد");
+                .GreaterThan(10).WithMessage("کمتر از 10 مجاز نیست");
         }
     }
 }

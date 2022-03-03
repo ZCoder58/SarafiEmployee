@@ -8,19 +8,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.SubCustomers.Commands.Transactions.RollbackTransaction
 {
-    public class RollbackTransactionValidation:AbstractValidator<RollbackTransactionCommand>
+    public class RollbackTransactionValidation : AbstractValidator<RollbackTransactionCommand>
     {
-        public RollbackTransactionValidation(IApplicationDbContext dbContext,IHttpUserContext httpUserContext)
+        public RollbackTransactionValidation(IApplicationDbContext dbContext, IHttpUserContext httpUserContext)
         {
             RuleFor(a => a.TransactionId)
                 .NotEqual(Guid.Empty).WithMessage("ای دی ضروری میباشد")
-                .Must(transactionId => dbContext.SubCustomerTransactions.Include(a => a.SubCustomerAccountRate)
+                .Must((model, transactionId) => dbContext.SubCustomerTransactions.Include(a => a.SubCustomerAccountRate)
                     .ThenInclude(a => a.SubCustomerAccount).Any(a =>
-                        a.TransactionType!=SubCustomerTransactionTypes.TransferToAccount &&
-                        a.TransactionType!=SubCustomerTransactionTypes.ReceivedFromAccount &&
+                        (model.AllowTransferRollback || (a.TransactionType != SubCustomerTransactionTypes.Transfer &&
+                                                         a.TransactionType != SubCustomerTransactionTypes
+                                                             .TransferWithDebt)) &&
+                        a.TransactionType != SubCustomerTransactionTypes.ReceivedFromAccount &&
                         a.SubCustomerAccountRate.SubCustomerAccount.CustomerId ==
                         httpUserContext.GetCurrentUserId().ToGuid() &&
-                        a.CreatedDate.Value.Date>=DateTime.UtcNow.AddDays(-2).Date &&
+                        a.CreatedDate.Value.Date >= DateTime.UtcNow.AddDays(-2).Date &&
                         a.Id == transactionId)).WithMessage("درخواست نامعتبر");
         }
     }

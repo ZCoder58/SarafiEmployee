@@ -7,28 +7,28 @@ using Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.SubCustomers.Commands.UpdateAccountAmount.Withdrawal
+namespace Application.SubCustomers.Commands.UpdateAccountAmount.WithdrawalTransfer
 {
-    public class WithdrawalSubCustomerAccountAmountHandler : IRequestHandler<WithdrawalSubCustomerAccountAmountCommand>
+    public class WithdrawalTransferSubCustomerAccountAmountHandler : IRequestHandler<WithdrawalTransferSubCustomerAccountAmountCommand>
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IMediator _mediator;
 
-        public WithdrawalSubCustomerAccountAmountHandler(IApplicationDbContext dbContext, IMediator mediator)
+        public WithdrawalTransferSubCustomerAccountAmountHandler(IApplicationDbContext dbContext, IMediator mediator)
         {
             _dbContext = dbContext;
             _mediator = mediator;
         }
 
-        public async Task<Unit> Handle(WithdrawalSubCustomerAccountAmountCommand request,
+        public async Task<Unit> Handle(WithdrawalTransferSubCustomerAccountAmountCommand request,
             CancellationToken cancellationToken)
         {
             var targetSubCustomerAccountRate = _dbContext.SubCustomerAccountRates
                 .Include(a => a.RatesCountry)
                 .GetById(request.SubCustomerAccountRateId);
             var transactionType = targetSubCustomerAccountRate.Amount >= request.Amount
-                ? SubCustomerTransactionTypes.Withdrawal
-                : SubCustomerTransactionTypes.WithdrawalWithDebt;
+                ? SubCustomerTransactionTypes.Transfer
+                : SubCustomerTransactionTypes.TransferWithDebt;
             //update account amount
             targetSubCustomerAccountRate.Amount -= request.Amount;
             await _dbContext.SaveChangesAsync(cancellationToken);
@@ -38,7 +38,8 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.Withdrawal
                 Comment = request.Comment,
                 PriceName = targetSubCustomerAccountRate.RatesCountry.PriceName,
                 TransactionType = transactionType,
-                SubCustomerAccountRateId = request.SubCustomerAccountRateId
+                SubCustomerAccountRateId = request.SubCustomerAccountRateId,
+                TransferId = request.TransferId
             }, cancellationToken);
             return Unit.Value;
         }

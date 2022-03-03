@@ -13,5 +13,7 @@ namespace Domain.Entities
         public Transfer Transfer { get; set; }
         public Guid SubCustomerAccountRateId { get; set; }
         public SubCustomerAccountRate SubCustomerAccountRate { get; set; }
+        public Guid? ToSubCustomerAccountRateId { get; set; }
+        public SubCustomerAccountRate ToSubCustomerAccountRate { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace Application.SubCustomers.Commands.EditTransfer
         public double Amount { get; set; }
         public double Fee { get; set; } = 0;
         public double ReceiverFee { get; set; } = 0;
-        
+        public string Comment { get; set; }
         public Guid FriendId { get; set; }
         public Guid SubCustomerAccountId { get; set; }
         public Guid SubCustomerAccountRateId { get; set; }

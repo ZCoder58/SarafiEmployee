@@ -7,6 +7,7 @@ using Application.Customer.ExchangeRates.Extensions;
 using Application.Customer.Transfers.EventHandlers;
 using Application.SubCustomers.Commands.Transactions.RollbackTransaction;
 using Application.SubCustomers.Commands.UpdateAccountAmount.Withdrawal;
+using Application.SubCustomers.Commands.UpdateAccountAmount.WithdrawalTransfer;
 using Application.SubCustomers.Statics;
 using AutoMapper;
 using Domain.Interfaces;
@@ -59,9 +60,8 @@ namespace Application.SubCustomers.Commands.EditTransfer
             {
                 var lastSubCustomerTransaction = _dbContext.SubCustomerTransactions.FirstOrDefault(a=>
                     a.TransferId==targetTransfer.Id);
-                await _mediator.Send(new RollbackTransactionCommand(lastSubCustomerTransaction.Id), cancellationToken);
-                
-                await _mediator.Send(new WithdrawalSubCustomerAccountAmountCommand(request.SubCustomerAccountId,
+                await _mediator.Send(new RollbackTransactionCommand(lastSubCustomerTransaction.Id,true), cancellationToken);
+                await _mediator.Send(new WithdrawalTransferSubCustomerAccountAmountCommand(request.SubCustomerAccountId,
                     request.SubCustomerAccountRateId,
                     request.Amount + request.Fee,
                     string.Concat("برای حواله با کد نمبر ", targetTransfer.CodeNumber, "به ", 

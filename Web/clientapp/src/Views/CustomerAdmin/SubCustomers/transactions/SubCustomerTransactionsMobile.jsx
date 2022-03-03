@@ -2,6 +2,7 @@ import React from 'react'
 import { ListItem, Box, ListItemText, Stack, Chip, Table, TableBody, TableCell, TableHead, TableRow, Typography, ButtonGroup, IconButton, Button } from '@mui/material'
 import { NotExist, CDialog, AskDialog } from '../../../../ui-componets'
 import authAxiosApi from '../../../../axios'
+import { TransactionTypesStatics } from '../../../../helpers/statics'
 
 export default function SubCustomerTransactionsMobile({ transactions }) {
     const [infoOpen, setInfoOpen] = React.useState(false)
@@ -60,14 +61,25 @@ export default function SubCustomerTransactionsMobile({ transactions }) {
                                         secondary={
                                             <React.Fragment>
                                                 <Stack component="span" spacing={1} direction="column">
-                                                    <Typography variant="body2" component="span">نوعیت انتقال - {e.transactionType === 1 ?
-                                                        <Chip label="اضافه شده به حساب" component="span" size="small" color="primary"></Chip> :
-                                                        e.transactionType === 2 ?
-                                                            <Chip label="انتقال به حساب" component="span" size="small" color="warning"></Chip> :
-                                                            e.transactionType === 3 ?
-                                                                <Chip label="انتقال از حساب" component="span" size="small" color="success"></Chip> :
-                                                                <Chip label="برداشت از حساب" component="span" size="small" color="error"></Chip>
-                                                    }
+                                                    <Typography variant="body2" component="span">نوعیت انتقال -
+                                                        {e.transactionType === TransactionTypesStatics.Deposit ?
+                                                            <Chip label="اضافه شده به حساب" size="small" color="primary"></Chip> :
+                                                            e.transactionType === TransactionTypesStatics.Transfer ?
+                                                                <Chip label="ارسال حواله" size="small" color="info"></Chip> :
+                                                                e.transactionType === TransactionTypesStatics.TransferWithDebt ?
+                                                                    <Chip label="ارسال حواله به قرض" size="small" color="error"></Chip> :
+                                                                    e.transactionType === TransactionTypesStatics.TransferToAccount ?
+                                                                        <Chip label="انتقال به دیگر حساب" size="small" color="warning"></Chip> :
+                                                                        e.transactionType === TransactionTypesStatics.TransferToAccountWithDebt ?
+                                                                            <Chip label="انتقال به دیگر حساب به قرض" size="small" color="error"></Chip> :
+                                                                            e.transactionType === TransactionTypesStatics.ReceivedFromAccount ?
+                                                                                <Chip label="انتقال از دیگر حساب" size="small" color="success"></Chip> :
+                                                                                e.transactionType === TransactionTypesStatics.Withdrawal ?
+                                                                                    <Chip label="برداشت از حساب" size="small" color="info"></Chip> :
+                                                                                    e.transactionType === TransactionTypesStatics.WithdrawalWithDebt ?
+                                                                                        <Chip label="برداشت از حساب به قرض" size="small" color="error"></Chip> :
+                                                                                        <Chip label="برداشت از حساب" size="small" color="error"></Chip>
+                                                        }
                                                     </Typography>
                                                     <Typography variant="body2" component="span">تاریخ انتقال - {new Date(e.createdDate).toLocaleDateString()}</Typography>
                                                     <Stack component="span" direction="row">

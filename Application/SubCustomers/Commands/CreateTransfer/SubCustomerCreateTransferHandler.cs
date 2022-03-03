@@ -9,6 +9,7 @@ using Application.Customer.Transfers.EventHandlers;
 using Application.Customer.Transfers.Statics;
 using Application.SubCustomers.Commands.UpdateAccountAmount.Deposit;
 using Application.SubCustomers.Commands.UpdateAccountAmount.Withdrawal;
+using Application.SubCustomers.Commands.UpdateAccountAmount.WithdrawalTransfer;
 using Application.SubCustomers.Statics;
 using AutoMapper;
 using Domain.Entities;
@@ -55,7 +56,8 @@ namespace Application.SubCustomers.Commands.CreateTransfer
             newTransfer.AccountType =TransferAccountTypesStatic.SubCustomerAccount;
             await _dbContext.Transfers.AddAsync(newTransfer, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            await _mediator.Send(new WithdrawalSubCustomerAccountAmountCommand(
+           
+            await _mediator.Send(new WithdrawalTransferSubCustomerAccountAmountCommand(
                 request.SubCustomerAccountId,
                 request.SubCustomerAccountRateId,
                 request.Amount + request.Fee,

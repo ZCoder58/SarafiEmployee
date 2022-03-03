@@ -112,7 +112,7 @@ export default function SubCustomerEditTransfer() {
    
     return (
         <CCard
-            title="فورم ثبت حواله جدید"
+            title="فورم ویرایش حواله مشتری"
             headerIcon={<SyncAltOutlinedIcon />}
             enableActions={true}
             actions={<IconButton onClick={() => navigate("/customer/transfers")}>

@@ -145,7 +145,8 @@ namespace Application.Common.Mappers
             CreateMap<SubCustomerTransaction,SubCustomerTransactionDTo>()
                 .ForMember(dist=>dist.CanRollback,option=>
                     option.MapFrom(source=>
-                        source.TransactionType!=SubCustomerTransactionTypes.TransferToAccount &&
+                        source.TransactionType!=SubCustomerTransactionTypes.Transfer &&
+                        source.TransactionType!=SubCustomerTransactionTypes.TransferWithDebt &&
                         source.TransactionType!=SubCustomerTransactionTypes.ReceivedFromAccount &&
                         source.CreatedDate.Value.Date>=DateTime.UtcNow.AddDays(-2).Date));
             CreateMap<CreateTransactionCommand, SubCustomerTransaction>();

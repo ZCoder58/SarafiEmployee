@@ -108,7 +108,7 @@ export default function VCEditTransfer() {
     return (
         loading ? <SkeletonFull /> :
             <CCard
-                title="فورم ثبت حواله جدید"
+                title="فورم ویرایش حواله "
                 headerIcon={<SyncAltOutlinedIcon />}
                 enableActions={true}
                 actions={<IconButton onClick={() => navigate("/customer/transfers")}>

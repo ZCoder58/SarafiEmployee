@@ -64,31 +64,30 @@ namespace Application.SubCustomers.Commands.EditTransfer
             RuleFor(a => a.Amount)
                 .Cascade(CascadeMode.Stop)
                 .NotNull().WithMessage("مقدار پول ارسالی ضروری میباشد")
-                .GreaterThan(10).WithMessage("کمتر از 10 مجاز نیست")
-                .Must(ValidAmount).WithMessage("این مقدار پول در حساب مشتری وجود ندارد");
-            
+                .GreaterThan(10).WithMessage("کمتر از 10 مجاز نیست");
+
         }
 
-        public bool ValidAmount(SubCustomerEditTransferCommand model, double amount)
-        {
-            var targetTransfer = _dbContext.Transfers.GetById(model.Id);
-            var lastSubCustomerAccountRate = _dbContext.SubCustomerAccountRates
-                .Include(a=>a.RatesCountry)
-                .FirstOrDefault(a => 
-                    a.SubCustomerAccountId==targetTransfer.SubCustomerAccountId &&
-                    a.RatesCountry.PriceName == targetTransfer.FromCurrency);
-            var newSubCustomerAccountRate = _dbContext.SubCustomerAccountRates
-                .Include(a=>a.RatesCountry)
-                .FirstOrDefault(a => 
-                    a.SubCustomerAccountId==targetTransfer.SubCustomerAccountId &&
-                    a.Id==model.SubCustomerAccountRateId);
-            if (lastSubCustomerAccountRate.Id == newSubCustomerAccountRate.Id)
-            {
-                return (lastSubCustomerAccountRate.Amount + (targetTransfer.SourceAmount + targetTransfer.Fee)) >=
-                       (model.Amount + model.Fee);
-            }
-
-            return newSubCustomerAccountRate.Amount >= model.Amount+model.Fee;
-        }
+        // public bool ValidAmount(SubCustomerEditTransferCommand model, double amount)
+        // {
+        //     var targetTransfer = _dbContext.Transfers.GetById(model.Id);
+        //     var lastSubCustomerAccountRate = _dbContext.SubCustomerAccountRates
+        //         .Include(a=>a.RatesCountry)
+        //         .FirstOrDefault(a => 
+        //             a.SubCustomerAccountId==targetTransfer.SubCustomerAccountId &&
+        //             a.RatesCountry.PriceName == targetTransfer.FromCurrency);
+        //     var newSubCustomerAccountRate = _dbContext.SubCustomerAccountRates
+        //         .Include(a=>a.RatesCountry)
+        //         .FirstOrDefault(a => 
+        //             a.SubCustomerAccountId==targetTransfer.SubCustomerAccountId &&
+        //             a.Id==model.SubCustomerAccountRateId);
+        //     if (lastSubCustomerAccountRate.Id == newSubCustomerAccountRate.Id)
+        //     {
+        //         return (lastSubCustomerAccountRate.Amount + (targetTransfer.SourceAmount + targetTransfer.Fee)) >=
+        //                (model.Amount + model.Fee);
+        //     }
+        //
+        //     return newSubCustomerAccountRate.Amount >= model.Amount+model.Fee;
+        // }
     }
 }

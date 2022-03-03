@@ -5,6 +5,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Util from '../../../../helpers/Util';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 import authAxiosApi from '../../../../axios';
+import { TransactionTypesStatics } from '../../../../helpers/statics';
 export default function SubCustomerTransactionsDesktop({ transactions=[] }) {
     const [infoOpen, setInfoOpen] = React.useState(false)
     const [infoData, setInfoData] = React.useState(null)
@@ -66,12 +67,22 @@ export default function SubCustomerTransactionsDesktop({ transactions=[] }) {
                                 {e.amount} {e.priceName}
                             </TableCell>
                             <TableCell>
-                                {e.transactionType === 1 ?
+                                {e.transactionType === TransactionTypesStatics.Deposit ?
                                     <Chip label="اضافه شده به حساب" size="small" color="primary"></Chip> :
-                                    e.transactionType === 2?
-                                    <Chip label="انتقال به حساب" size="small" color="warning"></Chip>:
-                                    e.transactionType === 3?
-                                    <Chip label="انتقال از حساب" size="small" color="success"></Chip>:
+                                    e.transactionType === TransactionTypesStatics.Transfer?
+                                    <Chip label="ارسال حواله" size="small" color="info"></Chip>:
+                                    e.transactionType === TransactionTypesStatics.TransferWithDebt?
+                                    <Chip label="ارسال حواله به قرض" size="small" color="error"></Chip>:
+                                    e.transactionType === TransactionTypesStatics.TransferToAccount?
+                                    <Chip label="انتقال به دیگر حساب" size="small" color="warning"></Chip>:
+                                    e.transactionType === TransactionTypesStatics.TransferToAccountWithDebt?
+                                    <Chip label="انتقال به دیگر حساب به قرض" size="small" color="error"></Chip>:
+                                    e.transactionType === TransactionTypesStatics.ReceivedFromAccount?
+                                    <Chip label="انتقال از دیگر حساب" size="small" color="success"></Chip>:
+                                    e.transactionType === TransactionTypesStatics.Withdrawal?
+                                    <Chip label="برداشت از حساب" size="small" color="info"></Chip>:
+                                    e.transactionType === TransactionTypesStatics.WithdrawalWithDebt?
+                                    <Chip label="برداشت از حساب به قرض" size="small" color="error"></Chip>:
                                     <Chip label="برداشت از حساب" size="small" color="error"></Chip>
                                     }
                             </TableCell>

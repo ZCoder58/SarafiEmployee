@@ -11,13 +11,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.SubCustomers.Commands.UpdateAccountAmount.TransferToAccount
 {
-    public class TransferToAmountHandler : IRequestHandler<TransferToAccountCommand>
+    public class TransferToAccountHandler : IRequestHandler<TransferToAccountCommand>
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IHttpUserContext _httpUserContext;
         private readonly IMediator _mediator;
 
-        public TransferToAmountHandler(IApplicationDbContext dbContext, IHttpUserContext httpUserContext,
+        public TransferToAccountHandler(IApplicationDbContext dbContext, IHttpUserContext httpUserContext,
             IMediator mediator)
         {
             _dbContext = dbContext;
@@ -34,7 +34,9 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.TransferToAccoun
             var targetToSubCustomerAccountRate = _dbContext.SubCustomerAccountRates
                 .Include(a => a.RatesCountry)
                 .GetById(request.ToSubCustomerAccountRateId);
-
+            var transactionType = targetSubCustomerAccountRate.Amount >= request.Amount
+                ? SubCustomerTransactionTypes.TransferToAccount
+                : SubCustomerTransactionTypes.TransferToAccountWithDebt;
             //update subCustomerAccount amount 
             targetSubCustomerAccountRate.Amount -= request.Amount;
             //update toSubCustomerAccount amount
@@ -51,8 +53,9 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.TransferToAccoun
                 Amount = request.Amount,
                 Comment = request.Comment,
                 PriceName = targetSubCustomerAccountRate.RatesCountry.PriceName,
-                TransactionType = SubCustomerTransactionTypes.TransferToAccount,
-                SubCustomerAccountRateId = request.SubCustomerAccountRateId
+                TransactionType = transactionType,
+                SubCustomerAccountRateId = request.SubCustomerAccountRateId,
+                ToSubCustomerAccountRateId = request.ToSubCustomerAccountRateId
             }, cancellationToken);
             // add receiver transaction
             await _mediator.Send(new CreateTransactionCommand()

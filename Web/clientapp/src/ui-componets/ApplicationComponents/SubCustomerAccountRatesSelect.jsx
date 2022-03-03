@@ -65,7 +65,7 @@ export default function SubCustomerAccountRatesSelect({subCustomerId,defaultAcco
                 </ListItem>}
         />
 
-       {value&&value.amount===0?
+       {value&&value.amount<1?
         <>
         <Typography variant="caption" color="error" >{value&&`موجودی حساب : ${value.amount} ${value.priceName}`}</Typography>
         <Alert severity='warning'>
