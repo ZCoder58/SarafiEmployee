@@ -3,6 +3,8 @@ import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlin
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
+import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 const common = {
   title: "عمومی",
   type: "group",
@@ -48,6 +50,29 @@ const common = {
       type: "item",
       icon: BadgeOutlinedIcon,
       url:"subCustomers"
+    },
+    {
+      title: "حسابات من",
+      type: "item",
+      icon: AccountBalanceWalletOutlinedIcon,
+      url:"accounts"
+    },
+    {
+      title:"بیلانس ها",
+      type:"collapse",
+      icon:DescriptionOutlinedIcon,
+      children:[
+        {
+          title:"بیلانس حواله ها",
+          type:"item",
+          url:"transfers/bills"
+        },
+        {
+          title:"بیلانس رسید و برد",
+          type:"item",
+          url:"subCustomers/bills"
+        }
+      ]
     },
   ]
 };

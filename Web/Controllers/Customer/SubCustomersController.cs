@@ -126,5 +126,11 @@ namespace Web.Controllers.Customer
         {
             return Mediator.Send(new GetSubCustomerEditTransferQuery(id));
         }
+        
+        [HttpGet("bills")]
+        public Task<List<SubCustomerBillsDTo>> GetBills(DateTime fromDate,DateTime toDate,Guid subCustomerId)
+        {
+            return Mediator.Send(new GetSubCustomersBillsQuery(fromDate,toDate,subCustomerId));
+        }
     }
 }

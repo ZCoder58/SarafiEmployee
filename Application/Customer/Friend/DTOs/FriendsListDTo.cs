@@ -11,8 +11,10 @@ namespace Application.Customer.Friend.DTOs
         public string CustomerFriendLastName { get; set; }
         public string CustomerFriendPhoto { get; set; }
         public string CustomerFriendCity { get; set; }
+        public string CompanyAgencyName { get; set; }
         public string CustomerFriendDetailedAddress { get; set; }
         public string CustomerFriendCountryName { get; set; }
+        public bool IsEmployee { get; set; }
         public int State { get; set; }
     }
 }

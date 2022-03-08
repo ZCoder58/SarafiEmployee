@@ -58,64 +58,57 @@ export default function COutbox() {
         )
     }, [])
     return (
-        <Grid container spacing={2}>
-            <Grid item lg={12} md={12} sm={12} xs={12}>
-                <Box component="form" noValidate onSubmit={formik.handleSubmit}>
-                    <Grid container spacing={1}>
-                        <Grid item lg={4} md={4} sm={6} xs={12}>
-
-                            <CDateTimeRange
-                                value={[formik.values.fromDate, formik.values.toDate]}
-                                onChange={(start, end) => {
-                                    formik.setFieldValue("fromDate", start)
-                                    formik.setFieldValue("toDate", end)
-                                }}
-                                startOptions={{
-                                    error: formik.errors.fromDate ? true : false,
-                                    helperText: formik.errors.fromDate,
-                                    required: true,
-                                    name: "fromDate",
-                                    size: "small",
-                                    variant: "outlined"
-                                }}
-                                endOptions={{
-                                    error: formik.errors.toDate ? true : false,
-                                    helperText: formik.errors.toDate,
-                                    required: true,
-                                    name: "toDate",
-                                    size: "small",
-                                    variant: "outlined"
-                                }}
-                            />
-                        </Grid>
-                        <Grid item lg={4} md={4} sm={6} xs={12}>
-                            <SearchFriendDropdown
-                                error={formik.errors.friendId ? true : false}
-                                helperText={formik.errors.friendId}
-                                required
-                                name="friendId"
-                                onValueChange={(v) => formik.setFieldValue("friendId", v ? v.id : undefined)}
-                                size="small"
-                                label="انتخاب همکار" />
-
-                        </Grid>
-                        <Grid item lg={12} md={12} sm={12} xs={12}>
-                            <LoadingButton
-                                loading={formik.isSubmitting}
-                                loadingPosition='start'
-                                variant='contained'
-                                color='primary'
-                                startIcon={<SearchOutlined />}
-                                type='submit'
-                                size="small"
-                            >
-                                جستجو
-                            </LoadingButton>
-                        </Grid>
+        <>
+        <Box component="form" noValidate onSubmit={formik.handleSubmit}>
+                <Grid container spacing={2}>
+                    <CDateTimeRange
+                        value={[formik.values.fromDate, formik.values.toDate]}
+                        onChange={(start, end) => {
+                            formik.setFieldValue("fromDate", start)
+                            formik.setFieldValue("toDate", end)
+                        }}
+                        startOptions={{
+                            error: formik.errors.fromDate ? true : false,
+                            helperText: formik.errors.fromDate,
+                            required: true,
+                            name: "fromDate",
+                            size: "small"
+                        }}
+                        endOptions={{
+                            error: formik.errors.toDate ? true : false,
+                            helperText: formik.errors.toDate,
+                            required: true,
+                            name: "toDate",
+                            size: "small"
+                        }}
+                    />
+                    <Grid item lg={4} md={4} sm={6} xs={12}>
+                        <SearchFriendDropdown
+                            error={formik.errors.friendId ? true : false}
+                            helperText={formik.errors.friendId}
+                            required
+                            name="friendId"
+                            onValueChange={(v) => formik.setFieldValue("friendId", v ? v.id : undefined)}
+                            size="small"
+                            label="انتخاب همکار" />
+                    </Grid>
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <LoadingButton
+                            loading={formik.isSubmitting}
+                            loadingPosition='start'
+                            variant='contained'
+                            color='primary'
+                            size='small'
+                            startIcon={<SearchOutlined/>}
+                            type='submit'
+                        >
+                            جستجو
+                        </LoadingButton>
                     </Grid>
 
-                </Box>
-            </Grid>
+                </Grid>
+            </Box>
+        <Grid container spacing={2}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
                 {loading ? <SkeletonFull /> :
                     <TableContainer>
@@ -123,5 +116,6 @@ export default function COutbox() {
                     </TableContainer>}
             </Grid>
         </Grid>
+        </>
     )
 }

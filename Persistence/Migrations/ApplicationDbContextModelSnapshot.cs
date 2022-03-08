@@ -45,6 +45,31 @@ namespace Persistence.Migrations
                     b.ToTable("AdminUsers");
                 });
 
+            modelBuilder.Entity("Domain.Entities.CompanyAgency", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CompanyInfoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyInfoId");
+
+                    b.ToTable("CompanyAgencies");
+                });
+
             modelBuilder.Entity("Domain.Entities.CompanyInfo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -105,6 +130,9 @@ namespace Persistence.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("CompanyAgencyId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -158,6 +186,8 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyAgencyId");
+
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("CountryId");
@@ -171,8 +201,8 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("Amount")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -193,6 +223,50 @@ namespace Persistence.Migrations
                     b.HasIndex("RatesCountryId");
 
                     b.ToTable("CustomerAccounts");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CustomerAccountTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CustomerAccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PriceName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ToCustomerAccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("TransferId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerAccountId");
+
+                    b.HasIndex("ToCustomerAccountId");
+
+                    b.HasIndex("TransferId");
+
+                    b.ToTable("CustomerAccountTransactions");
                 });
 
             modelBuilder.Entity("Domain.Entities.CustomerExchangeRate", b =>
@@ -397,6 +471,9 @@ namespace Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CodeNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedDate")
@@ -611,6 +688,17 @@ namespace Persistence.Migrations
                     b.ToTable("Transfers");
                 });
 
+            modelBuilder.Entity("Domain.Entities.CompanyAgency", b =>
+                {
+                    b.HasOne("Domain.Entities.CompanyInfo", "CompanyInfo")
+                        .WithMany()
+                        .HasForeignKey("CompanyInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CompanyInfo");
+                });
+
             modelBuilder.Entity("Domain.Entities.CompanyInfo", b =>
                 {
                     b.HasOne("Domain.Entities.EmployeeSetting", "EmployeeSetting")
@@ -624,6 +712,10 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Customer", b =>
                 {
+                    b.HasOne("Domain.Entities.CompanyAgency", "CompanyAgency")
+                        .WithMany("Customers")
+                        .HasForeignKey("CompanyAgencyId");
+
                     b.HasOne("Domain.Entities.CompanyInfo", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId");
@@ -635,6 +727,8 @@ namespace Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
+
+                    b.Navigation("CompanyAgency");
 
                     b.Navigation("Country");
                 });
@@ -656,6 +750,29 @@ namespace Persistence.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("RatesCountry");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CustomerAccountTransaction", b =>
+                {
+                    b.HasOne("Domain.Entities.CustomerAccount", "CustomerAccount")
+                        .WithMany()
+                        .HasForeignKey("CustomerAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.CustomerAccount", "ToCustomerAccount")
+                        .WithMany()
+                        .HasForeignKey("ToCustomerAccountId");
+
+                    b.HasOne("Domain.Entities.Transfer", "Transfer")
+                        .WithMany()
+                        .HasForeignKey("TransferId");
+
+                    b.Navigation("CustomerAccount");
+
+                    b.Navigation("ToCustomerAccount");
+
+                    b.Navigation("Transfer");
                 });
 
             modelBuilder.Entity("Domain.Entities.CustomerExchangeRate", b =>
@@ -744,7 +861,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.SubCustomerTransaction", b =>
                 {
                     b.HasOne("Domain.Entities.SubCustomerAccountRate", "SubCustomerAccountRate")
-                        .WithMany()
+                        .WithMany("SubCustomerTransactions")
                         .HasForeignKey("SubCustomerAccountRateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -787,9 +904,19 @@ namespace Persistence.Migrations
                     b.Navigation("SubCustomerAccount");
                 });
 
+            modelBuilder.Entity("Domain.Entities.CompanyAgency", b =>
+                {
+                    b.Navigation("Customers");
+                });
+
             modelBuilder.Entity("Domain.Entities.SubCustomerAccount", b =>
                 {
                     b.Navigation("SubCustomerAccountRates");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SubCustomerAccountRate", b =>
+                {
+                    b.Navigation("SubCustomerTransactions");
                 });
 #pragma warning restore 612, 618
         }

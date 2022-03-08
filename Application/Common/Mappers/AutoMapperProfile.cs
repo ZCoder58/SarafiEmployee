@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Linq;
+using Application.Common.Statics;
+using Application.Company.Agencies.DTOs;
 using Application.Company.Employees.Commands.CreateEmployees;
 using Application.Company.Employees.Commands.EditEmployees;
 using Application.Company.Employees.DTOs;
 using Application.Countries.DTOs;
+using Application.Customer.CustomerAccounts.Commands.CreateAccountRate;
+using Application.Customer.CustomerAccounts.Commands.Transactions.CreateTransaction;
+using Application.Customer.CustomerAccounts.DTOs;
 using Application.Customer.ExchangeRates.Commands.UpdateExchangeRate;
 using Application.Customer.ExchangeRates.DTos;
 using Application.Customer.Friend.DTOs;
@@ -84,7 +89,9 @@ namespace Application.Common.Mappers
 
             #region friends
 
-            CreateMap<Friend, FriendsListDTo>();
+            CreateMap<Friend, FriendsListDTo>()
+                .ForMember(dist=>dist.IsEmployee,option=>
+                    option.MapFrom(source=>source.CustomerFriend.UserType==UserTypes.EmployeeType));
             CreateMap<Friend, FriendRequestDTo>();
             CreateMap<Friend, SearchFriendDTo>();
 
@@ -129,7 +136,21 @@ namespace Application.Common.Mappers
             CreateMap<SubCustomerAccount,SubCustomerAccountDropdownListDTo>();
 
             #endregion
-
+            #region CustomerAccountRate
+            
+            CreateMap<CustomerAccount,CustomerAccountRateDTo>()
+                .ForMember(dist=>dist.PriceName,option=>
+                    option.MapFrom(source=>source.RatesCountry.PriceName));
+            CreateMap<CreateCustomerAccountRateCommand,CustomerAccount>();
+            CreateMap<CreateCustomerTransactionCommand,CustomerAccountTransaction>();
+            CreateMap<CustomerAccountTransaction,CustomerAccountTransactionDTo>()
+                .ForMember(dist=>dist.CanRollback,option=>
+                    option.MapFrom(source=>
+                        source.TransactionType!=TransactionTypes.Transfer &&
+                        source.TransactionType!=TransactionTypes.ReceivedFromAccount &&
+                        source.CreatedDate.Value.Date>=DateTime.UtcNow.AddDays(-2).Date));
+            // CreateMap<CustomerAccount,EditCustomerAccountRateDTo>();
+            #endregion
             #region SubCustomerAccountRate
             
             CreateMap<SubCustomerAccountRate,SubCustomerAccountRateDTo>()
@@ -145,12 +166,21 @@ namespace Application.Common.Mappers
             CreateMap<SubCustomerTransaction,SubCustomerTransactionDTo>()
                 .ForMember(dist=>dist.CanRollback,option=>
                     option.MapFrom(source=>
-                        source.TransactionType!=SubCustomerTransactionTypes.Transfer &&
-                        source.TransactionType!=SubCustomerTransactionTypes.TransferWithDebt &&
-                        source.TransactionType!=SubCustomerTransactionTypes.ReceivedFromAccount &&
+                        source.TransactionType!=TransactionTypes.Transfer &&
+                        source.TransactionType!=TransactionTypes.TransferWithDebt &&
+                        source.TransactionType!=TransactionTypes.ReceivedFromAccount &&
                         source.CreatedDate.Value.Date>=DateTime.UtcNow.AddDays(-2).Date));
             CreateMap<CreateTransactionCommand, SubCustomerTransaction>();
 
+            #endregion
+
+            #region CompanyAgency
+
+            CreateMap<CompanyAgency,AgenciesSelectDTo>();
+            CreateMap<CompanyAgency,AgencyEditDTo>();
+            CreateMap<CompanyAgency, AgenciesTableDto>()
+                .ForMember(dist=>dist.TotalEmployees,option=>
+                    option.MapFrom(source=>source.Customers.Count() ));
             #endregion
             #region customerProfile
 

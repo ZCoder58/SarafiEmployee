@@ -10,11 +10,10 @@ namespace Application.Company.Employees.DTOs
         public string FatherName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string City { get; set; }
         public string DetailedAddress { get; set; }
         public Guid CountryId { get; set; }
         public string Photo { get; set; }
         public bool IsActive { get; set; }
-
+        public Guid CompanyAgencyId { get; set; }
     }
 }

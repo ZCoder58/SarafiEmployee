@@ -29,11 +29,9 @@ export default function themeComponents(theme) {
           '& [data-tag]':{
             width:"100%"
           },
-          // '& .rdt_TableCell':{
-          //   paddingRight:8,
-          //   paddingLeft:8
-
-          // }
+          '& .rdt_TableCell':{
+            paddingTop:10,
+          }
         }
       }
     },
@@ -120,12 +118,14 @@ export default function themeComponents(theme) {
     // },
     MuiTableCell:{
       styleOverrides:{
-        
-         '& .MuiListItem-root':{
-           paddingLeft:0,
-           paddingRight:0
-         
+        root:{
+          '& .MuiListItem-root':{
+            paddingLeft:0,
+            paddingRight:0
+          
+         }
         }
+        
       }
     },
     MuiDialogTitle:{

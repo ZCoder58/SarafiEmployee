@@ -22,16 +22,16 @@ namespace Application.SubCustomers.Commands.Transactions.RollbackTransaction
         {
             var targetTransaction = _dbContext.SubCustomerTransactions.GetById(request.TransactionId);
             var targetSubCustomerAccountRate = _dbContext.SubCustomerAccountRates.GetById(targetTransaction.SubCustomerAccountRateId);
-            if (targetTransaction.TransactionType == SubCustomerTransactionTypes.Withdrawal || 
-                targetTransaction.TransactionType == SubCustomerTransactionTypes.Transfer ||
-                targetTransaction.TransactionType == SubCustomerTransactionTypes.TransferWithDebt ||
-                targetTransaction.TransactionType == SubCustomerTransactionTypes.WithdrawalWithDebt ||
-                targetTransaction.TransactionType == SubCustomerTransactionTypes.TransferToAccountWithDebt ||
-                targetTransaction.TransactionType == SubCustomerTransactionTypes.TransferToAccount)
+            if (targetTransaction.TransactionType == TransactionTypes.Withdrawal || 
+                targetTransaction.TransactionType == TransactionTypes.Transfer ||
+                targetTransaction.TransactionType == TransactionTypes.TransferWithDebt ||
+                targetTransaction.TransactionType == TransactionTypes.WithdrawalWithDebt ||
+                targetTransaction.TransactionType == TransactionTypes.TransferToAccountWithDebt ||
+                targetTransaction.TransactionType == TransactionTypes.TransferToAccount)
             {
                 targetSubCustomerAccountRate.Amount += targetTransaction.Amount;
-                if (targetTransaction.TransactionType == SubCustomerTransactionTypes.TransferToAccountWithDebt ||
-                    targetTransaction.TransactionType == SubCustomerTransactionTypes.TransferToAccount)
+                if (targetTransaction.TransactionType == TransactionTypes.TransferToAccountWithDebt ||
+                    targetTransaction.TransactionType == TransactionTypes.TransferToAccount)
                 {
                     var targetToSubCustomerAccountRate =
                         _dbContext.SubCustomerAccountRates.GetById(

@@ -19,13 +19,16 @@ const initialModel = {
     phone: "",
     address: "",
     sId: "",
+    codeNumber:""
 }
 const validationSchema = Yup.object().shape({
     name: Yup.string().required('نام ضروری میباشد'),
     fatherName: Yup.string().required('نام پدر ضروری میباشد'),
     phone: Yup.string().required('شماره تماس ضروری میباشد'),
     sId: Yup.string().required('شماره تذکره ضروری میباشد'),
-    address: Yup.string().required('آدرس مشتری ضروری میباشد')
+    address: Yup.string().required('آدرس مشتری ضروری میباشد'),
+    codeNumber: Yup.string().required('کد نمبر مشتری ضروری میباشد')
+
 });
 export default function VCSubCustomersEdit() {
     const navigate = useNavigate()
@@ -108,7 +111,7 @@ export default function VCSubCustomersEdit() {
                                 label='شماره تماس'
                                 type='text'
                                 required
-                                value={formik.values.phone}
+                                defaultValue={formik.values.phone}
                                 error={formik.errors.phone ? true : false}
                                 onChange={formik.handleChange}
                             />
@@ -117,13 +120,25 @@ export default function VCSubCustomersEdit() {
                                 name='sId'
                                 helperText={formik.errors.sId}
                                 size='small'
-                                value={formik.values.sId}
+                                defaultValue={formik.values.sId}
                                 label='نمبر تذکره'
                                 type='text'
                                 required
                                 error={formik.errors.sId ? true : false}
                                 onChange={formik.handleChange}
                             />
+                            <TextField
+                            variant='outlined'
+                            name='codeNumber'
+                            helperText={formik.errors.codeNumber}
+                            defaultValue={formik.values.codeNumber}
+                            size='small'
+                            label='کد نمبر'
+                            type='text'
+                            required
+                            error={formik.errors.codeNumber ? true : false}
+                            onChange={formik.handleChange}
+                        />
                         </Grid>
                         <Grid item lg={12} md={12} sm={12} xs={12}>
                             <TextField

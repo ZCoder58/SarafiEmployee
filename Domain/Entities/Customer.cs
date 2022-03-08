@@ -27,6 +27,8 @@ namespace Domain.Entities
         public string UserType { get; set; }
         public Guid? CompanyId { get; set; }
         public CompanyInfo Company { get; set; }
+        public Guid? CompanyAgencyId { get; set; }
+        public CompanyAgency CompanyAgency { get; set; }
         
     }
 }

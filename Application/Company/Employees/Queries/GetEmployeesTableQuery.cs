@@ -8,6 +8,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Company.Employees.Queries
 {

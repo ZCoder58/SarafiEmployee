@@ -4,6 +4,7 @@ import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
+import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 const common = {
   title: "عمومی",
   type: "group",
@@ -65,6 +66,12 @@ const common = {
       type: "item",
       icon: BadgeOutlinedIcon,
       url:"subCustomers"
+    },
+    {
+      title: "نمایندگی ها",
+      type: "item",
+      icon: AccountTreeOutlinedIcon,
+      url:"agencies"
     },
   ]
 };

@@ -14,6 +14,7 @@ using Application.Customer.Transfers.Queries.GetInTransfersReport;
 using Application.Customer.Transfers.Queries.GetOutTransfersReport;
 using Application.Customer.Transfers.Queries.GetTransferDetailInbox;
 using Application.Customer.Transfers.Queries.GetTransferDetailOutbox;
+using Application.Customer.Transfers.Queries.GetTransfersBills;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
@@ -101,6 +102,11 @@ namespace Web.Controllers.Customer
         public Task<List<TransferOutReportDTo>> GetOutReport(DateTime fromDate,DateTime toDate,Guid friendId)
         {
             return Mediator.Send(new GetOutTransfersReportQuery(fromDate,toDate,friendId));
+        }
+        [HttpGet("bills")]
+        public Task<List<TransfersBillsDTo>> GetBills(DateTime fromDate,DateTime toDate,Guid friendId)
+        {
+            return Mediator.Send(new GetTransfersBillsQuery(fromDate,toDate,friendId));
         }
     }
 }

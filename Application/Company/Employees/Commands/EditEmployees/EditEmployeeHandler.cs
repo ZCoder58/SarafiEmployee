@@ -31,7 +31,6 @@ namespace Application.Company.Employees.Commands.EditEmployees
             {
                 targetEmployee.Photo=await request.PhotoFile.SaveToAsync(CustomerStatics.PhotoSavePath(targetEmployee.Id));
             }
-            
             await _dbContext.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }

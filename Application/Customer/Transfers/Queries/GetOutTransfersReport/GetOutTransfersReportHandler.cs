@@ -32,9 +32,9 @@ namespace Application.Customer.Transfers.Queries.GetOutTransfersReport
                 var inReportFriend= _dbContext.Transfers
                     .Where(a =>
                         a.ReceiverId == _httpUserContext.GetCurrentUserId().ToGuid() &&
-                        a.CompleteDate.Value.Date >= request.FromDate.Date &&
                         a.SenderId == targetFriend.CustomerFriendId.ToGuid() &&
                         a.State==TransfersStatusTypes.Completed&&
+                        a.CompleteDate.Value.Date >= request.FromDate.Date &&
                         a.CompleteDate.Value.Date <= request.ToDate.Date).ToList()
                     .GroupBy(a => a.ToCurrency)
                     .Select(a => new TransferOutReportDTo()
@@ -50,8 +50,8 @@ namespace Application.Customer.Transfers.Queries.GetOutTransfersReport
             var inReportGlobal= _dbContext.Transfers
                 .Where(a =>
                     a.ReceiverId == _httpUserContext.GetCurrentUserId().ToGuid() &&
-                    a.CompleteDate.Value.Date >= request.FromDate.Date &&
                     a.State==TransfersStatusTypes.Completed&&
+                    a.CompleteDate.Value.Date >= request.FromDate.Date &&
                     a.CompleteDate.Value.Date <= request.ToDate.Date).ToList()
                 .GroupBy(a => a.ToCurrency)
                 .Select(a => new TransferOutReportDTo()

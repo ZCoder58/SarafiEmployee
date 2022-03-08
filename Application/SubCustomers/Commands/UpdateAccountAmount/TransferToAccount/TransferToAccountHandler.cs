@@ -35,8 +35,8 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.TransferToAccoun
                 .Include(a => a.RatesCountry)
                 .GetById(request.ToSubCustomerAccountRateId);
             var transactionType = targetSubCustomerAccountRate.Amount >= request.Amount
-                ? SubCustomerTransactionTypes.TransferToAccount
-                : SubCustomerTransactionTypes.TransferToAccountWithDebt;
+                ? TransactionTypes.TransferToAccount
+                : TransactionTypes.TransferToAccountWithDebt;
             //update subCustomerAccount amount 
             targetSubCustomerAccountRate.Amount -= request.Amount;
             //update toSubCustomerAccount amount
@@ -71,7 +71,7 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.TransferToAccoun
                     targetSubCustomerAccountRate.SubCustomerAccount.FatherName,
                     " به این اکانت انتقال داده شد"),
                 PriceName = targetToSubCustomerAccountRate.RatesCountry.PriceName,
-                TransactionType = SubCustomerTransactionTypes.ReceivedFromAccount,
+                TransactionType = TransactionTypes.ReceivedFromAccount,
                 SubCustomerAccountRateId = request.ToSubCustomerAccountRateId
             }, cancellationToken);
             return Unit.Value;

@@ -6,6 +6,15 @@ namespace Application.Customer.Friend.Extensions
 {
     public static class FriendsExtension
     {
+        public static bool IsApprovedCustomersFriend(this IQueryable<Domain.Entities.Friend> friends,Guid whoCustomerId,Guid withCustomerId)
+        {
+            var result= friends.Any(a =>
+                (a.CustomerId == whoCustomerId &&
+                 a.CustomerFriendId==withCustomerId) ||
+                (a.CustomerId == withCustomerId &&
+                 a.CustomerFriendId == whoCustomerId));
+            return result;
+        }
         public static bool IsCustomersFriend(this IQueryable<Domain.Entities.Friend> friends,Guid whoCustomerId,Guid withCustomerId)
         {
             var result= friends.Any(a =>

@@ -33,7 +33,7 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.Deposit
                     Amount = request.Amount,
                     Comment = request.Comment,
                     PriceName = targetSubCustomerAccountRate.RatesCountry.PriceName,
-                    TransactionType = SubCustomerTransactionTypes.Deposit,
+                    TransactionType = TransactionTypes.Deposit,
                     SubCustomerAccountRateId = request.SubCustomerAccountRateId
                 }, cancellationToken);
             return Unit.Value;

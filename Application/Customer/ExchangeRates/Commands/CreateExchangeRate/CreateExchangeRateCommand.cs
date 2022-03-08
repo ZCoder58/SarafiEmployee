@@ -8,6 +8,7 @@ namespace Application.Customer.ExchangeRates.Commands.CreateExchangeRate
         Guid FromCurrency, 
         Guid ToCurrency,
         double FromAmount,
-        double ToAmount,
+        double ToAmountSell,
+        double ToAmountBuy,
         bool Updated=true) : IRequest<CustomerExchangeRate>;
 }

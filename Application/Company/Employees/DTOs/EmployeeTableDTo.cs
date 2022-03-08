@@ -9,9 +9,9 @@ namespace Application.Company.Employees.DTOs
         public string FatherName { get; set; }
         public string Photo { get; set; }
         public string Phone { get; set; }
-        public string City { get; set; }
         public string UserName { get; set; }
         public bool IsActive { get; set; }
         public string CountryName { get; set; }
+        public string CompanyAgencyName { get; set; }
     }
 }

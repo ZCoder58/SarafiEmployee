@@ -1,5 +1,6 @@
 ﻿using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
+using Application.Company.Agencies.Extensions;
 using Domain.Interfaces;
 using FluentValidation;
 
@@ -7,10 +8,17 @@ namespace Application.Company.Employees.Commands.CreateEmployees
 {
     public class CreateEmployeeValidation:AbstractValidator<CreateEmployeeCommand>
     {
-        public CreateEmployeeValidation(IApplicationDbContext dbContext)
+        public CreateEmployeeValidation(IApplicationDbContext dbContext,IHttpUserContext httpUserContext)
         {
-            RuleFor(a => a.City)
-                .NotNull().WithMessage("نام شهر ضروری میباشد"); 
+            RuleFor(a => a.CompanyAgencyId)
+                .NotNull()
+                .NotEmpty().WithMessage("انتخاب نمایندگی ضروری میباشد")
+                .Must(agencyId=>dbContext.CompanyAgencies.IsExistById(agencyId,httpUserContext.GetCompanyId().ToGuid()))
+                .WithMessage("نمایندگی پیدا نشد"); 
+            RuleFor(a => a.CompanyAgencyId)
+                .NotNull().WithMessage("انتخاب نمایندگی ضروری میباشد")
+                .Must(agencyId=>dbContext.CompanyAgencies.IsExistById(agencyId,httpUserContext.GetCompanyId().ToGuid()))
+                .WithMessage("نمایندگی نامعتبر"); 
             RuleFor(a => a.DetailedAddress)
                 .NotNull().WithMessage("جزییات آدرس شما ضروری میباشد");
             RuleFor(a => a.Name)

@@ -15,6 +15,8 @@ namespace Persistence
         {
         }
 
+        public DbSet<CustomerAccountTransaction> CustomerAccountTransactions { get; set; }
+        public DbSet<CompanyAgency> CompanyAgencies { get; set; }
         public DbSet<CompanyInfo> CompaniesInfos { get; set; }
         public DbSet<EmployeeSetting> EmployeeSettings { get; set; }
         public DbSet<SubCustomerTransaction> SubCustomerTransactions { get; set; }
@@ -70,14 +72,16 @@ namespace Persistence
             }
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
-        // protected override void OnModelCreating(ModelBuilder modelBuilder)
-        // {
-        //     if (!_httpUserContext.GetCurrentUserId().IsNullOrEmpty())
-        //     {
-        //         modelBuilder.ApplyFilter<ICompanyFilter>(a => a.CompanyId==_httpUserContext.GetCompanyId().ToGuid());
-        //     }
-        //     base.OnModelCreating(modelBuilder);
-        // }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // if (!_httpUserContext.GetCurrentUserId().IsNullOrEmpty())
+            // {
+            //     modelBuilder.ApplyFilter<ICompanyFilter>(a => a.CompanyId==_httpUserContext.GetCompanyId().ToGuid());
+            // }
+            modelBuilder.Entity<SubCustomerAccountRate>().HasMany(a=>a.SubCustomerTransactions)
+                .WithOne(a=>a.SubCustomerAccountRate);
+            base.OnModelCreating(modelBuilder);
+        }
 
     }
 }

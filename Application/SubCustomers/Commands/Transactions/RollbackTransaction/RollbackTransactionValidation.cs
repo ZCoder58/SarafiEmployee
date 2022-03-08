@@ -16,10 +16,10 @@ namespace Application.SubCustomers.Commands.Transactions.RollbackTransaction
                 .NotEqual(Guid.Empty).WithMessage("ای دی ضروری میباشد")
                 .Must((model, transactionId) => dbContext.SubCustomerTransactions.Include(a => a.SubCustomerAccountRate)
                     .ThenInclude(a => a.SubCustomerAccount).Any(a =>
-                        (model.AllowTransferRollback || (a.TransactionType != SubCustomerTransactionTypes.Transfer &&
-                                                         a.TransactionType != SubCustomerTransactionTypes
+                        (model.AllowTransferRollback || (a.TransactionType != TransactionTypes.Transfer &&
+                                                         a.TransactionType != TransactionTypes
                                                              .TransferWithDebt)) &&
-                        a.TransactionType != SubCustomerTransactionTypes.ReceivedFromAccount &&
+                        a.TransactionType != TransactionTypes.ReceivedFromAccount &&
                         a.SubCustomerAccountRate.SubCustomerAccount.CustomerId ==
                         httpUserContext.GetCurrentUserId().ToGuid() &&
                         a.CreatedDate.Value.Date >= DateTime.UtcNow.AddDays(-2).Date &&

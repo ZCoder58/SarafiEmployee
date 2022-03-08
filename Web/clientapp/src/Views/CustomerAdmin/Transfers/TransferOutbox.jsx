@@ -42,6 +42,7 @@ export default function TransferOutbox() {
                                     <Typography component="span" variant="subtitle2" color="GrayText">نمبر حواله - {row.codeNumber}</Typography>
                                     <Typography component="span" variant="subtitle2" color="GrayText">دریافت کننده - {row.toName} {row.toLastName}</Typography>
                                     <Typography component="span" variant="subtitle2" color="GrayText">مبلغ - {row.destinationAmount} {row.toCurrency}</Typography>
+                                    <Typography component="span" variant="subtitle2" color="GrayText">کد نمبر - {row.codeNumber}</Typography>
                                 </Stack>
                             </React.Fragment>
                         } />
@@ -89,6 +90,14 @@ export default function TransferOutbox() {
             name: <Typography variant="body2" fontWeight={600}>مبلغ دریافتی</Typography>,
             selector: row => (
                 <Box>{row.destinationAmount} {row.toCurrency}</Box>
+            ),
+            sortable: false,
+            reorder: true
+        },
+        {
+            name: <Typography variant="body2" fontWeight={600}>کد نمبر</Typography>,
+            selector: row => (
+                <Box>{row.codeNumber}</Box>
             ),
             sortable: false,
             reorder: true

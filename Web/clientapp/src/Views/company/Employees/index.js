@@ -24,7 +24,7 @@ export default function VEmployees(){
                 </ListItemAvatar>
                 <ListItemText 
                 primary={`${row.name} ${row.fatherName}`}
-                secondary={`${row.countryName} ${row.city}`}
+                secondary={`${row.countryName} ${row.companyAgencyName}`}
                 />
             </ListItem>,
             sortable:true,
@@ -65,7 +65,7 @@ export default function VEmployees(){
                 secondary={
                     <React.Fragment>
                         <Stack component="span" direction="column" spacing={1}>
-                            <Typography component="span">آدرس : {`${row.countryName} ${row.city}`}</Typography>
+                            <Typography component="span">آدرس : {`${row.countryName} ${row.companyAgencyName}`}</Typography>
                             <Typography component="span">وضعیت : {row.isActive?<Chip label="فعال" component="span" color="success" size="small"></Chip>:<Chip component="span" size="small" label="غیر فعال" color="secondary"></Chip>}</Typography>
                             <ButtonGroup component="span" fullWidth>
                                 <Button size="small" onClick={()=>navigate('/company/employees/edit/'+row.id)}>ویرایش</Button>

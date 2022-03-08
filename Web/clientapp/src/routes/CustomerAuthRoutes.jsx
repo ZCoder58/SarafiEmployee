@@ -17,6 +17,7 @@ const VCTransferInboxDetail=LoadablePage(React.lazy(()=>import("../Views/Custome
 const VCTransferOutboxDetail=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/VCTransferOutboxInfo")))
 const VCEditTransfer=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/VCEditTransfer")))
 const SubCustomerEditTransfer=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/SubCustomerEditTransfer")))
+const VCTransfersBills=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Transfers/Bills")))
 //roznamche
 const VCRoznamcha=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Roznamcha")))
 //general
@@ -27,6 +28,11 @@ const VCSubcustomersCreate=LoadablePage(React.lazy(()=>import("../Views/Customer
 const VCSubcustomersEdit=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/SubCustomers/VCSubCustomersEdit")))
 const VCTransactions=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/SubCustomers/Transactions/VCTransactions")))
 const VCSubCustomersAccounts=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/SubCustomers/Accounts/VCSubCustomersAccounts")))
+const VSubCustomerBills=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/SubCustomers/Bills")))
+//customer account
+const VCAccounts=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Accounts")))
+
+
 export const CustomerAuthRoutes={
     path:"/customer",
     element:<CustomerAuthLayout/>,
@@ -38,6 +44,11 @@ export const CustomerAuthRoutes={
         {
             path:"dashboard",
             element:<VDashboard/>
+        },
+        //accounts 
+        {
+            path:"accounts",
+            element:<VCAccounts/>
         },
         //subCustomers
         {
@@ -55,6 +66,10 @@ export const CustomerAuthRoutes={
         {
             path:"subCustomers/transactions/:subCustomerId",
             element:<VCTransactions/>
+        },
+        {
+            path:"subCustomers/bills",
+            element:<VSubCustomerBills/>
         },
         {
             path:"subCustomers/accounts/:subCustomerId",
@@ -90,6 +105,10 @@ export const CustomerAuthRoutes={
         {
             path:"transfers/outbox/:transferId",
             element:<VCTransferOutboxDetail/>
+        },
+        {
+            path:"transfers/bills",
+            element:<VCTransfersBills/>
         },
         ///rates
         {

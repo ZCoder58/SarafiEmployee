@@ -10,8 +10,8 @@ import { CDateTimeRange, SearchFriendDropdown, SkeletonFull } from '../../../ui-
 import { TableRoznamchaInboxDesktop, TableRoznamchaInboxMobile } from './Responsives/InboxResponsive';
 export default function CInbox() {
     const [transfers, setTransfers] = React.useState([])
-    const [loading,setLoading]=React.useState(true)
-    const {screenXs} = useSelector(states => states.R_AdminLayout)
+    const [loading, setLoading] = React.useState(true)
+    const { screenXs } = useSelector(states => states.R_AdminLayout)
     const validationSchema = Yup.object().shape({
         fromDate: Yup.date().required("تاریخ شروع ضروری میباشد").typeError("لطفا یک تاریخ انتخاب نمایید"),
         toDate: Yup.date().required("تاریخ ختم ضروری میباشد").typeError("لطفا یک تاریخ انتخاب نمایید")
@@ -46,81 +46,78 @@ export default function CInbox() {
                     fromDate: new Date(),
                     toDate: new Date()
                 }
-                
+
             }).then(r => {
                 setTransfers(r)
             })
             setLoading(false)
         })()
-        return ()=>(
+        return () => (
             setTransfers([])
-           )
+        )
     }, [])
     return (
-        <Grid container spacing={2}>
-            <Grid item lg={12} md={12} sm={12} xs={12}>
-                <Box component="form" noValidate onSubmit={formik.handleSubmit}>
-                    <Grid container spacing={1}>
-                        <Grid item lg={4} md={4} sm={6} xs={12}>
-                            <CDateTimeRange
-                                value={[formik.values.fromDate, formik.values.toDate]}
-                                onChange={(start, end) => {
-                                    formik.setFieldValue("fromDate", start)
-                                    formik.setFieldValue("toDate",  end)
-                                }}
-                                startOptions={{
-                                    error: formik.errors.fromDate ? true : false,
-                                    helperText: formik.errors.fromDate,
-                                    required: true,
-                                    name: "fromDate",
-                                    size: "small"
-                                }}
-                                endOptions={{
-                                    error: formik.errors.toDate ? true : false,
-                                    helperText: formik.errors.toDate,
-                                    required: true,
-                                    name: "toDate",
-                                    size: "small"
-                                }}
-                            />
-                        </Grid>
-                        <Grid item lg={4} md={4} sm={6} xs={12}>
-                            <SearchFriendDropdown
-                                error={formik.errors.friendId ? true : false}
-                                helperText={formik.errors.friendId}
-                                required
-                                name="friendId"
-                                onValueChange={(v) => formik.setFieldValue("friendId", v ? v.id : undefined)}
-                                size="small"
-                                label="انتخاب همکار" />
-
-                        </Grid>
-                        <Grid item lg={12} md={12} sm={12} xs={12}>
-                            <LoadingButton
-                                loading={formik.isSubmitting}
-                                loadingPosition='start'
-                                variant='contained'
-                                color='primary'
-                                startIcon={<SearchOutlined />}
-                                type='submit'
-                                size="small"
-                            >
-                                جستجو
-                            </LoadingButton>
-                        </Grid>
+        <>
+            <Box component="form" noValidate onSubmit={formik.handleSubmit}>
+                <Grid container spacing={2}>
+                    <CDateTimeRange
+                        value={[formik.values.fromDate, formik.values.toDate]}
+                        onChange={(start, end) => {
+                            formik.setFieldValue("fromDate", start)
+                            formik.setFieldValue("toDate", end)
+                        }}
+                        startOptions={{
+                            error: formik.errors.fromDate ? true : false,
+                            helperText: formik.errors.fromDate,
+                            required: true,
+                            name: "fromDate",
+                            size: "small"
+                        }}
+                        endOptions={{
+                            error: formik.errors.toDate ? true : false,
+                            helperText: formik.errors.toDate,
+                            required: true,
+                            name: "toDate",
+                            size: "small"
+                        }}
+                    />
+                    <Grid item lg={4} md={4} sm={6} xs={12}>
+                        <SearchFriendDropdown
+                            error={formik.errors.friendId ? true : false}
+                            helperText={formik.errors.friendId}
+                            required
+                            name="friendId"
+                            onValueChange={(v) => formik.setFieldValue("friendId", v ? v.id : undefined)}
+                            size="small"
+                            label="انتخاب همکار" />
+                    </Grid>
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <LoadingButton
+                            loading={formik.isSubmitting}
+                            loadingPosition='start'
+                            variant='contained'
+                            color='primary'
+                            size='small'
+                            startIcon={<SearchOutlined />}
+                            type='submit'
+                        >
+                            جستجو
+                        </LoadingButton>
                     </Grid>
 
-                </Box>
-            </Grid>
-            <Grid item lg={12} md={12} sm={12} xs={12}>
-                {loading ?
-                    <SkeletonFull />
-                    :
-                    <TableContainer>
-                        {screenXs?<TableRoznamchaInboxMobile transfers={transfers}/>:<TableRoznamchaInboxDesktop transfers={transfers}/>}
-                    </TableContainer>
+                </Grid>
+            </Box>
+            <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                    {loading ?
+                        <SkeletonFull />
+                        :
+                        <TableContainer>
+                            {screenXs ? <TableRoznamchaInboxMobile transfers={transfers} /> : <TableRoznamchaInboxDesktop transfers={transfers} />}
+                        </TableContainer>
                     }
+                </Grid>
             </Grid>
-        </Grid>
+        </>
     )
 }

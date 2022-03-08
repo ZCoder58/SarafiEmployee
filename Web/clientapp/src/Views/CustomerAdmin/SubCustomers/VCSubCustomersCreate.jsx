@@ -16,14 +16,16 @@ const initialModel = {
     fatherName: "",
     phone: "",
     address: "",
-    sId: ""
+    sId: "",
+    codeNumber:""
 }
 const validationSchema = Yup.object().shape({
     name: Yup.string().required('نام ضروری میباشد'),
     fatherName: Yup.string().required('نام پدر ضروری میباشد'),
     phone: Yup.string().required('شماره تماس ضروری میباشد'),
     sId: Yup.string().required('شماره تذکره ضروری میباشد'),
-    address: Yup.string().required('آدرس مشتری ضروری میباشد')
+    address: Yup.string().required('آدرس مشتری ضروری میباشد'),
+    codeNumber: Yup.string().required('کد نمبر مشتری ضروری میباشد')
 });
 export default function VCSubCustomersCreate() {
     const [accountRate, setAccountRate] = React.useState(null)
@@ -101,6 +103,17 @@ export default function VCSubCustomersCreate() {
                             type='text'
                             required
                             error={formik.errors.sId ? true : false}
+                            onChange={formik.handleChange}
+                        />
+                         <TextField
+                            variant='outlined'
+                            name='codeNumber'
+                            helperText={formik.errors.codeNumber}
+                            size='small'
+                            label='کد نمبر'
+                            type='text'
+                            required
+                            error={formik.errors.codeNumber ? true : false}
                             onChange={formik.handleChange}
                         />
                     </Grid>

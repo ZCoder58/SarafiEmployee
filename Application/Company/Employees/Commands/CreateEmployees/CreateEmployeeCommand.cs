@@ -11,11 +11,11 @@ namespace Application.Company.Employees.Commands.CreateEmployees
         public string FatherName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string City { get; set; }
         public string DetailedAddress { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public Guid CountryId { get; set; }
+        public Guid CompanyAgencyId { get; set; }
         public IFormFile Photo { get; set; }
     }
 }

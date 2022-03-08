@@ -4,7 +4,7 @@ import { LoadingButton } from '@mui/lab';
 import { useNavigate, useParams } from 'react-router';
 import React from 'react';
 import { Grid, IconButton, TextField, Box,FormControlLabel,Switch } from "@mui/material";
-import { CCard, CountriesDropDown, ProfileImageUploader, SkeletonFull } from "../../../ui-componets";
+import { AgenciesSelect, CCard, CountriesDropDown, ProfileImageUploader, SkeletonFull } from "../../../ui-componets";
 import { ArrowBackOutlined, SaveOutlined } from "@mui/icons-material";
 import authAxiosApi from "../../../axios";
 import Util from '../../../helpers/Util'
@@ -69,7 +69,7 @@ export default function VEditEmployee() {
                             size='small'
                             label='نام'
                             type='text'
-                            value={formik.values.name}
+                            defaultValue={formik.values.name}
                             required
                             error={formik.errors.name ? true : false}
                             onChange={formik.handleChange}
@@ -77,7 +77,7 @@ export default function VEditEmployee() {
                         <TextField
                             variant='outlined'
                             name='lastName'
-                            value={formik.values.lastName}
+                            defaultValue={formik.values.lastName}
                             size='small'
                             label='تخلص'
                             type='text'
@@ -87,7 +87,7 @@ export default function VEditEmployee() {
                             variant='outlined'
                             name='fatherName'
                             helperText={formik.errors.fatherName}
-                            value={formik.values.fatherName}
+                            defaultValue={formik.values.fatherName}
                             size='small'
                             label='نام پدر'
                             required
@@ -104,7 +104,7 @@ export default function VEditEmployee() {
                             label='شماره تماس'
                             type='number'
                             required
-                            value={formik.values.phone}
+                            defaultValue={formik.values.phone}
                             error={formik.errors.phone ? true : false}
                             onChange={formik.handleChange}
                         />
@@ -112,9 +112,9 @@ export default function VEditEmployee() {
                             variant='outlined'
                             name='email'
                             size='small'
-                            value={formik.values.email}
+                            defaultValue={formik.values.email}
                             label='ایمیل'
-                            type='email'
+                            type='text'
                             helperText={formik.errors.email}
                             error={formik.errors.email ? true : false}
                             onChange={formik.handleChange}
@@ -131,17 +131,16 @@ export default function VEditEmployee() {
                         />
                     </Grid>
                     <Grid item lg={4} md={4} sm={4} xs={12}>
-                        <TextField
-                            variant='outlined'
-                            name='city'
-                            helperText={formik.errors.city}
-                            value={formik.values.city}
+                       
+                    <AgenciesSelect
+                            name='companyAgencyId'
+                            defaultId={formik.values.companyAgencyId}
+                            helperText={formik.errors.companyAgencyId}
                             size='small'
-                            label='شهر'
-                            type='text'
+                            label='نمایندگی'
                             required
-                            error={formik.errors.city ? true : false}
-                            onChange={formik.handleChange}
+                            error={formik.errors.companyAgencyId ? true : false}
+                            onValueChange={(v)=>formik.setFieldValue("companyAgencyId",v?v.id:undefined)}
                         />
                     </Grid>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -149,7 +148,7 @@ export default function VEditEmployee() {
                             variant='outlined'
                             name='detailedAddress'
                             helperText={formik.errors.detailedAddress}
-                            value={formik.values.detailedAddress}
+                            defaultValue={formik.values.detailedAddress}
                             size='small'
                             label='جزییات آدرس'
                             type='text'
@@ -194,7 +193,7 @@ const employeeModel = {
     fatherName: "",
     phone: "",
     countryId: "",
-    city: "",
+    companyAgencyId: "",
     email: "",
     detailedAddress: "",
     photoFile: "",
@@ -203,12 +202,12 @@ const employeeModel = {
 }
 
 const validationSchema = Yup.object().shape({
-    name: Yup.string().required("نام شما ضروری میباشد"),
-    fatherName: Yup.string().required("ولد شما ضروری میباشد"),
-    detailedAddress: Yup.string().required("جزییات آدرس شما ضروری میباشد"),
-    phone: Yup.string().required("شماره تماس شما ضروری میباشد"),
-    countryId: Yup.string().required("انتخاب کشور شما ضروری میباشد"),
-    city: Yup.string().required("شهر شما ضروری میباشد"),
-    email: Yup.string().email("ایمیل نادرست").typeError("ایمیل ادرس درست نمیباشد"),
+    name: Yup.string().required("نام ضروری میباشد"),
+    fatherName: Yup.string().required("ولد ضروری میباشد"),
+    detailedAddress: Yup.string().required("جزییات آدرس ضروری میباشد"),
+    phone: Yup.string().required("شماره تماس ضروری میباشد"),
+    countryId: Yup.string().required("انتخاب کشور ضروری میباشد"),
+    companyAgencyId: Yup.string().required("نمایندگی ضروری میباشد"),
+    email: Yup.string().email("ایمیل نادرست").nullable(true).typeError("ایمیل ادرس درست نمیباشد"),
 
 });

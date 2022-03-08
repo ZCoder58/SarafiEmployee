@@ -27,8 +27,8 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.WithdrawalTransf
                 .Include(a => a.RatesCountry)
                 .GetById(request.SubCustomerAccountRateId);
             var transactionType = targetSubCustomerAccountRate.Amount >= request.Amount
-                ? SubCustomerTransactionTypes.Transfer
-                : SubCustomerTransactionTypes.TransferWithDebt;
+                ? TransactionTypes.Transfer
+                : TransactionTypes.TransferWithDebt;
             //update account amount
             targetSubCustomerAccountRate.Amount -= request.Amount;
             await _dbContext.SaveChangesAsync(cancellationToken);

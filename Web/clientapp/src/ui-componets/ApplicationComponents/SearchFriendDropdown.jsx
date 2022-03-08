@@ -50,12 +50,10 @@ export default function SearchFriendDropdown({ defaultFriendId, onValueChange, .
                    </ListItemAvatar>
                     <ListItemText
                     primary={`${option.customerFriendName} ${option.customerFriendLastName}`}
-                    secondary={`${option.customerFriendCountryName} ${option.customerFriendCity}`}
+                    secondary={`${option.customerFriendCountryName} ${option.isEmployee?option.companyAgencyName:option.customerFriendCity}`}
                     />
-                   
                 </ListItem>}
         />
-
         </React.Fragment>
         
     )

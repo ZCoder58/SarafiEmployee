@@ -8,12 +8,14 @@ namespace Domain.Entities
         public CustomerExchangeRate()
         {
             FromAmount = 1;
-            ToExchangeRate = 1;
+            ToExchangeRateSell = 1;
+            ToExchangeRateBuy = 1;
         }
         public Guid FromRatesCountryId { get; set; }
         public double FromAmount { get; set; }
         public Guid? ToRatesCountryId { get; set; }
-        public double ToExchangeRate { get; set; }
+        public double ToExchangeRateSell { get; set; }
+        public double ToExchangeRateBuy { get; set; }
         public RatesCountry FromRatesCountry { get; set; }
         public RatesCountry ToRatesCountry { get; set; }
         public Guid CustomerId { get; set; }

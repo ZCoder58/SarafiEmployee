@@ -4,7 +4,7 @@ import { LoadingButton } from '@mui/lab';
 import { useNavigate } from 'react-router';
 import React from 'react';
 import { Grid, IconButton, TextField,Box } from "@mui/material";
-import { CCard, CountriesDropDown, PasswordField, ProfileImageUploader } from "../../../ui-componets";
+import { AgenciesSelect, CCard, CountriesDropDown, PasswordField, ProfileImageUploader } from "../../../ui-componets";
 import { ArrowBackOutlined, SaveOutlined } from "@mui/icons-material";
 import authAxiosApi from "../../../axios";
 import Util from '../../../helpers/Util'
@@ -120,16 +120,15 @@ export default function VNewEmployee() {
                         />
                     </Grid>
                     <Grid item lg={4} md={4} sm={4} xs={12}>
-                        <TextField
-                            variant='outlined'
-                            name='city'
-                            helperText={formik.errors.city}
+
+                        <AgenciesSelect
+                            name='companyAgencyId'
+                            helperText={formik.errors.companyAgencyId}
                             size='small'
-                            label='شهر'
-                            type='text'
+                            label='نمایندگی'
                             required
-                            error={formik.errors.city ? true : false}
-                            onChange={formik.handleChange}
+                            error={formik.errors.companyAgencyId ? true : false}
+                            onValueChange={(v)=>formik.setFieldValue("companyAgencyId",v?v.id:undefined)}
                         />
                     </Grid>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -195,25 +194,26 @@ const employeeModel = {
     fatherName: "",
     phone: "",
     countryId: "",
-    city: "",
+    companyAgencyId: "",
     email: "",
     userName: "",
     password: "",
     repeatPassword: "",
     detailedAddress: "",
-    photo:{}
+    photo:{},
+    
 }
 
 const validationSchema = Yup.object().shape({
-    name: Yup.string().required("نام شما ضروری میباشد"),
-    fatherName: Yup.string().required("ولد شما ضروری میباشد"),
-    detailedAddress: Yup.string().required("جزییات آدرس شما ضروری میباشد"),
-    phone: Yup.string().required("شماره تماس شما ضروری میباشد"),
-    countryId: Yup.string().required("انتخاب کشور شما ضروری میباشد"),
-    city: Yup.string().required("شهر شما ضروری میباشد"),
+    name: Yup.string().required("نام ضروری میباشد"),
+    fatherName: Yup.string().required("ولد ضروری میباشد"),
+    detailedAddress: Yup.string().required("جزییات آدرس ضروری میباشد"),
+    phone: Yup.string().required("شماره تماس ضروری میباشد"),
+    countryId: Yup.string().required("انتخاب کشور ضروری میباشد"),
+    companyAgencyId: Yup.string().required("نمایندگی ضروری میباشد"),
     email: Yup.string().email("ایمیل نادرست").typeError("ایمیل ادرس درست نمیباشد"),
-    userName: Yup.string().required("نام کاربری شما ضروری میباشد"),
-    password: Yup.string().required("رمز عبور شما ضروری میباشد"),
+    userName: Yup.string().required("نام کاربری ضروری میباشد"),
+    password: Yup.string().required("رمز عبور ضروری میباشد"),
     repeatPassword: Yup.string()
         .required("تکرار رمز عبور ضروری میباشد")
         .test("validateRepeatPassword", "رمز عبور یکسان نیست", (value, context) => {

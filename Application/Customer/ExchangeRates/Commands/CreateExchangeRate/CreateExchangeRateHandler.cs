@@ -38,26 +38,27 @@ namespace Application.Customer.ExchangeRates.Commands.CreateExchangeRate
                 Updated = request.Updated,
                 Reverse = false,
                 FromAmount = request.FromAmount,
-                ToExchangeRate = request.ToAmount
+                ToExchangeRateSell = request.ToAmountSell,
+                ToExchangeRateBuy = request.ToAmountBuy
             }, cancellationToken)).Entity;
-            if (request.FromCurrency != request.ToCurrency)
-            {
-                //add reverse
-                await _dbContext.CustomerExchangeRates.AddAsync(new CustomerExchangeRate()
-                {
-                    CustomerId = _httpUserContext.GetCurrentUserId().ToGuid(),
-                    FromRatesCountryId = toCurrency.Id,
-                    ToRatesCountryId = fromCurrency.Id,
-                    Updated = request.Updated,
-                    Reverse = true,
-                    FromAmount = request.ToAmount,
-                    ToExchangeRate = request.FromAmount
-                }, cancellationToken);
-            }
-            else
-            {
-                newCustomerExchangeRate.Updated = true;
-            }
+            // if (request.FromCurrency != request.ToCurrency)
+            // {
+            //     //add reverse
+            //     await _dbContext.CustomerExchangeRates.AddAsync(new CustomerExchangeRate()
+            //     {
+            //         CustomerId = _httpUserContext.GetCurrentUserId().ToGuid(),
+            //         FromRatesCountryId = toCurrency.Id,
+            //         ToRatesCountryId = fromCurrency.Id,
+            //         Updated = request.Updated,
+            //         Reverse = true,
+            //         FromAmount = request.ToAmount,
+            //         ToExchangeRate = request.FromAmount
+            //     }, cancellationToken);
+            // }
+            // else
+            // {
+            //     newCustomerExchangeRate.Updated = true;
+            // }
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 

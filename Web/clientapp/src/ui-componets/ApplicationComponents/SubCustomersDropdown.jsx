@@ -41,7 +41,7 @@ export default function SubCustomersDropdown({ exceptCustomerId,defaultSubCustom
             loading={loading}
             loadingText="در حال بارگیری..."
             value={value}
-            disableClearable
+            // disableClearable
             onChange={(event, newValue) => {
                 setValue(newValue)
                 onValueChange(newValue)

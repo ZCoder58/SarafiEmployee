@@ -1,4 +1,4 @@
-import { AskDialog, CCard, SearchFriendDropdown, SubCustomersDropdown } from '../../../ui-componets'
+import { AskDialog, CCard, ExchangeRateAlert, SearchFriendDropdown, SubCustomersDropdown } from '../../../ui-componets'
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
 import { Grid, Box, TextField, Stack, Typography, Divider, Alert, Grow, IconButton } from '@mui/material'
 import { useFormik } from 'formik'
@@ -152,7 +152,7 @@ export default function SubCustomerEditTransfer() {
                             <TextField
                                 size="small"
                                 name='fromLastName'
-                                value={formik.values.fromLastName}
+                                defaultValue={formik.values.fromLastName}
                                 label="تخلص ارسال کننده"
                                 onChange={formik.handleChange}
                             />
@@ -195,7 +195,7 @@ export default function SubCustomerEditTransfer() {
                             />
                             <TextField
                                 name='toLastName'
-                                value={formik.values.toLastName}
+                                defaultValue={formik.values.toLastName}
                                 label="تخلص دریافت کننده"
                                 size="small"
                                 type="text"
@@ -215,7 +215,7 @@ export default function SubCustomerEditTransfer() {
                             <TextField
                                 name='toGrandFatherName'
                                 label="ولدیت دریافت کننده"
-                                value={formik.values.toGrandFatherName}
+                                defaultValue={formik.values.toGrandFatherName}
                                 size="small"
                                 type="text"
                                 onChange={formik.handleChange}
@@ -268,46 +268,14 @@ export default function SubCustomerEditTransfer() {
                                     )
                                 }}
                             />
-                            <TextField
-                                label="مقدار پول دریافتی"
-                                required
-                                size="small"
-                                value={receivedAmount}
-                                InputProps={{
-                                    readOnly: true,
-                                    endAdornment: (
-                                        <Stack direction="row">
-                                            <Divider orientation='vertical' flexItem ></Divider>
-                                            <Typography sx={{ ml: 1 }} variant="body1" >{distRate ? distRate.priceName : "هیچ"}</Typography>
-                                        </Stack>
-                                    )
-                                }}
-                            />
+                           
 
-
-                            {exchangeRate && !exchangeRate.updated &&
-                                <Grow in={!exchangeRate.updated}>
-                                    <Alert variant='outlined' severity="warning">
-                                        <Stack direction="column">
-                                            <Box>نرخ {exchangeRate.fromAmount} {accountRate&&accountRate.priceName} </Box>
-                                            <Box>معادل {exchangeRate.toExchangeRate} {distRate&&distRate.priceName}</Box>
-                                            <Box>نرخ ارز آپدیت نمیباشد!</Box>
-                                        </Stack>
-                                    </Alert>
-                                </Grow>}
-                            {exchangeRate && exchangeRate.updated &&
-                                <Grow in={exchangeRate.updated}>
-                                    <Alert variant='outlined' severity="success">
-                                        <Stack direction="column">
-                                            <Box>نرخ {exchangeRate.fromAmount} {accountRate&&accountRate.priceName} </Box>
-                                            <Box>معادل {exchangeRate.toExchangeRate} {distRate&&distRate.priceName}</Box>
-                                            <Box sx={{ fontWeight: 900 }}>نرخ ارز آپدیت است</Box>
-                                        </Stack>
-                                    </Alert>
-                                </Grow>
-                            }
-
-
+<ExchangeRateAlert
+                                exchangeRate={exchangeRate}
+                                sourceRate={accountRate}
+                                distRate={distRate}
+                                amount={formik.values.amount}
+                                />
                             <TextField
                                 name='fee'
                                 label="کمیشن"
