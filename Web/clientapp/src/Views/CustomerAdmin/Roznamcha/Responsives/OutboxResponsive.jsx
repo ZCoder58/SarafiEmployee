@@ -1,6 +1,6 @@
 import { ListItem, ListItemText, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import React from 'react'
-import { NotExist } from '../../../../ui-componets'
+import { CurrencyText, NotExist } from '../../../../ui-componets'
 export const TableRoznamchaOutboxDesktop = ({ transfers=[] }) => (
     <Table>
     <TableHead>
@@ -23,19 +23,19 @@ export const TableRoznamchaOutboxDesktop = ({ transfers=[] }) => (
     {transfers.length>0? transfers.map((e, i) => (
                 <TableRow key={i}>
                     <TableCell>
-                        {e.totalAmount} {e.currencyName}
+                    <CurrencyText value={e.totalAmount} priceName={e.currencyName}/>
                     </TableCell>
                     <TableCell>
                         {e.totalTransfers}
                     </TableCell>
                     <TableCell>
-                        {e.totalReceiverFee} {e.currencyName}
+                    <CurrencyText value={e.totalReceiverFee} priceName={e.currencyName}/>
                     </TableCell>
                     <TableCell sx={{ 
                         fontWeight:900,
                          color:"primary"
                      }}>
-                        {(Number(e.totalReceiverFee)+Number(e.totalAmount))} {e.currencyName}
+                        <CurrencyText value={(Number(e.totalReceiverFee)+Number(e.totalAmount))} priceName={e.currencyName}/>
                     </TableCell>
                 </TableRow>
             )):

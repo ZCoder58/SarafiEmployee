@@ -4,7 +4,7 @@ import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import authAxiosApi from '../../../../axios'
 import Util from '../../../../helpers/Util'
-import {CTitle } from '../../../../ui-componets'
+import {CTitle, CurrencyInput, CurrencyText } from '../../../../ui-componets'
 import { LoadingButton } from '@mui/lab'
 import { CheckCircleOutline } from '@mui/icons-material'
 const initialModel = {
@@ -35,17 +35,16 @@ export default function SCustomerNewTransactionFormDeposit({customerAccount, onS
     return (
         <Box component="form" noValidate onSubmit={formik.handleSubmit}>
             <CTitle>اضافه کردن پول به حساب</CTitle>
-            <TextField
+            <CurrencyInput
                 variant='outlined'
                 name='amount'
                 helperText={formik.errors.amount}
                 size='small'
                 label='مقدار'
                 value={formik.values.amount}
-                type='number'
                 required
                 error={formik.errors.amount ? true : false}
-                onChange={formik.handleChange}
+                onChange={(v)=>formik.setFieldValue("amount",v)}
                 InputProps={{
                     endAdornment: <InputAdornment position="end">
                         {accountRate?accountRate.priceName:"هیچ"}

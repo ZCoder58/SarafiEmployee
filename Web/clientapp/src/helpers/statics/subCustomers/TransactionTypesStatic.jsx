@@ -6,6 +6,7 @@ const TransactionTypesStatic = {
     TransferToAccountWithDebt: 4,
     WithdrawalWithDebt: 5,
     Transfer: 6,
-    TransferWithDebt: 7
+    TransferWithDebt: 7,
+    TransferComplete:8
 }
 export default TransactionTypesStatic;

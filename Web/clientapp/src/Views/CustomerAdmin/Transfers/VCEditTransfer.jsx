@@ -1,4 +1,4 @@
-import { CCard, SearchFriendDropdown, SkeletonFull, RatesDropdown, AskDialog, ExchangeRateAlert } from '../../../ui-componets'
+import { CCard, SearchFriendDropdown, SkeletonFull, RatesDropdown, AskDialog, ExchangeRateAlert, CurrencyInput, CurrencyText } from '../../../ui-componets'
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
 import { Grid, Box, TextField, Stack, Typography, Divider, IconButton } from '@mui/material'
 import { useFormik } from 'formik'
@@ -13,7 +13,7 @@ import { FieldSet } from '../../../ui-componets'
 import { ArrowBack } from '@mui/icons-material';
 import { useParams } from 'react-router'
 const createModel = {
-    id:"",
+    id: "",
     fromName: "",
     fromLastName: "",
     fromFatherName: "",
@@ -29,8 +29,8 @@ const createModel = {
     fee: 0,
     receiverFee: 0,
     codeNumber: "",
-    comment:"",
-        exchangeType:""
+    comment: "",
+    exchangeType: ""
 }
 const validationSchema = Yup.object().shape({
     exchangeType: Yup.string().required("نوعیت نرخ معامله ضروری میباشد"),
@@ -53,7 +53,7 @@ export default function VCEditTransfer() {
     const [sourceRate, setSourceRate] = React.useState(null)
     const [distRate, setDistRate] = React.useState(null)
     const [exchangeRate, setExchangeRate] = React.useState(null)
-    const [askOpen,setAskOpen]=React.useState(false)
+    const [askOpen, setAskOpen] = React.useState(false)
     const navigate = useNavigate()
     const { transferId } = useParams()
     const formik = useFormik({
@@ -85,12 +85,12 @@ export default function VCEditTransfer() {
             setLoading(true)
             await authAxiosApi.get('customer/transfers/edit?id=' + transferId).then(r => {
                 formik.setValues(r)
-            }).catch(errors=>{
+            }).catch(errors => {
                 navigate('/requestDenied')
             })
             setLoading(false)
         })()
-        
+
     }, [transferId])
     React.useEffect(() => {
         if (distRate && sourceRate) {
@@ -104,7 +104,7 @@ export default function VCEditTransfer() {
             })
             )()
         }
-        return ()=>setExchangeRate(null)
+        return () => setExchangeRate(null)
     }, [distRate, sourceRate])
     return (
         loading ? <SkeletonFull /> :
@@ -115,13 +115,13 @@ export default function VCEditTransfer() {
                 actions={<IconButton onClick={() => navigate("/customer/transfers")}>
                     <ArrowBack />
                 </IconButton>}>
-                {exchangeRate&& !exchangeRate.updated?
-                        <AskDialog
-                         open={askOpen} 
-                         message="نرخ تبادل ارز آپدیت نمیباشد"
-                         onNo={()=>setAskOpen(false)} 
-                         onYes={()=>formik.submitForm()}/>
-                        :""}
+                {exchangeRate && !exchangeRate.updated ?
+                    <AskDialog
+                        open={askOpen}
+                        message="نرخ تبادل ارز آپدیت نمیباشد"
+                        onNo={() => setAskOpen(false)}
+                        onYes={() => formik.submitForm()} />
+                    : ""}
                 <Box component="form" noValidate onSubmit={formik.handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item lg={6} md={6} sm={6} xs={12}>
@@ -234,16 +234,15 @@ export default function VCEditTransfer() {
                                     required
                                     onValueChange={(newValue) => handleDistChange(newValue)}
                                 />
-                                <TextField
+                                <CurrencyInput
                                     name='amount'
                                     label="مقدار پول ارسالی"
                                     required
                                     size="small"
-                                    type="number"
                                     value={formik.values.amount}
                                     error={formik.errors.amount ? true : false}
                                     helperText={formik.errors.amount}
-                                    onChange={formik.handleChange}
+                                    onChange={(v) => formik.setFieldValue("amount", v)}
                                     InputProps={{
                                         endAdornment: (
                                             <Stack direction="row">
@@ -253,16 +252,16 @@ export default function VCEditTransfer() {
                                         )
                                     }}
                                 />
-                               
-                               <ExchangeRateAlert
-                                exchangeRate={exchangeRate}
-                                sourceRate={sourceRate}
-                                distRate={distRate}
-                                amount={formik.values.amount}
-                                defaultType={formik.values.exchangeType}
-                                onTypeChange={(v)=>formik.setFieldValue("exchangeType",v)}
-                                onResultAmountChange={(resultAmount)=>setReceivedAmount(resultAmount)}
-                            />
+
+                                <ExchangeRateAlert
+                                    exchangeRate={exchangeRate}
+                                    sourceRate={sourceRate}
+                                    distRate={distRate}
+                                    amount={formik.values.amount}
+                                    defaultType={formik.values.exchangeType}
+                                    onTypeChange={(v) => formik.setFieldValue("exchangeType", v)}
+                                    onResultAmountChange={(resultAmount) => setReceivedAmount(resultAmount)}
+                                />
                                 <TextField
                                     name='fee'
                                     label="کمیشن"
@@ -282,7 +281,7 @@ export default function VCEditTransfer() {
                             </FieldSet>
 
                         </Grid>
-                        
+
                         <Grid item lg={6} md={6} sm={6} xs={12}>
                             <FieldSet label="معلومات حواله دار">
                                 <SearchFriendDropdown
@@ -310,13 +309,13 @@ export default function VCEditTransfer() {
                                         )
                                     }}
                                 />
-                                <TextField
+                                <CurrencyInput
                                     name='receiverFee'
                                     label="مجموع پول طلب :"
                                     size="small"
-                                    type="number"
                                     value={Number(formik.values.receiverFee) + Number(receivedAmount)}
                                     InputProps={{
+                                        readOnly: true,
                                         endAdornment: (
                                             <Stack direction="row">
                                                 <Divider orientation='vertical' flexItem ></Divider>
@@ -328,15 +327,15 @@ export default function VCEditTransfer() {
                             </FieldSet>
                         </Grid>
                         <Grid item lg={12} md={12} sm={12} xs={12}>
-                        <TextField
-                                    name='comment'
-                                    label="ملاحضات"
-                                    size="small"
-                                    multiline
-                                    rows={4}
-                                    defaultValue={formik.values.comment}
-                                    onChange={formik.handleChange}
-                                />
+                            <TextField
+                                name='comment'
+                                label="ملاحضات"
+                                size="small"
+                                multiline
+                                rows={4}
+                                defaultValue={formik.values.comment}
+                                onChange={formik.handleChange}
+                            />
                         </Grid>
                         <Grid item lg={12} md={12} sm={12} xs={12}>
                             <FieldSet label="معلومات حواله" className="bgWave">
@@ -346,24 +345,25 @@ export default function VCEditTransfer() {
                                 </Stack>
                                 <Stack direction="column" spacing={1}>
                                     <Typography variant="body1" fontWeight={900}>مجموع پول دریافتی از مشتری :</Typography>
-                                    <Typography variant="h4">{`${exchangeRate ? Number(Number(formik.values.amount) + Number(formik.values.fee)).toFixed(2) : 0} ${sourceRate ? sourceRate.priceName : "هیچ"}`}
+                                    <Typography variant="h4">
+                                        <CurrencyText value={Number(Number(formik.values.amount) + Number(formik.values.fee))} priceName={sourceRate ? sourceRate.priceName : "هیچ"} />
                                     </Typography>
 
                                 </Stack>
                             </FieldSet>
                         </Grid>
                         <Grid item lg={12} md={12} sm={12} xs={12}>
-                        <LoadingButton
+                            <LoadingButton
                                 loading={formik.isSubmitting}
                                 loadingPosition='start'
                                 variant='contained'
                                 color='primary'
                                 startIcon={<CheckOutlinedIcon />}
-                                onClick={()=>{
-                                    if(exchangeRate && !exchangeRate.updated){
-                                        formik.isValid&&setAskOpen(true)
-                                    }else{
-                                       formik.submitForm()
+                                onClick={() => {
+                                    if (exchangeRate && !exchangeRate.updated) {
+                                        formik.isValid && setAskOpen(true)
+                                    } else {
+                                        formik.submitForm()
                                     }
                                 }}
                             >
@@ -373,6 +373,6 @@ export default function VCEditTransfer() {
                     </Grid>
                 </Box>
             </CCard>
-            
+
     )
 }

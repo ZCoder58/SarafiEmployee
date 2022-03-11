@@ -1,7 +1,8 @@
-import { Grid, InputAdornment, TextField } from '@mui/material'
+import { Grid, InputAdornment } from '@mui/material'
 import React from 'react'
 import authAxiosApi from '../../axios'
-import { ExchangeRateAlert, RatesDropdown } from '..'
+import { CurrencyInput, ExchangeRateAlert, RatesDropdown } from '..'
+
 export default function ConvertCurrecy() {
     const [sourceRate, setSourceRate] = React.useState(null)
     const [distRate, setDistRate] = React.useState(null)
@@ -24,7 +25,7 @@ export default function ConvertCurrecy() {
     }, [sourceRate, distRate])
     return (
         <Grid container spacing={2}>
-            <Grid item  lg={6} md={6} sm={6} xs={12}>
+            <Grid item lg={6} md={6} sm={6} xs={12}>
 
                 <RatesDropdown
                     label="ارز"
@@ -32,7 +33,7 @@ export default function ConvertCurrecy() {
                     onValueChange={v => setSourceRate(v)}
                 />
             </Grid>
-            <Grid item  lg={6} md={6} sm={6} xs={12}>
+            <Grid item lg={6} md={6} sm={6} xs={12}>
 
                 <RatesDropdown
                     label="ارز معادل"
@@ -41,8 +42,8 @@ export default function ConvertCurrecy() {
                 />
             </Grid>
             <Grid item xs={12}>
-                <TextField
-                    onChange={(e) => setAmount(e.target.value)}
+                <CurrencyInput
+                    onChange={(v) =>setAmount(v)}
                     label="مقدار پول"
                     InputProps={{
                         endAdornment: <InputAdornment position="end">
@@ -50,17 +51,16 @@ export default function ConvertCurrecy() {
                         </InputAdornment>
                     }}
                 />
-
             </Grid>
             <Grid item xs={12}>
-            <ExchangeRateAlert
-                exchangeRate={exchangeRate}
-                sourceRate={sourceRate}
-                distRate={distRate}
-                amount={amount}
-                label="نتیجه تبدیل ارز"
-                
-            />
+                <ExchangeRateAlert
+                    exchangeRate={exchangeRate}
+                    sourceRate={sourceRate}
+                    distRate={distRate}
+                    amount={amount}
+                    label="نتیجه تبدیل ارز"
+
+                />
             </Grid>
         </Grid>
     )

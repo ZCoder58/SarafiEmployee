@@ -1,6 +1,6 @@
 import { ListItem, ListItemText, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import React from 'react'
-import { NotExist } from '../../../../ui-componets'
+import { CurrencyText, NotExist } from '../../../../ui-componets'
 export const TableRoznamchaInboxDesktop = ({ transfers=[] }) => (
     <Table>
         <TableHead>
@@ -21,13 +21,13 @@ export const TableRoznamchaInboxDesktop = ({ transfers=[] }) => (
             {transfers.length > 0 ? transfers.map((e, i) => (
                 <TableRow key={i}>
                     <TableCell>
-                        {e.totalAmount} {e.currencyName}
+                    <CurrencyText value={e.totalAmount} priceName={e.currencyName}/>
                     </TableCell>
                     <TableCell>
                         {e.totalTransfers}
                     </TableCell>
                     <TableCell>
-                        {e.totalFee} {e.currencyName}
+                    <CurrencyText value={e.totalFee} priceName={e.currencyName}/>
                     </TableCell>
                    
                 </TableRow>
@@ -58,7 +58,7 @@ export const TableRoznamchaInboxMobile = ({transfers=[]}) => (
                     <TableCell>
                         <ListItem>
                             <ListItemText
-                            primary={`${e.totalAmount} ${e.currencyName}`}
+                            primary={<CurrencyText value={e.totalAmount} priceName={e.currencyName}/>}
                             primaryTypographyProps={{ 
                                 typography:"body1",
                                 fontWeight:900
@@ -67,7 +67,7 @@ export const TableRoznamchaInboxMobile = ({transfers=[]}) => (
                                 <React.Fragment>
                                     <Stack component="span" spacing={1} direction="column">
                                         <Typography component="span">مجموع حواله - {e.totalTransfers}</Typography>
-                                        <Typography component="span">مجموع کمیشن - {e.totalFee} {e.currencyName}</Typography>
+                                        <Typography component="span">مجموع کمیشن - <CurrencyText value={e.totalFee} priceName={e.currencyName}/></Typography>
                                     </Stack>
                                 </React.Fragment>
                             }

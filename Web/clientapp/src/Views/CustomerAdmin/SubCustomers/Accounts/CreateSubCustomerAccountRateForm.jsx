@@ -6,7 +6,7 @@ import React from 'react'
 import * as Yup from 'yup'
 import authAxiosApi from '../../../../axios';
 import Util from '../../../../helpers/Util';
-import { RatesDropdown } from '../../../../ui-componets';
+import { CurrencyInput, RatesDropdown } from '../../../../ui-componets';
 const initialModel = {
     subCustomerAccountId: "",
     amount: 0,
@@ -34,16 +34,15 @@ export default function CreateSubCustomerAccountRateForm({subCustomerId,onSubmit
     })
     return (
         <Box component="form" noValidate onSubmit={formik.handleSubmit}>
-            <TextField
+            <CurrencyInput
                 variant='outlined'
                 name='amount'
                 helperText={formik.errors.amount}
                 size='small'
                 label='مقدار پول اولیه'
-                type='text'
                 required
                 error={formik.errors.amount ? true : false}
-                onChange={formik.handleChange}
+                onChange={(v)=>formik.setFieldValue("amount",v)}
             />
             <RatesDropdown
                 name='ratesCountryId'

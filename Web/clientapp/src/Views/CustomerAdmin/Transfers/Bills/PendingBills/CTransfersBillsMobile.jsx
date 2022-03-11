@@ -1,6 +1,6 @@
 import React from 'react'
 import { ListItem, ListItemText, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
-import { NotExist } from '../../../../../ui-componets'
+import { CurrencyText, NotExist } from '../../../../../ui-componets'
 
 export default function CTransfersBillsMobile({ transfers=[] }) {
 
@@ -23,8 +23,8 @@ export default function CTransfersBillsMobile({ transfers=[] }) {
                                         primary={
                                             <>
                                             {e.billResult<0?
-                                <Typography fontWeight={900} color="error">{e.billResult} {e.currencyName}</Typography>:
-                                <Typography fontWeight={900}>{e.billResult} {e.currencyName}</Typography>
+                                <Typography fontWeight={900} color="error"><CurrencyText value={e.billResult} priceName={e.currencyName}/></Typography>:
+                                <Typography fontWeight={900}><CurrencyText value={e.billResult} priceName={e.currencyName}/></Typography>
                             }</>
                                         }
                                         primaryTypographyProps={{
@@ -35,8 +35,8 @@ export default function CTransfersBillsMobile({ transfers=[] }) {
                                             <React.Fragment>
                                                 <Stack component="span" spacing={1} direction="column">
                                                    
-                                                    <Typography variant="body2" component="span">طلب : {e.talab} {e.currencyName}</Typography>
-                                                    <Typography variant="body2" component="span">بدهی : {e.bedehi} {e.currencyName}</Typography>
+                                                    <Typography variant="body2" component="span">طلب : <CurrencyText value={e.talab} priceName={e.currencyName}/></Typography>
+                                                    <Typography variant="body2" component="span">بدهی : <CurrencyText value={e.bedehi} priceName={e.currencyName}/></Typography>
                                                     
                                                 </Stack>
                                             </React.Fragment>

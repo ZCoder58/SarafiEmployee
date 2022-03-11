@@ -1,4 +1,4 @@
-import { AskDialog, CCard, ExchangeRateAlert, SearchFriendDropdown, SubCustomersDropdown } from '../../../ui-componets'
+import { AskDialog, CCard, CurrencyInput, CurrencyText, ExchangeRateAlert, SearchFriendDropdown, SubCustomersDropdown } from '../../../ui-componets'
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
 import { Grid, Box, TextField, Stack, Typography, Divider, Alert, Grow, IconButton } from '@mui/material'
 import { useFormik } from 'formik'
@@ -248,16 +248,15 @@ export default function SubCustomerEditTransfer() {
                                 onValueChange={(newValue) => handleDistChange(newValue)}
                             />
 
-                            <TextField
+                            <CurrencyInput
                                 name='amount'
                                 label="مقدار پول ارسالی"
                                 required
                                 size="small"
-                                type="number"
                                 value={formik.values.amount}
                                 error={formik.errors.amount ? true : false}
                                 helperText={formik.errors.amount}
-                                onChange={formik.handleChange}
+                                onChange={(v)=>formik.setFieldValue("amount",v)}
                                 InputProps={{
                                     endAdornment: (
                                         <Stack direction="row">
@@ -324,13 +323,13 @@ export default function SubCustomerEditTransfer() {
                                     )
                                 }}
                             />
-                            <TextField
+                            <CurrencyInput
                                 name='receiverFee'
                                 label="مجموع پول طلب :"
                                 size="small"
-                                type="number"
                                 value={Number(formik.values.receiverFee) + Number(receivedAmount)}
                                 InputProps={{
+                                    readOnly:true,
                                     endAdornment: (
                                         <Stack direction="row">
                                             <Divider orientation='vertical' flexItem ></Divider>
@@ -360,7 +359,10 @@ export default function SubCustomerEditTransfer() {
                             </Stack>
                             <Stack direction="column" spacing={1}>
                                 <Typography variant="body1" fontWeight={900}>مجموع پول دریافتی از مشتری :</Typography>
-                                <Typography variant="h4">{`${exchangeRate ? Number(Number(formik.values.amount) + Number(formik.values.fee)).toFixed(2) : 0} ${accountRate ? accountRate.priceName : "هیچ"}`}
+                                <Typography variant="h4">
+                                    <CurrencyText
+                                        value={Number(Number(formik.values.amount) + Number(formik.values.fee))}
+                                        priceName={accountRate ? accountRate.priceName : "هیچ"} />
                                 </Typography>
                             </Stack>
                         </FieldSet>

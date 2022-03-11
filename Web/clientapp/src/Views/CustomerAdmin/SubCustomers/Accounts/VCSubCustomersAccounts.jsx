@@ -1,5 +1,5 @@
 import React from 'react'
-import { CCard, CDialog, CToolbar, SkeletonFull } from '../../../../ui-componets'
+import { CCard, CDialog, CToolbar, CurrencyText, SkeletonFull } from '../../../../ui-componets'
 import authAxiosApi from '../../../../axios'
 import { useParams, useNavigate } from 'react-router'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
@@ -90,7 +90,7 @@ export default function VCSubCustomerAccounts() {
                                         primary={
                                             e.amount<0?
                                             <Typography fontWeight={900} color="error">{e.amount} {e.priceName}</Typography>:
-                                            <Typography fontWeight={900}>{e.amount} {e.priceName}</Typography>
+                                            <Typography fontWeight={900}><CurrencyText value={e.amount} priceName={e.priceName}/></Typography>
                                         }
                                         secondary={
                                             <Typography variant="caption">تاریخ ایجاد حساب : {new Date(e.createdDate).toLocaleDateString()}</Typography>

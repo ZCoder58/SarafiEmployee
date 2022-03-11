@@ -9,7 +9,7 @@ import { LoadingButton } from '@mui/lab';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import Util from '../../../helpers/Util'
 import { useNavigate } from 'react-router';
-import { FieldSet, RatesDropdown } from '../../../ui-componets'
+import { FieldSet, RatesDropdown, CurrencyInput, CurrencyText } from '../../../ui-componets'
 import { ArrowBack } from '@mui/icons-material';
 const createModel = {
     fromName: "",
@@ -215,15 +215,14 @@ export default function CreateTransfer() {
                                 onValueChange={(newValue) => handleDistChange(newValue)}
                             />
 
-                            <TextField
+                            <CurrencyInput
                                 name='amount'
                                 label="مقدار پول ارسالی"
                                 required
                                 size="small"
-                                type="number"
                                 error={formik.errors.amount ? true : false}
                                 helperText={formik.errors.amount}
-                                onChange={formik.handleChange}
+                                onChange={(v) => formik.setFieldValue("amount", v)}
                                 InputProps={{
                                     endAdornment: (
                                         <Stack direction="row">
@@ -239,8 +238,8 @@ export default function CreateTransfer() {
                                 sourceRate={sourceRate}
                                 distRate={distRate}
                                 amount={formik.values.amount}
-                                onTypeChange={(v)=>formik.setFieldValue("exchangeType",v)}
-                                onResultAmountChange={(resultAmount)=>setReceivedAmount(resultAmount)}
+                                onTypeChange={(v) => formik.setFieldValue("exchangeType", v)}
+                                onResultAmountChange={(resultAmount) => setReceivedAmount(resultAmount)}
                             />
                             <TextField
                                 name='fee'
@@ -289,13 +288,14 @@ export default function CreateTransfer() {
                                     )
                                 }}
                             />
-                            <TextField
+                            <CurrencyInput
                                 name='receiverFee'
                                 label="مجموع پول طلب :"
                                 size="small"
-                                type="number"
+
                                 value={Number(formik.values.receiverFee) + Number(receivedAmount)}
                                 InputProps={{
+                                    readOnly: true,
                                     endAdornment: (
                                         <Stack direction="row">
                                             <Divider orientation='vertical' flexItem ></Divider>
@@ -325,9 +325,11 @@ export default function CreateTransfer() {
                             </Stack>
                             <Stack direction="column" spacing={1}>
                                 <Typography variant="body1" fontWeight={900}>مجموع پول دریافتی از مشتری :</Typography>
-                                <Typography variant="h4">{`${exchangeRate ? Number(Number(formik.values.amount) + Number(formik.values.fee)).toFixed(2) : 0} ${sourceRate ? sourceRate.priceName : "هیچ"}`}
+                                <Typography variant="h4">
+                                    <CurrencyText
+                                        value={Number(Number(formik.values.amount) + Number(formik.values.fee))}
+                                        priceName={sourceRate ? sourceRate.priceName : "هیچ"} />
                                 </Typography>
-
                             </Stack>
                         </FieldSet>
                     </Grid>

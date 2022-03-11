@@ -1,6 +1,6 @@
 import React from 'react'
-import { Grow, Alert, Stack, Box, TextField, InputAdornment } from '@mui/material'
-import { CSelect } from '..'
+import { Grow, Alert, Stack, Box, InputAdornment } from '@mui/material'
+import { CSelect,CurrencyInput } from '..'
 ExchangeRateAlert.defaultProps = {
     label: "مقدار پول دریافتی",
     onTypeChange:()=>{},
@@ -20,14 +20,13 @@ export default function ExchangeRateAlert({onResultAmountChange, exchangeRate, s
     React.useEffect(() => {
         onTypeChange(exchangeType)
         if(exchangeRate&& exchangeRate.reverse){
-            setAmountResult(exchangeRate ?getExchangeRate()===1?(Number(amount)*Number(exchangeRate.fromAmount)).toFixed(2):
-            (Number(amount)/Number(getExchangeRate()) * Number(exchangeRate.fromAmount)).toFixed(2): 0)
+            setAmountResult(exchangeRate ?getExchangeRate()===1?(Number(amount)*Number(exchangeRate.fromAmount)):
+            (Number(amount)/Number(getExchangeRate()) * Number(exchangeRate.fromAmount)): 0)
 
         }else{
-            setAmountResult(exchangeRate ?exchangeRate.fromAmount===1?(Number(amount)*Number(getExchangeRate())).toFixed(2):
-            (Number(amount)/Number(exchangeRate.fromAmount) *Number(getExchangeRate()) ).toFixed(2): 0)
+            setAmountResult(exchangeRate ?exchangeRate.fromAmount===1?(Number(amount)*Number(getExchangeRate())):
+            (Number(amount)/Number(exchangeRate.fromAmount) *Number(getExchangeRate())): 0)
         }
-      
     }, [amount, sourceRate, distRate, exchangeRate,exchangeType])
     React.useEffect(() => {
         onResultAmountChange(amountResult)
@@ -69,10 +68,8 @@ export default function ExchangeRateAlert({onResultAmountChange, exchangeRate, s
                     setExhcangeType(v.target.value)
                 }}
             />
-            <TextField
+            <CurrencyInput
                 label={label}
-                required
-                size="small"
                 value={amountResult}
                 InputProps={{
                     readOnly: true,

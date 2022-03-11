@@ -1,6 +1,6 @@
 import React from 'react'
 import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
-import { NotExist } from '../../../../ui-componets'
+import { CurrencyText, NotExist } from '../../../../ui-componets'
 export default function SCTransactionsBillsDekstop({ transactions = [], isPersonReport = false }) {
     return (
         <>
@@ -39,14 +39,13 @@ export default function SCTransactionsBillsDekstop({ transactions = [], isPerson
                     {transactions.length > 0 ? transactions.map((e, i) => (
                         <TableRow key={i}>
                             <TableCell>
-                                {e.totalBord} {e.currencyName}
+                                <CurrencyText value={e.totalBord} priceName={e.currencyName} />
                             </TableCell>
                             <TableCell>
-                                {e.totalRasid} {e.currencyName}
-
+                                <CurrencyText value={e.totalRasid} priceName={e.currencyName} />
                             </TableCell>
                             <TableCell>
-                                {e.totalHawala} {e.currencyName}
+                                <CurrencyText value={e.totalHawala} priceName={e.currencyName} />
                             </TableCell>
                             {
                                 isPersonReport ?
@@ -54,24 +53,24 @@ export default function SCTransactionsBillsDekstop({ transactions = [], isPerson
                                         <TableCell>
                                             {e.totalBills < 0 ?
                                                 <Typography fontWeight={900} color="error">{e.totalBills} {e.currencyName}</Typography> :
-                                                <Typography fontWeight={900}>{e.totalBills} {e.currencyName}</Typography>
+                                                <Typography fontWeight={900}><CurrencyText value={e.totalBills} priceName={e.currencyName}/></Typography>
                                             }
                                         </TableCell>
                                     </> :
                                     <>
                                         <TableCell>
-                                        <Typography fontWeight={900}>{e.totalTalab} {e.currencyName}</Typography>
+                                            <Typography fontWeight={900}><CurrencyText value={e.totalTalab} priceName={e.currencyName}/></Typography>
                                         </TableCell>
                                         <TableCell>
-                                        <Typography fontWeight={900} color="error">{e.totalBedehi} {e.currencyName}</Typography>
+                                            <Typography fontWeight={900} color="error"><CurrencyText value={e.totalBedehi} priceName={e.currencyName}/></Typography>
                                         </TableCell>
                                     </>
                             }
                         </TableRow>
                     )) :
                         <TableRow >
-                            <TableCell colSpan={isPersonReport?4:6}>
-                                <NotExist/>
+                            <TableCell colSpan={isPersonReport ? 4 : 6}>
+                                <NotExist />
                             </TableCell>
                         </TableRow>}
                 </TableBody>

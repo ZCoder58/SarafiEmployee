@@ -1,6 +1,6 @@
 import React from 'react'
 import { Chip, Table, Box, TableBody, TableCell, TableHead, TableRow, IconButton, Typography } from '@mui/material'
-import { NotExist, CDialog, CTooltip,AskDialog } from '../../../../ui-componets'
+import { NotExist, CDialog, CTooltip,AskDialog, CurrencyText } from '../../../../ui-componets'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Util from '../../../../helpers/Util';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
@@ -64,7 +64,7 @@ export default function CustomerTransactionsDesktop({ transactions=[] }) {
                     {transactionsList.length > 0 ? transactionsList.map((e, i) => (
                         <TableRow key={i}>
                             <TableCell>
-                                {e.amount} {e.priceName}
+                                <CurrencyText value={e.amount} priceName={e.priceName}/>
                             </TableCell>
                             <TableCell>
                                 {e.transactionType === TransactionTypesStatics.Deposit ?
@@ -83,6 +83,8 @@ export default function CustomerTransactionsDesktop({ transactions=[] }) {
                                     <Chip label="برداشت از حساب" size="small" color="info"></Chip>:
                                     e.transactionType === TransactionTypesStatics.WithdrawalWithDebt?
                                     <Chip label="برداشت از حساب به قرض" size="small" color="error"></Chip>:
+                                    e.transactionType === TransactionTypesStatics.TransferComplete?
+                                    <Chip label="اجرای حواله" size="small" color="info"></Chip>:
                                     <Chip label="برداشت از حساب" size="small" color="error"></Chip>
                                     }
                             </TableCell>

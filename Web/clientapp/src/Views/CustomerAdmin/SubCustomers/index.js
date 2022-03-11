@@ -14,7 +14,6 @@ import SCNewTransactionFormDeposit from './TransactionTypesForm/SCNewTransaction
 import SCNewTransactionFormTransferToAccount from './TransactionTypesForm/SCNewTransactionFormTransferToAccount';
 import TextDecreaseIcon from '@mui/icons-material/TextDecrease';
 import TextIncreaseIcon from '@mui/icons-material/TextIncrease';
-import MoveDownOutlinedIcon from '@mui/icons-material/MoveDownOutlined';
 export default function VCSubCustomers() {
     const [refreshTableState, setRefreshTableState] = React.useState(false)
     const [transactionDialogOpen,setTransactionDialogOpen]=React.useState(false)

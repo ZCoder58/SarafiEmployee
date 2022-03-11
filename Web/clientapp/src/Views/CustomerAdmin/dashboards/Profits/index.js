@@ -3,7 +3,7 @@ import { Card, CardHeader, Grid, List, ListItem, ListItemText, Stack, Typography
 import authAxiosApi from '../../../../axios'
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import UnarchiveOutlinedIcon from '@mui/icons-material/UnarchiveOutlined';
-import { SkeletonFull } from '../../../../ui-componets'
+import { CurrencyText, SkeletonFull } from '../../../../ui-componets'
 export default function Profits() {
     const [inProfits, setInProfits] = React.useState([])
     const [outProfits, setOutProfits] = React.useState([])
@@ -44,8 +44,8 @@ export default function Profits() {
                                         primary={
                                             <React.Fragment>
                                                 <Stack component="span" direction="row" spacing={1} alignItems="flex-end">
-                                                    <Typography component="span" variant="h3">{e.totalProfit}</Typography>
-                                                    <Typography component="span" variant="h5">{e.currencyName}</Typography>
+                                                    <Typography component="span" variant="h3"><CurrencyText value={e.totalProfit} priceName={<Typography component="span" variant="h5">{e.currencyName}</Typography>}/></Typography>
+                                                    
                                                 </Stack>
                                             </React.Fragment>
                                         }
@@ -83,8 +83,8 @@ export default function Profits() {
                                         primary={
                                             <React.Fragment>
                                                 <Stack component="span" direction="row" spacing={1} alignItems="flex-end">
-                                                    <Typography component="span" variant="h3">{e.totalProfit}</Typography>
-                                                    <Typography component="span" variant="h5">{e.currencyName}</Typography>
+                                                <Typography component="span" variant="h3"><CurrencyText value={e.totalProfit} priceName={<Typography component="span" variant="h5">{e.currencyName}</Typography>}/></Typography>
+
                                                 </Stack>
                                             </React.Fragment>
                                         }

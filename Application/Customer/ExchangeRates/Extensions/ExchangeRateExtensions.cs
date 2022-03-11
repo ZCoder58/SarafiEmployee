@@ -60,12 +60,12 @@ namespace Application.Customer.ExchangeRates.Extensions
                     return (lastExchangeRate.FromAmount == 1
                         ? amount * exchangeRate
                         : (amount /
-                           lastExchangeRate.FromAmount) * exchangeRate).ToString().ToDoubleFormatted();
+                           lastExchangeRate.FromAmount) * exchangeRate);
                 }
 
                 return (exchangeRate == 1
                     ? amount * lastExchangeRate.FromAmount
-                    : (amount / exchangeRate) * lastExchangeRate.FromAmount).ToString().ToDoubleFormatted();
+                    : (amount / exchangeRate) * lastExchangeRate.FromAmount);
             }
 
             return 0;

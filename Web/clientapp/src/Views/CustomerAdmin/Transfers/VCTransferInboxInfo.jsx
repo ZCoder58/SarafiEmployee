@@ -2,7 +2,7 @@ import React from 'react'
 import { Grid, Card, CardContent, Typography, Chip, Divider, Stack, styled, Button, CardHeader, IconButton } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import authAxiosApi from '../../../axios'
-import { CDialog, SkeletonFull } from '../../../ui-componets'
+import { CDialog, CurrencyText, SkeletonFull } from '../../../ui-componets'
 import { shouldForwardProp } from '@mui/system'
 import { useNavigate } from 'react-router'
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined'
@@ -125,7 +125,7 @@ export default function VCTransferInfo() {
                             </StyledRowLight>
                             <StyledRowDark>
                                 <Typography variant="body1" fontWeight={900}>مقدار پول دریافتی :</Typography>
-                                <Typography variant="body2">{transfer.destinationAmount} {transfer.toCurrency}</Typography>
+                                <Typography variant="body2"><CurrencyText value={transfer.destinationAmount} priceName={transfer.toCurrency}/></Typography>
                             </StyledRowDark>
                             <StyledRowLight>
                                 <Typography variant="body1" fontWeight={900}>ملاحظات :</Typography>

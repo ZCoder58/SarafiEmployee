@@ -1,6 +1,6 @@
 import React from 'react'
 import { ListItem, Box, ListItemText, Stack, Chip, Table, TableBody, TableCell, TableHead, TableRow, Typography, ButtonGroup, IconButton, Button } from '@mui/material'
-import { NotExist, CDialog, AskDialog } from '../../../../ui-componets'
+import { NotExist, CDialog, AskDialog, CurrencyText } from '../../../../ui-componets'
 import authAxiosApi from '../../../../axios'
 import { TransactionTypesStatics } from '../../../../helpers/statics'
 
@@ -53,7 +53,7 @@ export default function CustomerTransactionsMobile({ transactions }) {
                             <TableCell sx={{ p: 0 }}>
                                 <ListItem>
                                     <ListItemText
-                                        primary={`${e.amount} ${e.priceName}`}
+                                        primary={<CurrencyText value={e.amount} priceName={e.priceName}/>}
                                         primaryTypographyProps={{
                                             typography: "body1",
                                             fontWeight: 900
@@ -78,6 +78,8 @@ export default function CustomerTransactionsMobile({ transactions }) {
                                                                                     <Chip label="برداشت از حساب" component="span" size="small" color="info"></Chip> :
                                                                                     e.transactionType === TransactionTypesStatics.WithdrawalWithDebt ?
                                                                                         <Chip label="برداشت از حساب به قرض" component="span" size="small" color="error"></Chip> :
+                                                                                        e.transactionType === TransactionTypesStatics.TransferComplete?
+                                    <Chip label="اجرای حواله" size="small" color="info"></Chip>:
                                                                                         <Chip label="برداشت از حساب" size="small" component="span" color="error"></Chip>
                                                         }
                                                     </Typography>

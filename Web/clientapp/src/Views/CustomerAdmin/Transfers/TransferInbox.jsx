@@ -1,4 +1,4 @@
-import {  TableGlobalSearch, CToolbar, CTable, CTooltip, AskDialog } from '../../../ui-componets'
+import {  TableGlobalSearch, CToolbar, CTable, CTooltip, AskDialog, CurrencyText } from '../../../ui-componets'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'; import React from 'react'
 import { Box, Grid, Stack, Typography, useTheme, Chip, IconButton, ListItem, ListItemText, Button } from '@mui/material'
@@ -41,7 +41,7 @@ export default function InnerTransferInbox() {
                                 <Stack direction="column" component="span">
                                     <Typography component="span" variant="subtitle2" color="GrayText">نمبر حواله - {row.codeNumber}</Typography>
                                     <Typography component="span" variant="subtitle2" color="GrayText">دریافت کننده - {row.toName} {row.toLastName}</Typography>
-                                    <Typography component="span" variant="subtitle2" color="GrayText">مبلغ - {row.destinationAmount} {row.toCurrency}</Typography>
+                                    <Typography component="span" variant="subtitle2" color="GrayText">مبلغ - <CurrencyText value={row.destinationAmount} priceName={row.toCurrency}/> </Typography>
                                     <Typography component="span" variant="subtitle2" color="GrayText">کد نمبر - {row.codeNumber}</Typography>
                                 </Stack>
                             </React.Fragment>
@@ -89,7 +89,7 @@ export default function InnerTransferInbox() {
         {
             name: <Typography variant="body2" fontWeight={600}>مبلغ دریافتی</Typography>,
             selector: row => (
-                <Box>{row.destinationAmount} {row.toCurrency}</Box>
+                <Box><CurrencyText value={row.destinationAmount} priceName={row.toCurrency}/></Box>
             ),
             sortable: false,
             reorder: true

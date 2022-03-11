@@ -1,6 +1,6 @@
 import React from 'react'
 import {  Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
-import { NotExist } from '../../../../../ui-componets'
+import { CurrencyText, NotExist } from '../../../../../ui-componets'
 export default function CTransfersBillsDekstop({ transfers=[] }) {
     return (
         <>
@@ -22,15 +22,15 @@ export default function CTransfersBillsDekstop({ transfers=[] }) {
                     {transfers.length > 0 ? transfers.map((e, i) => (
                         <TableRow key={i}>
                             <TableCell>
-                                {e.talab} {e.currencyName}
+                                <CurrencyText value={e.talab} priceName={e.currencyName}/>
                             </TableCell>
                             <TableCell>
-                                {e.bedehi} {e.currencyName}
+                                <CurrencyText value={e.bedehi} priceName={e.currencyName}/>
                             </TableCell>
                             <TableCell>
                                 {e.billResult<0?
-                                <Typography fontWeight={900} color="error">{e.billResult} {e.currencyName}</Typography>:
-                                <Typography fontWeight={900}>{e.billResult} {e.currencyName}</Typography>
+                                <Typography fontWeight={900} color="error"> <CurrencyText value={e.billResult} priceName={e.currencyName}/></Typography>:
+                                <Typography fontWeight={900}><CurrencyText value={e.billResult} priceName={e.currencyName}/></Typography>
                             }
                             </TableCell>
                         </TableRow>
