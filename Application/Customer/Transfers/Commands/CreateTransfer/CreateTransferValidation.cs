@@ -18,8 +18,7 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
                 .GreaterThan(10).WithMessage("کمتر از 10 مجاز نیست");
             RuleFor(a => a.CodeNumber)
                 .Cascade(CascadeMode.Stop)
-                .NotNull().WithMessage("کود حواله ضروری میباشد")
-                .ExclusiveBetween(50, 5001).WithMessage("کود نمبر حواله درست نمیباشد");
+                .NotNull().WithMessage("کود حواله ضروری میباشد");
             RuleFor(a => a.FCurrency)
                 .NotNull().WithMessage("انتخاب واحد پول ارسالی ضروری میباشد");   
             RuleFor(a => a.FromName)

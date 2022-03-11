@@ -28,6 +28,7 @@ const createModel = {
     receiverFee: 0,
     comment: "",
     exchangeType: "buy",
+    codeNumber:0
 }
 const validationSchema = Yup.object().shape({
     fromName: Yup.string().required("نام ارسال کنننده ضروری میباشد"),
@@ -42,12 +43,13 @@ const validationSchema = Yup.object().shape({
     fee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
     exchangeType: Yup.string().required("نوعیت معامله ضروری میباشد"),
     receiverFee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
+    codeNumber: Yup.number().required("کد نمبر حواله ضروری میباشد"),
 });
 
 export default function CreateTransfer() {
     const [sourceRate, setSourceRate] = React.useState(null)
     const [distRate, setDistRate] = React.useState(null)
-    const [transferCode, setTransferCode] = React.useState(0)
+    // const [transferCode, setTransferCode] = React.useState(0)
     const [exchangeRate, setExchangeRate] = React.useState(null)
     const [askOpen, setAskOpen] = React.useState(false)
     const [receivedAmount, setReceivedAmount] = React.useState(0)
@@ -57,7 +59,7 @@ export default function CreateTransfer() {
         initialValues: createModel,
         onSubmit: async (values, formikHelper) => {
             const formData = Util.ObjectToFormData(values)
-            formData.append("codeNumber", transferCode)
+            // formData.append("codeNumber", transferCode)
             try {
                 await authAxiosApi.post('customer/transfers', formData)
                 navigate('/customer/transfers')
@@ -87,7 +89,7 @@ export default function CreateTransfer() {
                 }).then(r => {
                     setExchangeRate(r)
                 })
-                setTransferCode(Util.GenerateRandom(50, 5000))
+                // setTransferCode(Util.GenerateRandom(50, 5000))
 
             } catch {
 
@@ -275,9 +277,7 @@ export default function CreateTransfer() {
                                 label="کمیشن حواله دار"
                                 size="small"
                                 type="number"
-
                                 defaultValue={formik.values.receiverFee}
-
                                 onChange={formik.handleChange}
                                 InputProps={{
                                     endAdornment: (
@@ -304,6 +304,17 @@ export default function CreateTransfer() {
                                     )
                                 }}
                             />
+                            <TextField
+                                name='codeNumber'
+                                label="کد نمبر حواله"
+                                size="small"
+                                type="number"
+                                required
+                                error={formik.errors.codeNumber?true:false}
+                                helperText={formik.errors.codeNumber}
+                                defaultValue={formik.values.codeNumber}
+                                onChange={formik.handleChange}
+                            />
                         </FieldSet>
                     </Grid>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -319,10 +330,10 @@ export default function CreateTransfer() {
                     </Grid>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
                         <FieldSet label="معلومات حواله" className="bgWave">
-                            <Stack direction="column" spacing={1}>
+                            {/* <Stack direction="column" spacing={1}>
                                 <Typography variant="body1" fontWeight={900}>نمبر حواله :</Typography>
                                 <Typography variant="h4">{transferCode}</Typography>
-                            </Stack>
+                            </Stack> */}
                             <Stack direction="column" spacing={1}>
                                 <Typography variant="body1" fontWeight={900}>مجموع پول دریافتی از مشتری :</Typography>
                                 <Typography variant="h4">

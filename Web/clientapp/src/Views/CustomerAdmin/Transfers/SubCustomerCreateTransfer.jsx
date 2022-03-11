@@ -28,7 +28,8 @@ const createModel = {
     fee: 0,
     receiverFee: 0,
     comment: "",
-    exchangeType:""
+    exchangeType:"",
+    codeNumber:0
 }
 const validationSchema = Yup.object().shape({
     exchangeType: Yup.string().required("نوعیت نرخ معامله ضروری میباشد"),
@@ -44,11 +45,12 @@ const validationSchema = Yup.object().shape({
     friendId: Yup.string().required("انتخاب همکار شما ضروری میباشد"),
     fee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
     receiverFee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
+    codeNumber: Yup.number().required("کد نمبر حواله ضروری میباشد")
 });
 export default function SubCustomerCreateTransfer() {
     const [accountRate, setAcountRate] = React.useState(null)
     const [distRate, setDistRate] = React.useState(null)
-    const [transferCode, setTransferCode] = React.useState(0)
+    // const [transferCode, setTransferCode] = React.useState(0)
     const [exchangeRate, setExchangeRate] = React.useState(null)
     const [askOpen, setAskOpen] = React.useState(false)
     const [receivedAmount, setReceivedAmount] = React.useState(0)
@@ -59,7 +61,7 @@ export default function SubCustomerCreateTransfer() {
         initialValues: createModel,
         onSubmit: async (values, formikHelper) => {
             const formData = Util.ObjectToFormData(values)
-            formData.append("codeNumber", transferCode)
+            // formData.append("codeNumber", transferCode)
             try {
                 await authAxiosApi.post('subCustomers/transfers', formData)
                 navigate('/customer/transfers')
@@ -107,9 +109,9 @@ export default function SubCustomerCreateTransfer() {
         })()
         return () => setExchangeRate(null)
     }, [accountRate, distRate])
-    React.useEffect(() => {
-        setTransferCode(Util.GenerateRandom(50, 5000))
-    }, [])
+    // React.useEffect(() => {
+    //     setTransferCode(Util.GenerateRandom(50, 5000))
+    // }, [])
     return (
         <CCard
             title="فورم ثبت حواله جدید"
@@ -334,6 +336,17 @@ export default function SubCustomerCreateTransfer() {
                                     )
                                 }}
                             />
+                            <TextField
+                                name='codeNumber'
+                                label="کد نمبر حواله"
+                                size="small"
+                                type="number"
+                                required
+                                error={formik.errors.codeNumber?true:false}
+                                helperText={formik.errors.codeNumber}
+                                defaultValue={formik.values.codeNumber}
+                                onChange={formik.handleChange}
+                            />
                         </FieldSet>
                     </Grid>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -349,10 +362,10 @@ export default function SubCustomerCreateTransfer() {
                     </Grid>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
                         <FieldSet label="معلومات حواله" className="bgWave">
-                            <Stack direction="column" spacing={1}>
+                            {/* <Stack direction="column" spacing={1}>
                                 <Typography variant="body1" fontWeight={900}>نمبر حواله :</Typography>
                                 <Typography variant="h4">{transferCode}</Typography>
-                            </Stack>
+                            </Stack> */}
                             <Stack direction="column" spacing={1}>
                                 <Typography variant="body1" fontWeight={900}>مجموع پول دریافتی از مشتری :</Typography>
                                 <Typography variant="h4">
