@@ -141,14 +141,16 @@ namespace Application.Common.Mappers
             CreateMap<CustomerAccount,CustomerAccountRateDTo>()
                 .ForMember(dist=>dist.PriceName,option=>
                     option.MapFrom(source=>source.RatesCountry.PriceName));
-            CreateMap<CreateCustomerAccountRateCommand,CustomerAccount>();
-            CreateMap<CreateCustomerTransactionCommand,CustomerAccountTransaction>();
+            CreateMap<CCreateAccountRateCommand,CustomerAccount>();
+            CreateMap<CCreateTransactionCommand,CustomerAccountTransaction>();
             CreateMap<CustomerAccountTransaction,CustomerAccountTransactionDTo>()
                 .ForMember(dist=>dist.CanRollback,option=>
                     option.MapFrom(source=>
                         source.TransactionType!=TransactionTypes.Transfer &&
-                        source.TransactionType!=TransactionTypes.ReceivedFromAccount &&
-                        source.CreatedDate.Value.Date>=DateTime.UtcNow.AddDays(-2).Date));
+                        source.TransactionType!=TransactionTypes.TransferComplete
+                        // source.TransactionType!=TransactionTypes.ReceivedFromAccount &&
+                        // source.CreatedDate.Value.Date>=DateTime.UtcNow.AddDays(-2).Date
+                        ));
             // CreateMap<CustomerAccount,EditCustomerAccountRateDTo>();
             #endregion
             #region SubCustomerAccountRate
@@ -156,8 +158,8 @@ namespace Application.Common.Mappers
             CreateMap<SubCustomerAccountRate,SubCustomerAccountRateDTo>()
                 .ForMember(dist=>dist.PriceName,option=>
                     option.MapFrom(source=>source.RatesCountry.PriceName));
-            CreateMap<CreateAccountRateCommand,SubCustomerAccountRate>();
-            CreateMap<EditAccountRateCommand,SubCustomerAccountRate>();
+            CreateMap<ScCreateAccountRateCommand,SubCustomerAccountRate>();
+            CreateMap<CsEditAccountRateCommand,SubCustomerAccountRate>();
             CreateMap<SubCustomerAccountRate,EditSubCustomerAccountRateDTo>();
 
             #endregion
@@ -167,10 +169,12 @@ namespace Application.Common.Mappers
                 .ForMember(dist=>dist.CanRollback,option=>
                     option.MapFrom(source=>
                         source.TransactionType!=TransactionTypes.Transfer &&
-                        source.TransactionType!=TransactionTypes.TransferWithDebt &&
-                        source.TransactionType!=TransactionTypes.ReceivedFromAccount &&
-                        source.CreatedDate.Value.Date>=DateTime.UtcNow.AddDays(-2).Date));
-            CreateMap<CreateTransactionCommand, SubCustomerTransaction>();
+                        source.TransactionType!=TransactionTypes.TransferWithDebt  &&
+                        source.TransactionType!=TransactionTypes.TransferComplete 
+                        // source.TransactionType!=TransactionTypes.ReceivedFromAccount &&
+                        // source.CreatedDate.Value.Date>=DateTime.UtcNow.AddDays(-2).Date
+                        ));
+            CreateMap<CsCreateTransactionCommand, SubCustomerTransaction>();
 
             #endregion
 

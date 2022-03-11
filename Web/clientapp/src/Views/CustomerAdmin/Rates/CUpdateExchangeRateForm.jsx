@@ -10,11 +10,13 @@ import Util from '../../../helpers/Util'
 const initialModel = {
     exchangeRateId: "",
     fromAmount: 1,
-    toExchangeRate: 0
+    toExchangeRateSell: 0,
+    toExchangeRateBuy: 0
 }
 const validationSchema = Yup.object().shape({
     fromAmount: Yup.number().required("مقدار ارز ضروری میباشد").moreThan(0, "کمتر از 1 مجاز نیست"),
-    toExchangeRate: Yup.number().required("مقدار معادل ضروری میباشد").moreThan(0, "کمتر از 0 مجاز نیست")
+    toExchangeRateSell: Yup.number().required("مقدار معادل فروش ضروری میباشد").moreThan(0, "کمتر از 0 مجاز نیست"),
+    toExchangeRateBuy: Yup.number().required("مقدار معادل خرید ضروری میباشد").moreThan(0, "کمتر از 0 مجاز نیست")
 });
 export default function CUpdateExchangeRateForm({ exchangeRateId,onSubmitDone }) {
     const [loading, setLoading] = React.useState(false)
@@ -40,7 +42,8 @@ export default function CUpdateExchangeRateForm({ exchangeRateId,onSubmitDone })
                 formik.setValues({
                     fromAmount:r.fromAmount,
                     exchangeRateId:r.id,
-                    toExchangeRate:r.toExchangeRate
+                    toExchangeRateBuy:r.toExchangeRateBuy,
+                    toExchangeRateSell:r.toExchangeRateSell
                 })
                 setRate(r)
             })
@@ -70,17 +73,37 @@ export default function CUpdateExchangeRateForm({ exchangeRateId,onSubmitDone })
                          }}
                     />
                 </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Grid item lg={6} md={6} sm={6} xs={12}>
                     <TextField
                         variant='outlined'
-                        name='toExchangeRate'
-                        helperText={formik.errors.toExchangeRate}
-                        value={formik.values.toExchangeRate}
+                        name='toExchangeRateSell'
+                        helperText={formik.errors.toExchangeRateSell}
+                        value={formik.values.toExchangeRateSell}
                         size='small'
-                        label='نرخ معادل'
+                        label='نرخ معادل فروش'
                         type='number'
                         required
-                        error={formik.errors.toExchangeRate ? true : false}
+                        error={formik.errors.toExchangeRateSell ? true : false}
+                        onChange={formik.handleChange}
+                        InputProps={{ 
+                            endAdornment:<InputAdornment position="end">
+                                    {rate.toRatesCountryPriceName}
+                                    <Divider orientation='vertical' variant='middle' flexItem/>
+                                </InputAdornment>
+                         }}
+                    />
+                </Grid>
+                <Grid item lg={6} md={6} sm={6} xs={12}>
+                    <TextField
+                        variant='outlined'
+                        name='toExchangeRateBuy'
+                        helperText={formik.errors.toExchangeRateBuy}
+                        value={formik.values.toExchangeRateBuy}
+                        size='small'
+                        label='نرخ معادل خرید'
+                        type='number'
+                        required
+                        error={formik.errors.toExchangeRateBuy ? true : false}
                         onChange={formik.handleChange}
                         InputProps={{ 
                             endAdornment:<InputAdornment position="end">

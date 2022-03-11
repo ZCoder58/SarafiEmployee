@@ -30,12 +30,12 @@ namespace Application.Customer.ExchangeRates.Commands.UpdateExchangeRate
             var targetExchangeRate = _dbContext.CustomerExchangeRates.GetById(request.ExchangeRateId);
             _mapper.Map(request, targetExchangeRate);
             targetExchangeRate.Updated = true;
-            var targetExchangeRateReverse = _dbContext.CustomerExchangeRates.GetExchangeRateReverseById(
-                _httpUserContext.GetCurrentUserId().ToGuid(),
-                targetExchangeRate.FromRatesCountryId, targetExchangeRate.ToRatesCountryId.ToGuid());
-            targetExchangeRateReverse.FromAmount = targetExchangeRate.ToExchangeRate;
-            targetExchangeRateReverse.ToExchangeRate = targetExchangeRate.FromAmount;
-            targetExchangeRateReverse.Updated = true;
+            // var targetExchangeRateReverse = _dbContext.CustomerExchangeRates.GetExchangeRateReverseById(
+            //     _httpUserContext.GetCurrentUserId().ToGuid(),
+            //     targetExchangeRate.FromRatesCountryId, targetExchangeRate.ToRatesCountryId.ToGuid());
+            // targetExchangeRateReverse.FromAmount = targetExchangeRate.ToExchangeRate;
+            // targetExchangeRateReverse.ToExchangeRate = targetExchangeRate.FromAmount;
+            // targetExchangeRateReverse.Updated = true;
            await _dbContext.SaveChangesAsync(cancellationToken);
            await _mediator.Publish(new CustomerExchangeRateUpdated(),cancellationToken);
            return Unit.Value;

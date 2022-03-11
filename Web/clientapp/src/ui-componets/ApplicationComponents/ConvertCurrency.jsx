@@ -1,4 +1,4 @@
-import { Box, Grid, InputAdornment, TextField } from '@mui/material'
+import { Grid, InputAdornment, TextField } from '@mui/material'
 import React from 'react'
 import authAxiosApi from '../../axios'
 import { ExchangeRateAlert, RatesDropdown } from '..'
@@ -59,6 +59,7 @@ export default function ConvertCurrecy() {
                 distRate={distRate}
                 amount={amount}
                 label="نتیجه تبدیل ارز"
+                
             />
             </Grid>
         </Grid>

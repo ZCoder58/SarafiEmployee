@@ -30,6 +30,7 @@ namespace Domain.Entities
         public string Comment { get; set; }
         public Guid? ReceiverId { get; set; }
         public Customer Receiver { get; set; }
+        public string ExchangeType { get; set; }
         public Guid SenderId { get; set; }
         public Customer Sender { get; set; }
         public int AccountType { get; set; }

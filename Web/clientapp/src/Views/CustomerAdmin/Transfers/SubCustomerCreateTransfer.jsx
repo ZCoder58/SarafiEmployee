@@ -1,6 +1,6 @@
 import { AskDialog, CCard, ExchangeRateAlert, SearchFriendDropdown, SubCustomersDropdown } from '../../../ui-componets'
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
-import { Grid, Box, TextField, Stack, Typography, Divider, Alert, Grow, IconButton } from '@mui/material'
+import { Grid, Box, TextField, Stack, Typography, Divider, IconButton } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import React from 'react'
@@ -27,9 +27,11 @@ const createModel = {
     friendId: undefined,
     fee: 0,
     receiverFee: 0,
-    comment: ""
+    comment: "",
+    exchangeType:""
 }
 const validationSchema = Yup.object().shape({
+    exchangeType: Yup.string().required("نوعیت نرخ معامله ضروری میباشد"),
     fromName: Yup.string().required("نام ارسال کنننده ضروری میباشد"),
     fromFatherName: Yup.string().required("ولد ارسال کننده ضروری میباشد"),
     fromPhone: Yup.string().required("شماره تماس ارسال کننده ضروری میباشد"),
@@ -49,6 +51,8 @@ export default function SubCustomerCreateTransfer() {
     const [transferCode, setTransferCode] = React.useState(0)
     const [exchangeRate, setExchangeRate] = React.useState(null)
     const [askOpen, setAskOpen] = React.useState(false)
+    const [receivedAmount, setReceivedAmount] = React.useState(0)
+
     const navigate = useNavigate()
     const formik = useFormik({
         validationSchema: validationSchema,
@@ -84,9 +88,6 @@ export default function SubCustomerCreateTransfer() {
         await formik.setFieldValue("fromFatherName", newSubCustomer ? newSubCustomer.fatherName : "")
         await formik.setFieldValue("fromPhone", newSubCustomer ? newSubCustomer.phone : "")
     }
-    const receivedAmount = React.useMemo(() => {
-        return exchangeRate ? (Number(exchangeRate.toExchangeRate) / Number(exchangeRate.fromAmount) * Number(formik.values.amount)).toFixed(2) : 0
-    }, [exchangeRate, formik.values.amount])
     React.useEffect(() => {
         (async () => {
             try {
@@ -260,11 +261,14 @@ export default function SubCustomerCreateTransfer() {
                                     )
                                 }}
                             />
+                            
                             <ExchangeRateAlert
                                 exchangeRate={exchangeRate}
                                 sourceRate={accountRate}
                                 distRate={distRate}
                                 amount={formik.values.amount}
+                                onTypeChange={(v)=>formik.setFieldValue("exchangeType",v)}
+                                onResultAmountChange={(resultAmount)=>setReceivedAmount(resultAmount)}
                             />
 
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
+using Application.Common.Statics;
 using Application.Customer.ExchangeRates.Extensions;
 using Application.SunriseSuperAdmin.Rates.Extensions;
 using Domain.Interfaces;
@@ -31,17 +32,21 @@ namespace Application.Customer.ExchangeRates.Commands.CreateExchangeRate
                 .Cascade(CascadeMode.Stop)
                 .NotNull().WithMessage("نرخ ارز ضروری میباشد")
                 .GreaterThanOrEqualTo(0).WithMessage("کوچکتر از 0 مجاز نیست"); 
-            RuleFor(a => a.ToAmount)
+            RuleFor(a => a.ToAmountSell)
                 .Cascade(CascadeMode.Stop)
-                .NotNull().WithMessage("نرخ معادل ضروری میباشد")
+                .NotNull().WithMessage("نرخ خرید معادل ضروری میباشد")
+                .GreaterThanOrEqualTo(0).WithMessage("کوچکتر از 0 مجاز نیست");
+            RuleFor(a => a.ToAmountBuy)
+                .Cascade(CascadeMode.Stop)
+                .NotNull().WithMessage("نرخ فروش معادل ضروری میباشد")
                 .GreaterThanOrEqualTo(0).WithMessage("کوچکتر از 0 مجاز نیست");
         }
 
         public bool IsNotAlreadyAdded(CreateExchangeRateCommand model,Guid fromCurrency)
         {
-            var target= _dbContext.CustomerExchangeRates.GetExchangeRateById(
+            var target= _dbContext.CustomerExchangeRates.GetTodayExchangeRateById(
                 _httpUserContext.GetCurrentUserId().ToGuid(),model.FromCurrency,model.ToCurrency);
-            return target.IsNull() || target.CreatedDate?.Date != DateTime.UtcNow.Date;
+            return target.IsNull();
         }
     }
 }

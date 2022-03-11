@@ -1,6 +1,7 @@
 ﻿using System;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
+using Application.Common.Statics;
 using Domain.Entities;
 using Domain.Interfaces;
 using FluentValidation;
@@ -23,9 +24,13 @@ namespace Application.Customer.ExchangeRates.Commands.UpdateExchangeRate
                 .Cascade(CascadeMode.Stop)
                 .NotNull().WithMessage("مقدار ارز ضروری میباشد")
                 .GreaterThanOrEqualTo(1).WithMessage("کمتر از 1 مجاز نیست");
-            RuleFor(a => a.FromAmount)
+            RuleFor(a => a.ToExchangeRateBuy)
                 .Cascade(CascadeMode.Stop)
-                .NotNull().WithMessage("مقدار معادل ضروری میباشد")
+                .NotNull().WithMessage("مقدار خرید معادل ضروری میباشد")
+                .GreaterThanOrEqualTo(0).WithMessage("کمتر از0 مجاز نیست");
+            RuleFor(a => a.ToExchangeRateSell)
+                .Cascade(CascadeMode.Stop)
+                .NotNull().WithMessage("مقدار فروش معادل ضروری میباشد")
                 .GreaterThanOrEqualTo(0).WithMessage("کمتر از0 مجاز نیست");
 
         }
@@ -34,8 +39,7 @@ namespace Application.Customer.ExchangeRates.Commands.UpdateExchangeRate
         {
             var targetExchangeRate = _dbContext.CustomerExchangeRates.GetById(exchangeRateId);
             return targetExchangeRate.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid() &&
-                   !targetExchangeRate.Reverse &&
-                   targetExchangeRate.CreatedDate?.Date.Date ==DateTime.UtcNow.Date;
+                   targetExchangeRate.CreatedDate?.Date.Date ==CDateTime.Now.Date;
         }
     }
 }

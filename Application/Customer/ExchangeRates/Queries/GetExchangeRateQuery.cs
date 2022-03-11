@@ -36,14 +36,22 @@ namespace Application.Customer.ExchangeRates.Queries
             var targetExchangeRate = _dbContext.CustomerExchangeRates.FirstOrDefault(a =>
                 a.CreatedDate.Value.Date == DateTime.UtcNow.Date &&
                 a.CustomerId==userId&&
-                a.FromRatesCountry.Id == request.FromCurrencyId &&
-                a.ToRatesCountry.Id == request.ToCurrencyId);
+                (a.FromRatesCountry.Id == request.FromCurrencyId &&
+                 a.ToRatesCountry.Id == request.ToCurrencyId) ||
+                (a.FromRatesCountry.Id == request.ToCurrencyId &&
+                 a.ToRatesCountry.Id == request.FromCurrencyId));
             if (targetExchangeRate.IsNull())
             {
-               var newExchangeRate=await _mediator.Send(new CreateExchangeRateCommand(request.FromCurrencyId, request.ToCurrencyId,1,1,false),cancellationToken);
+                var updated = request.FromCurrencyId == request.ToCurrencyId;
+               var newExchangeRate=await _mediator.Send(new CreateExchangeRateCommand(request.FromCurrencyId, request.ToCurrencyId,1,1,1,updated),cancellationToken);
                return _mapper.Map<ExchangeRatesDTo>(newExchangeRate);
             }
-            return _mapper.Map<ExchangeRatesDTo>(targetExchangeRate);
+            
+            var newExchangeRatesDTo = _mapper.Map<ExchangeRatesDTo>(targetExchangeRate);
+
+            newExchangeRatesDTo.Reverse = targetExchangeRate.FromRatesCountryId != request.FromCurrencyId;
+
+            return newExchangeRatesDTo;
         }
     }
 }

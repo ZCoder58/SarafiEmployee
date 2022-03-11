@@ -4,11 +4,11 @@ import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import authAxiosApi from '../../../../axios'
 import Util from '../../../../helpers/Util'
-import {SubCustomerAccountRatesSelect,CTitle } from '../../../../ui-componets'
+import {CTitle } from '../../../../ui-componets'
 import { LoadingButton } from '@mui/lab'
 import { CheckCircleOutline } from '@mui/icons-material'
 const initialModel = {
-    id:"",
+    rateCountryId:"",
     comment: "",
     amount: 1,
 }
@@ -22,7 +22,7 @@ export default function SCustomerNewTransactionFormDeposit({customerAccount, onS
         initialValues: initialModel,
         onSubmit: async (values, formikHelper) => {
             const formData=Util.ObjectToFormData(values);
-            formData.set('id', customerAccount.id)
+            formData.set('rateCountryId', customerAccount.ratesCountryId)
             await authAxiosApi.put('customer/accounts/deposit',formData )
                 .then(r => {
                     onSuccess()

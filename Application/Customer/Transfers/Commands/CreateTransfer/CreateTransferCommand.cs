@@ -23,5 +23,6 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
         public int CodeNumber { get; set; }
         public Guid FriendId { get; set; }
         public string Comment { get; set; }
+        public string ExchangeType { get; set; }
     }
 }

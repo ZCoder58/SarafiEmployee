@@ -24,5 +24,6 @@ namespace Application.Customer.Transfers.Commands.EditTransfer
         
         public Guid FriendId { get; set; }
         public string Comment { get; set; }
+        public string ExchangeType { get; set; }
     }
 }

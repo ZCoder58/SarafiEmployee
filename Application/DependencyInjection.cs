@@ -102,7 +102,7 @@ namespace Application
                 });
                 options.AddPolicy("limitRequest", policy =>
                 {
-                    policy.AddRequirements(new CustomerAuthRequirementLimitFriendsForSimpleCustomer(1));
+                    policy.AddRequirements(new CustomerAuthRequirementLimitFriendsForSimpleCustomer(3));
                 });
                 options.AddPolicy("limitEmployees", policy =>
                 {

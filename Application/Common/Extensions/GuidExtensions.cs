@@ -17,5 +17,17 @@ namespace Application.Common.Extensions
         {
             return guid==Guid.Empty;
         }
+        public static bool IsNotEmptyGuid(this Guid? guid)
+        {
+            return guid!=Guid.Empty;
+        }
+        public static bool IsEmptyGuid(this Guid? guid)
+        {
+            return guid==Guid.Empty;
+        }
+        public static bool IsEmptyOrNullGuid(this Guid? guid)
+        {
+            return guid==Guid.Empty || guid==null;
+        }
     }
 }

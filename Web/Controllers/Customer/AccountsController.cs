@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Common.Models;
 using Application.Customer.CustomerAccounts.Commands.CreateAccountRate;
+using Application.Customer.CustomerAccounts.Commands.Deposit;
 using Application.Customer.CustomerAccounts.Commands.Transactions.RollbackTransaction;
 using Application.Customer.CustomerAccounts.Commands.UpdateAccountAmount.Deposit;
-using Application.Customer.CustomerAccounts.Commands.UpdateAccountAmount.TransferToAccount;
 using Application.Customer.CustomerAccounts.Commands.UpdateAccountAmount.Withdrawal;
+using Application.Customer.CustomerAccounts.Commands.Withdrawal;
 using Application.Customer.CustomerAccounts.DTOs;
 using Application.Customer.CustomerAccounts.Queries;
 using Microsoft.AspNetCore.Authorization;
@@ -30,17 +31,17 @@ namespace Web.Controllers.Customer
             }));
         }
         [HttpPost]
-        public Task<CustomerAccountRateDTo> CreateAccount([FromForm] CreateCustomerAccountRateCommand request)
+        public Task<CustomerAccountRateDTo> CreateAccount([FromForm] CCreateAccountRateCommand request)
         {
             return Mediator.Send(request); 
         }
         [HttpPut("withdrawal")]
-        public Task WithdrawalAccount([FromForm] WithdrawalCustomerAccountAmountCommand request)
+        public Task WithdrawalAccount([FromForm] CWithdrawalMyAccountCommand request)
         {
             return Mediator.Send(request); 
         }
         [HttpPut("deposit")]
-        public Task DepositAccount([FromForm] DepositCustomerAccountAmountCommand request)
+        public Task DepositAccount([FromForm] CDepositMyAccountCommand request)
         {
             return Mediator.Send(request); 
         }
@@ -57,7 +58,7 @@ namespace Web.Controllers.Customer
                 toDate));
         }
         [HttpPost("transactions/rollback")]
-        public Task RollbackTransaction([FromBody]RollbackCustomerTransactionCommand request)
+        public Task RollbackTransaction([FromBody]CRollbackTransactionCommand request)
         {
             return Mediator.Send(request);
         }

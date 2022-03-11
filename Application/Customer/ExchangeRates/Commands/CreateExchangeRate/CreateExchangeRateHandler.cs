@@ -28,7 +28,7 @@ namespace Application.Customer.ExchangeRates.Commands.CreateExchangeRate
             var fromCurrency = _dbContext.RatesCountries.GetById(request.FromCurrency);
             var toCurrency = _dbContext.RatesCountries.GetById(request.ToCurrency);
 
-
+            
             //add base
             var newCustomerExchangeRate = (await _dbContext.CustomerExchangeRates.AddAsync(new CustomerExchangeRate()
             {

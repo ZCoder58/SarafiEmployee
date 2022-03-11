@@ -1,6 +1,6 @@
 import { CheckCircleOutline } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { Box, TextField } from '@mui/material'
+import { Box, Checkbox, FormControlLabel, TextField } from '@mui/material'
 import { useFormik } from 'formik';
 import React from 'react'
 import * as Yup from 'yup'
@@ -10,7 +10,8 @@ import { RatesDropdown } from '../../../../ui-componets';
 const initialModel = {
     subCustomerAccountId: "",
     amount: 0,
-    ratesCountryId: ""
+    ratesCountryId: "",
+    addToAccount:false
 }
 const validationSchema = Yup.object().shape({
     amount: Yup.number().required("مقدار پول اولیه حساب ضروری میباشد"),
@@ -54,6 +55,10 @@ export default function CreateSubCustomerAccountRateForm({subCustomerId,onSubmit
                 onValueChange={(v) =>{
                      formik.setFieldValue("ratesCountryId", v ? v.id : "")
                     }}
+            />
+            <FormControlLabel
+            label={"اضافه شدن پول به دخل"}
+            control={<Checkbox name='addToAccount' onChange={(e)=>formik.setFieldValue("addToAccount",e.target.checked)}/>}
             />
             <LoadingButton
                 loading={formik.isSubmitting}

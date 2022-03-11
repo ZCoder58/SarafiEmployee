@@ -45,4 +45,19 @@
       <Folder Include="Website\Management\extensions" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Customer\CustomerAccounts\Commands\UpdateAccountAmount\TransferToAccount\**" />
+      <Compile Remove="SubCustomers\Commands\UpdateAccountAmount\TransferToAccount\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Customer\CustomerAccounts\Commands\UpdateAccountAmount\TransferToAccount\**" />
+      <EmbeddedResource Remove="SubCustomers\Commands\UpdateAccountAmount\TransferToAccount\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Customer\CustomerAccounts\Commands\UpdateAccountAmount\TransferToAccount\**" />
+      <None Remove="SubCustomers\Commands\UpdateAccountAmount\TransferToAccount\**" />
+    </ItemGroup>
+
 </Project>

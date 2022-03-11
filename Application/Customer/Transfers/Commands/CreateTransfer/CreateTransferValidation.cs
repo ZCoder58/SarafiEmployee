@@ -46,6 +46,8 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
             RuleFor(a => a.ReceiverFee)
                 .Cascade(CascadeMode.Stop)
                 .GreaterThanOrEqualTo(0).WithMessage("کمتر از 0 مجاز نیست");
+            RuleFor(a => a.ExchangeType)
+                .NotNull().WithMessage("نوعیت تبادل ارز ضروری میباشد");
         }
     }
 }

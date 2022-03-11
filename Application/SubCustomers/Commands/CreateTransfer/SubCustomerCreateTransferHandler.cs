@@ -3,6 +3,10 @@ using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
 using Application.Common.Statics;
+using Application.Customer.CustomerAccounts.Commands.CreateAccountRate;
+using Application.Customer.CustomerAccounts.Commands.UpdateAccountAmount.Deposit;
+using Application.Customer.CustomerAccounts.Commands.UpdateAccountAmount.Withdrawal;
+using Application.Customer.CustomerAccounts.Extensions;
 using Application.Customer.ExchangeRates.Extensions;
 using Application.Customer.Transfers.Commands.CreateTransfer;
 using Application.Customer.Transfers.EventHandlers;
@@ -44,8 +48,14 @@ namespace Application.SubCustomers.Commands.CreateTransfer
                 fromCurrency.Id, request.TCurrency);
             newTransfer.SourceAmount = request.Amount;
             newTransfer.DestinationAmount = 
-                ((request.Amount / targetExchangeRate.FromAmount) * targetExchangeRate.ToExchangeRate).ToString().ToDoubleFormatted();            newTransfer.ToRate = targetExchangeRate.ToExchangeRate;
-            newTransfer.ToRate = targetExchangeRate.ToExchangeRate;
+                _dbContext.CustomerExchangeRates.ConvertCurrencyById(
+                    _httpUserContext.GetCurrentUserId().ToGuid(),
+                    fromCurrency.Id,
+                    request.TCurrency,
+                    request.Amount,
+                    request.ExchangeType);
+            newTransfer.ToRate = (request.ExchangeType=="buy"?
+                targetExchangeRate.ToExchangeRateBuy:targetExchangeRate.ToExchangeRateSell);
             newTransfer.FromRate = targetExchangeRate.FromAmount;
             newTransfer.RateUpdated = targetExchangeRate.Updated;
             newTransfer.ToCurrency = toCurrency.PriceName;
@@ -56,8 +66,7 @@ namespace Application.SubCustomers.Commands.CreateTransfer
             newTransfer.AccountType =TransferAccountTypesStatic.SubCustomerAccount;
             await _dbContext.Transfers.AddAsync(newTransfer, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-           
-            await _mediator.Send(new WithdrawalTransferSubCustomerAccountAmountCommand(
+            await _mediator.Send(new CsWithdrawalAccountTransferCommand(
                 request.SubCustomerAccountId,
                 request.SubCustomerAccountRateId,
                 request.Amount + request.Fee,

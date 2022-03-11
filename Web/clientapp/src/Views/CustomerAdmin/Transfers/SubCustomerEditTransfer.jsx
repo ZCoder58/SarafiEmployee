@@ -29,9 +29,11 @@ const createModel = {
     fee: 0,
     receiverFee: 0,
     codeNumber:0,
-    comment:""
+    comment:"",
+    exchangeType:""
 }
 const validationSchema = Yup.object().shape({
+    exchangeType: Yup.string().required("نوعیت نرخ معامله ضروری میباشد"),
     fromName: Yup.string().required("نام ارسال کنننده ضروری میباشد"),
     fromFatherName: Yup.string().required("ولد ارسال کننده ضروری میباشد"),
     fromPhone: Yup.string().required("شماره تماس ارسال کننده ضروری میباشد"),
@@ -46,6 +48,7 @@ const validationSchema = Yup.object().shape({
     receiverFee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
 });
 export default function SubCustomerEditTransfer() {
+    const [receivedAmount, setReceivedAmount] = React.useState(0)
     const [accountRate, setAccountRate] = React.useState(null)
     const [distRate, setDistRate] = React.useState(null)
     const [exchangeRate, setExchangeRate] = React.useState(null)
@@ -78,10 +81,6 @@ export default function SubCustomerEditTransfer() {
         formik.setFieldValue("tCurrency", newDistValue ? newDistValue.id : "")
         setDistRate(s => s = newDistValue)
     }
-
-    const receivedAmount = React.useMemo(() => {
-        return exchangeRate ? (Number(exchangeRate.toExchangeRate) / Number(exchangeRate.fromAmount) * Number(formik.values.amount)).toFixed(2) : 0
-    },[exchangeRate,formik.values.amount])
     React.useEffect(() => {
         (async () => {
             setLoading(true)
@@ -269,13 +268,16 @@ export default function SubCustomerEditTransfer() {
                                 }}
                             />
                            
-
-<ExchangeRateAlert
+                           <ExchangeRateAlert
                                 exchangeRate={exchangeRate}
                                 sourceRate={accountRate}
                                 distRate={distRate}
                                 amount={formik.values.amount}
-                                />
+                                defaultType={formik.values.exchangeType}
+                                onTypeChange={(v)=>formik.setFieldValue("exchangeType",v)}
+                                onResultAmountChange={(resultAmount)=>setReceivedAmount(resultAmount)}
+                            />
+
                             <TextField
                                 name='fee'
                                 label="کمیشن"

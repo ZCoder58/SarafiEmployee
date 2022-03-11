@@ -1,7 +1,7 @@
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CountriesRatesStatic from '../../../../helpers/statics/CountriesRatesStatic'
-import { Grid, styled, Table, TableBody, TableCell, TableHead, TableRow,Stack,Typography,Chip,IconButton, TableContainer } from '@mui/material'
-import { CCard, SkeletonFull,ImagePreview,CDialog, CTooltip } from '../../../../ui-componets'
+import { styled, Table, TableBody, TableCell, TableHead, TableRow,Stack,Typography,Chip,IconButton, } from '@mui/material'
+import { ImagePreview, CTooltip } from '../../../../ui-componets'
 
 const TableCellHeaderStyled = styled(TableCell)({
     typography: "body1",
@@ -39,12 +39,22 @@ export default function TableDesktopview({exchangeRates,handleEditClick}){
                             <Typography variant="body2">{e.fromRatesCountryFaName}</Typography>
                             <Typography variant="body2">{e.fromAmount}</Typography>
                             <Typography variant="body2">{e.fromRatesCountryPriceName}</Typography>
+                            <Typography variant="body2">به</Typography> 
+                            <Typography variant="body2">{e.toRatesCountryPriceName}</Typography>
                         </Stack>
                     </TableCell>
                     <TableCell>
-                        <Stack direction="row" spacing={1} alignItems="center">
-                            <Typography variant="body2">{e.toExchangeRate}</Typography>
+                        <Stack direction="column" spacing={1}>
+                            <Stack direction="row" spacing={1}>
+                            <Typography variant="body2">فروش : </Typography>
+                            <Typography variant="body2">{e.toExchangeRateSell}</Typography>
                             <Typography variant="body2">{e.toRatesCountryPriceName}</Typography>
+                            </Stack>
+                            <Stack direction="row" spacing={1}>
+                            <Typography variant="body2">خرید : </Typography>
+                            <Typography variant="body2">{e.toExchangeRateBuy}</Typography>
+                            <Typography variant="body2">{e.toRatesCountryPriceName}</Typography>
+                            </Stack>
                         </Stack>
                     </TableCell>
                     <TableCell>

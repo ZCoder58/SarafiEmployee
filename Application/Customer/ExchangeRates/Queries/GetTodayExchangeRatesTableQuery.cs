@@ -36,7 +36,6 @@ namespace Application.Customer.ExchangeRates.Queries
         {
             return await _dbContext.CustomerExchangeRates
                 .Where(a => a.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid() &&
-                            !a.Reverse &&
                             a.FromRatesCountryId !=(Guid)a.ToRatesCountryId &&
                              a.CreatedDate.Value.Date == request.TargetDate.Date)
                 .OrderDescending()

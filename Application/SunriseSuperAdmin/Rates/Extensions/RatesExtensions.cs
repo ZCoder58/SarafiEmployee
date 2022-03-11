@@ -14,5 +14,9 @@ namespace Application.SunriseSuperAdmin.Rates.Extensions
         {
             return query.FirstOrDefault(a => a.Abbr ==abbr);
         }
+        public static RatesCountry GetByPriceName(this IQueryable<RatesCountry> query,string priceName)
+        {
+            return query.FirstOrDefault(a => a.PriceName ==priceName);
+        }
     }
 }

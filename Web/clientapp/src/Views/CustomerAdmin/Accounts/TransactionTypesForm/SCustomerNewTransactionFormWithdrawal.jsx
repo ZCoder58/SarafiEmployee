@@ -1,14 +1,14 @@
 import React from 'react'
-import { Box, Divider, InputAdornment, TextField,Typography } from '@mui/material'
+import { Box, InputAdornment, TextField } from '@mui/material'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import authAxiosApi from '../../../../axios'
 import Util from '../../../../helpers/Util'
-import {CTitle, SubCustomerAccountRatesSelect } from '../../../../ui-componets'
+import {CTitle } from '../../../../ui-componets'
 import { LoadingButton } from '@mui/lab'
 import { CheckCircleOutline } from '@mui/icons-material'
 const initialModel = {
-    customerAccountId: "",
+    rateCountryId: "",
     comment: "",
     amount: 1,
 }
@@ -22,7 +22,7 @@ export default function SCustomerNewTransactionFormWithdrawal({customerAccount, 
         initialValues: initialModel,
         onSubmit: async (values, formikHelper) => {
             const formData=Util.ObjectToFormData(values);
-            formData.set('customerAccountId', customerAccount.id)
+            formData.set('rateCountryId', customerAccount.ratesCountryId)
             await authAxiosApi.put('customer/accounts/withdrawal',formData )
                 .then(r => {
                     onSuccess()

@@ -10,6 +10,7 @@ namespace Application.Customer.ExchangeRates.DTos
         public double FromAmount { get; set; }
         public string FromRatesCountryFlagPhoto { get; set; }
         public string ToRatesCountryPriceName{ get; set; }
-        public double ToExchangeRate { get; set; }
+        public double ToExchangeRateSell { get; set; }
+        public double ToExchangeRateBuy { get; set; }
     }
 }

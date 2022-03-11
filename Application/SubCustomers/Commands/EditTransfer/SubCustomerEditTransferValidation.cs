@@ -65,7 +65,9 @@ namespace Application.SubCustomers.Commands.EditTransfer
                 .Cascade(CascadeMode.Stop)
                 .NotNull().WithMessage("مقدار پول ارسالی ضروری میباشد")
                 .GreaterThan(10).WithMessage("کمتر از 10 مجاز نیست");
-
+            RuleFor(a => a.ExchangeType)
+                .Cascade(CascadeMode.Stop)
+                .NotNull().WithMessage("نوعیت نرخ معامله ضروری میباشد");
         }
 
         // public bool ValidAmount(SubCustomerEditTransferCommand model, double amount)

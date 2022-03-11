@@ -11,13 +11,15 @@ const initialModel = {
     fromCurrency: "",
     toCurrency: "",
     fromAmount: 1,
-    toAmount: 1
+    toAmountSell: 1,
+    toAmountBuy: 1
 }
 const validationSchema = Yup.object().shape({
     fromCurrency: Yup.string().required("انتخاب ارز ضروری میباشد"),
     toCurrency: Yup.string().required("انتخاب ارز معادل ضروری میباشد"),
     fromAmount: Yup.number().required("مقدار ارز ضروری میباشد").moreThan(0, "کمتر از 1 مجاز نیست"),
-    toAmount: Yup.number().required("مقدار معادل ضروری میباشد").moreThan(0, "کمتر از 1 مجاز نیست")
+    toAmountSell: Yup.number().required("مقدار معادل فروش ضروری میباشد").moreThan(0, "کمتر از 1 مجاز نیست"),
+    toAmountBuy: Yup.number().required("مقدار معادل خرید ضروری میباشد").moreThan(0, "کمتر از 1 مجاز نیست")
 });
 export default function CUpdateExchangeRateForm({onSubmitDone }) {
     const [fromRate,setFromRate]=React.useState(null)
@@ -38,7 +40,7 @@ export default function CUpdateExchangeRateForm({onSubmitDone }) {
     return (
         <Box component="form" noValidate onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Grid item lg={6} md={6} sm={6} xs={12}>
                     <RatesDropdown
                      name='fromCurrency'
                      helperText={formik.errors.fromCurrency}
@@ -54,7 +56,7 @@ export default function CUpdateExchangeRateForm({onSubmitDone }) {
                         }}
                     />
                 </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Grid item lg={6} md={6} sm={6} xs={12}>
                     <RatesDropdown
                      name='toCurrency'
                      helperText={formik.errors.toCurrency}
@@ -90,17 +92,37 @@ export default function CUpdateExchangeRateForm({onSubmitDone }) {
                          }}
                     />
                 </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Grid item lg={6} md={6} sm={6} xs={12}>
                     <TextField
                         variant='outlined'
-                        name='toAmount'
-                        helperText={formik.errors.toAmount}
-                        value={formik.values.toAmount}
+                        name='toAmountSell'
+                        helperText={formik.errors.toAmountSell}
+                        value={formik.values.toAmountSell}
                         size='small'
-                        label='نرخ معادل'
+                        label='نرخ معادل فروش'
                         type='number'
                         required
-                        error={formik.errors.toAmount ? true : false}
+                        error={formik.errors.toAmountSell ? true : false}
+                        onChange={formik.handleChange}
+                        InputProps={{ 
+                            endAdornment:<InputAdornment position="end">
+                                    {toRate?toRate.priceName:"هیچ"}
+                                    <Divider orientation='vertical' variant='middle' flexItem/>
+                                </InputAdornment>
+                         }}
+                    />
+                </Grid>
+                <Grid item lg={6} md={6} sm={6} xs={12}>
+                    <TextField
+                        variant='outlined'
+                        name='toAmountBuy'
+                        helperText={formik.errors.toAmountBuy}
+                        value={formik.values.toAmountBuy}
+                        size='small'
+                        label='نرخ معادل خرید'
+                        type='number'
+                        required
+                        error={formik.errors.toAmountBuy ? true : false}
                         onChange={formik.handleChange}
                         InputProps={{ 
                             endAdornment:<InputAdornment position="end">

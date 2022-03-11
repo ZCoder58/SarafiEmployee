@@ -11,11 +11,11 @@ import { RatesDropdown, SkeletonFull } from '../../../../ui-componets';
 const initialModel = {
     id: "",
     subCustomerAccountId: "",
-    amount: 0,
+    // amount: 0,
     ratesCountryId: ""
 }
 const validationSchema = Yup.object().shape({
-    amount: Yup.number().required("مقدار پول اولیه حساب ضروری میباشد"),
+    // amount: Yup.number().required("مقدار پول اولیه حساب ضروری میباشد"),
     ratesCountryId: Yup.string().required("انتخاب ارز حساب ضروری میباشد")
 });
 export default function EditSubCustomerAccountRateForm({ subCustomerAcccountRateId, onSubmit }) {
@@ -52,7 +52,7 @@ export default function EditSubCustomerAccountRateForm({ subCustomerAcccountRate
     return (
         loading?<SkeletonFull/>:
         <Box component="form" noValidate onSubmit={formik.handleSubmit}>
-            <TextField
+            {/* <TextField
                 variant='outlined'
                 name='amount'
                 helperText={formik.errors.amount}
@@ -68,7 +68,7 @@ export default function EditSubCustomerAccountRateForm({ subCustomerAcccountRate
                         {countryRate ? countryRate.priceName : "هیچ"}
                     </InputAdornment>
                 }}
-            />
+            /> */}
             <Accordion sx={{ 
                 my:2
              }}>

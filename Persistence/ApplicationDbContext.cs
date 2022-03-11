@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Statics;
 using Domain.Common;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -40,12 +41,11 @@ namespace Persistence
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                       
-                        entry.Entity.CreatedDate = DateTime.UtcNow;
+                        entry.Entity.CreatedDate = CDateTime.Now;
                         break;
                     case EntityState.Modified:
                        
-                        entry.Entity.UpdatedDate = DateTime.UtcNow;
+                        entry.Entity.UpdatedDate = CDateTime.Now;
                         break;
                 }
             }
@@ -61,11 +61,11 @@ namespace Persistence
                    
                     case EntityState.Added:
                         
-                        entry.Entity.CreatedDate = DateTime.UtcNow;
+                        entry.Entity.CreatedDate = CDateTime.Now;
                         break;
                     case EntityState.Modified:
                       
-                        entry.Entity.UpdatedDate = DateTime.UtcNow;
+                        entry.Entity.UpdatedDate = CDateTime.Now;
                         break;
 
                 }

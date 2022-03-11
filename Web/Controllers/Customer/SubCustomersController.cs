@@ -10,7 +10,6 @@ using Application.SubCustomers.Commands.EditSubCustomerAccount;
 using Application.SubCustomers.Commands.EditTransfer;
 using Application.SubCustomers.Commands.Transactions.RollbackTransaction;
 using Application.SubCustomers.Commands.UpdateAccountAmount.Deposit;
-using Application.SubCustomers.Commands.UpdateAccountAmount.TransferToAccount;
 using Application.SubCustomers.Commands.UpdateAccountAmount.Withdrawal;
 using Application.SubCustomers.DTOs;
 using Application.SubCustomers.Queries;
@@ -54,20 +53,20 @@ namespace Web.Controllers.Customer
             return Mediator.Send(request);
         }
         [HttpPut("accounts/withdrawal")]
-        public Task Withdrawal([FromForm] WithdrawalSubCustomerAccountAmountCommand request)
+        public Task Withdrawal([FromForm] CsWithdrawalAccountCommand request)
         {
             return Mediator.Send(request);
         }
         [HttpPut("accounts/deposit")]
-        public Task Deposit([FromForm] DepositSubCustomerAccountAmountCommand request)
+        public Task Deposit([FromForm] CsDepositAccountCommand request)
         {
             return Mediator.Send(request);
         }
-        [HttpPut("accounts/transferToAccount")]
-        public Task TransferToAmount([FromForm] TransferToAccountCommand request)
-        {
-            return Mediator.Send(request);
-        }
+        // [HttpPut("accounts/transferToAccount")]
+        // public Task TransferToAmount([FromForm] TransferToAccountCommand request)
+        // {
+        //     return Mediator.Send(request);
+        // }
         [HttpGet("transactions")]
         public Task<IEnumerable<SubCustomerTransactionDTo>> GetFilteredTransactions(Guid subCustomerId,DateTime fromDate,DateTime toDate)
         {
@@ -77,7 +76,7 @@ namespace Web.Controllers.Customer
                 toDate));
         }
         [HttpPost("transactions/rollback")]
-        public Task RollbackTransaction([FromBody]RollbackTransactionCommand request)
+        public Task RollbackTransaction([FromBody]CsRollbackTransactionCommand request)
         {
             return Mediator.Send(request);
         }
@@ -97,12 +96,12 @@ namespace Web.Controllers.Customer
             return Mediator.Send(new GetSubCustomerAccountsRatesQuery(id));
         }
         [HttpPost("accounts")]
-        public Task<SubCustomerAccountRateDTo>  CreateSubCustomerAccountRate([FromForm] CreateAccountRateCommand request)
+        public Task<SubCustomerAccountRateDTo>  CreateSubCustomerAccountRate([FromForm] ScCreateAccountRateCommand request)
         {
             return Mediator.Send(request);
         }
         [HttpPut("accounts")]
-        public Task<SubCustomerAccountRateDTo> EditSubCustomerAccountRate([FromForm] EditAccountRateCommand request)
+        public Task<SubCustomerAccountRateDTo> EditSubCustomerAccountRate([FromForm] CsEditAccountRateCommand request)
         {
             return Mediator.Send(request);
         }

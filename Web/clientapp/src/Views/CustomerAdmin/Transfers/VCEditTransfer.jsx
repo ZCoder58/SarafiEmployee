@@ -1,6 +1,6 @@
 import { CCard, SearchFriendDropdown, SkeletonFull, RatesDropdown, AskDialog, ExchangeRateAlert } from '../../../ui-componets'
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
-import { Grid, Box, TextField, Stack, Typography, Divider, Alert, Grow, IconButton } from '@mui/material'
+import { Grid, Box, TextField, Stack, Typography, Divider, IconButton } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import React from 'react'
@@ -29,9 +29,11 @@ const createModel = {
     fee: 0,
     receiverFee: 0,
     codeNumber: "",
-    comment:""
+    comment:"",
+        exchangeType:""
 }
 const validationSchema = Yup.object().shape({
+    exchangeType: Yup.string().required("نوعیت نرخ معامله ضروری میباشد"),
     fromName: Yup.string().required("نام ارسال کنننده ضروری میباشد"),
     fromFatherName: Yup.string().required("ولد ارسال کننده ضروری میباشد"),
     fromPhone: Yup.string().required("شماره تماس ارسال کننده ضروری میباشد"),
@@ -46,6 +48,7 @@ const validationSchema = Yup.object().shape({
 
 });
 export default function VCEditTransfer() {
+    const [receivedAmount, setReceivedAmount] = React.useState(0)
     const [loading, setLoading] = React.useState(true)
     const [sourceRate, setSourceRate] = React.useState(null)
     const [distRate, setDistRate] = React.useState(null)
@@ -76,9 +79,7 @@ export default function VCEditTransfer() {
         formik.setFieldValue("tCurrency", newDistValue ? newDistValue.id : "")
         setDistRate(s => s = newDistValue)
     }
-    const receivedAmount = React.useMemo(() => {
-        return exchangeRate ? (Number(exchangeRate.toExchangeRate) / Number(exchangeRate.fromAmount) * Number(formik.values.amount)).toFixed(2) : 0
-    },[exchangeRate,formik.values.amount])
+
     React.useEffect(() => {
         (async () => {
             setLoading(true)
@@ -253,12 +254,15 @@ export default function VCEditTransfer() {
                                     }}
                                 />
                                
-                                <ExchangeRateAlert
+                               <ExchangeRateAlert
                                 exchangeRate={exchangeRate}
                                 sourceRate={sourceRate}
                                 distRate={distRate}
                                 amount={formik.values.amount}
-                                />
+                                defaultType={formik.values.exchangeType}
+                                onTypeChange={(v)=>formik.setFieldValue("exchangeType",v)}
+                                onResultAmountChange={(resultAmount)=>setReceivedAmount(resultAmount)}
+                            />
                                 <TextField
                                     name='fee'
                                     label="کمیشن"

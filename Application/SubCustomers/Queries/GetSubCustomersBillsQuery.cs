@@ -49,14 +49,11 @@ namespace Application.SubCustomers.Queries
                             CurrencyName = a.Key,
                             TotalBord = a.Where(b =>
                                     b.TransactionType == TransactionTypes.Withdrawal ||
-                                    b.TransactionType == TransactionTypes.WithdrawalWithDebt ||
-                                    b.TransactionType == TransactionTypes.TransferToAccount ||
-                                    b.TransactionType == TransactionTypes.TransferToAccountWithDebt
+                                    b.TransactionType == TransactionTypes.WithdrawalWithDebt
                                 )
                                 .Sum(b => b.Amount).ToString(),
                             TotalRasid = a.Where(b =>
-                                    b.TransactionType == TransactionTypes.Deposit ||
-                                    b.TransactionType == TransactionTypes.ReceivedFromAccount
+                                    b.TransactionType == TransactionTypes.Deposit
                                 )
                                 .Sum(b => b.Amount).ToString(),
                             TotalHawala = a.Where(b =>
@@ -82,14 +79,11 @@ namespace Application.SubCustomers.Queries
                     CurrencyName = a.Key,
                     TotalBord = a.Where(b =>
                             b.TransactionType == TransactionTypes.Withdrawal ||
-                            b.TransactionType == TransactionTypes.WithdrawalWithDebt ||
-                            b.TransactionType == TransactionTypes.TransferToAccount ||
-                            b.TransactionType == TransactionTypes.TransferToAccountWithDebt
+                            b.TransactionType == TransactionTypes.WithdrawalWithDebt
                         )
                         .Sum(b => b.Amount).ToString(),
                     TotalRasid = a.Where(b =>
-                            b.TransactionType == TransactionTypes.Deposit ||
-                            b.TransactionType == TransactionTypes.ReceivedFromAccount
+                            b.TransactionType == TransactionTypes.Deposit 
                         )
                         .Sum(b => b.Amount).ToString(),
                     TotalHawala = a.Where(b =>

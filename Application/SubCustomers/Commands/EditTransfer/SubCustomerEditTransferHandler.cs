@@ -6,9 +6,7 @@ using Application.Common.Extensions.DbContext;
 using Application.Customer.ExchangeRates.Extensions;
 using Application.Customer.Transfers.EventHandlers;
 using Application.SubCustomers.Commands.Transactions.RollbackTransaction;
-using Application.SubCustomers.Commands.UpdateAccountAmount.Withdrawal;
 using Application.SubCustomers.Commands.UpdateAccountAmount.WithdrawalTransfer;
-using Application.SubCustomers.Statics;
 using AutoMapper;
 using Domain.Interfaces;
 using MediatR;
@@ -36,7 +34,7 @@ namespace Application.SubCustomers.Commands.EditTransfer
         {
             var targetTransfer = _dbContext.Transfers.GetById(request.Id);
             var receiver = _dbContext.Friends.GetById(request.FriendId);
-            
+
             var targetSubCustomerAccountRate =
                 _dbContext.SubCustomerAccountRates.GetById(request.SubCustomerAccountRateId);
             var fromCurrency = _dbContext.RatesCountries.GetById(targetSubCustomerAccountRate.RatesCountryId);
@@ -45,39 +43,47 @@ namespace Application.SubCustomers.Commands.EditTransfer
                 _httpUserContext.GetCurrentUserId().ToGuid(),
                 fromCurrency.Id, request.TCurrency);
             var lastSubCustomerAccountRate = _dbContext.SubCustomerAccountRates
-                .Include(a=>a.RatesCountry)
-                .FirstOrDefault(a => 
-                    a.SubCustomerAccountId==targetTransfer.SubCustomerAccountId &&
+                .Include(a => a.RatesCountry)
+                .FirstOrDefault(a =>
+                    a.SubCustomerAccountId == targetTransfer.SubCustomerAccountId &&
                     a.RatesCountry.PriceName == targetTransfer.FromCurrency);
             var newSubCustomerAccountRate = _dbContext.SubCustomerAccountRates
-                .Include(a=>a.RatesCountry)
-                .FirstOrDefault(a => 
-                    a.SubCustomerAccountId==targetTransfer.SubCustomerAccountId &&
-                    a.Id==request.SubCustomerAccountRateId);
+                .Include(a => a.RatesCountry)
+                .FirstOrDefault(a =>
+                    a.SubCustomerAccountId == targetTransfer.SubCustomerAccountId &&
+                    a.Id == request.SubCustomerAccountRateId);
 
             if (lastSubCustomerAccountRate.Id != newSubCustomerAccountRate.Id ||
-                (request.Amount+request.Fee) !=(targetTransfer.SourceAmount+targetTransfer.Fee))
+                (request.Amount + request.Fee) != (targetTransfer.SourceAmount + targetTransfer.Fee))
             {
-                var lastSubCustomerTransaction = _dbContext.SubCustomerTransactions.FirstOrDefault(a=>
-                    a.TransferId==targetTransfer.Id);
-                await _mediator.Send(new RollbackTransactionCommand(lastSubCustomerTransaction.Id,true), cancellationToken);
-                await _mediator.Send(new WithdrawalTransferSubCustomerAccountAmountCommand(request.SubCustomerAccountId,
+                var lastSubCustomerTransaction = _dbContext.SubCustomerTransactions.FirstOrDefault(a =>
+                    a.TransferId == targetTransfer.Id);
+                await _mediator.Send(new CsRollbackTransactionCommand(lastSubCustomerTransaction.Id, true),
+                    cancellationToken);
+                await _mediator.Send(new CsWithdrawalAccountTransferCommand(request.SubCustomerAccountId,
                     request.SubCustomerAccountRateId,
                     request.Amount + request.Fee,
-                    string.Concat("برای حواله با کد نمبر ", targetTransfer.CodeNumber, "به ", 
-                        request.ToName," ",request.ToLastName," ولد",request.ToFatherName," ارسال گردید"),
-                    targetTransfer.Id),cancellationToken);
+                    string.Concat("برای حواله با کد نمبر ", targetTransfer.CodeNumber, "به ",
+                        request.ToName, " ", request.ToLastName, " ولد", request.ToFatherName, " ارسال گردید"),
+                    targetTransfer.Id), cancellationToken);
             }
+
             targetTransfer.SourceAmount = request.Amount;
-            targetTransfer.DestinationAmount =
-                ((request.Amount / targetExchangeRate.FromAmount) * targetExchangeRate.ToExchangeRate).ToString().ToDoubleFormatted();
-            targetTransfer.ToRate = targetExchangeRate.ToExchangeRate;
+            targetTransfer.DestinationAmount = _dbContext.CustomerExchangeRates.ConvertCurrencyById(
+                _httpUserContext.GetCurrentUserId().ToGuid(),
+                fromCurrency.Id,
+                request.TCurrency,
+                request.Amount,
+                request.ExchangeType);
+            targetTransfer.ToRate = (request.ExchangeType == "buy"
+                ? targetExchangeRate.ToExchangeRateBuy
+                : targetExchangeRate.ToExchangeRateSell);
             targetTransfer.FromRate = targetExchangeRate.FromAmount;
             targetTransfer.RateUpdated = targetExchangeRate.Updated;
             targetTransfer.ToCurrency = toCurrency.PriceName;
             targetTransfer.FromCurrency = fromCurrency.PriceName;
             targetTransfer.ReceiverId = receiver.CustomerFriendId;
-          
+
             _mapper.Map(request, targetTransfer);
             await _dbContext.SaveChangesAsync(cancellationToken);
             await _mediator.Publish(new TransferEdited(), cancellationToken);

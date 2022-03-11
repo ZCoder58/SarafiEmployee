@@ -24,5 +24,6 @@ namespace Application.SubCustomers.Commands.EditTransfer
         public Guid FriendId { get; set; }
         public Guid SubCustomerAccountId { get; set; }
         public Guid SubCustomerAccountRateId { get; set; }
+        public string ExchangeType { get; set; }
     }
 }

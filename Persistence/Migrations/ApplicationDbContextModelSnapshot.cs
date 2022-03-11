@@ -243,6 +243,9 @@ namespace Persistence.Migrations
                     b.Property<Guid>("CustomerAccountId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("EnableRollback")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PriceName")
                         .HasColumnType("nvarchar(max)");
 
@@ -290,7 +293,10 @@ namespace Persistence.Migrations
                     b.Property<bool>("Reverse")
                         .HasColumnType("bit");
 
-                    b.Property<double>("ToExchangeRate")
+                    b.Property<double>("ToExchangeRateBuy")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ToExchangeRateSell")
                         .HasColumnType("float");
 
                     b.Property<Guid?>("ToRatesCountryId")
@@ -607,6 +613,9 @@ namespace Persistence.Migrations
 
                     b.Property<double>("DestinationAmount")
                         .HasColumnType("float");
+
+                    b.Property<string>("ExchangeType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Fee")
                         .HasColumnType("float");

@@ -146,7 +146,7 @@ export default function VCSubCustomers() {
                         <TabsList onChange={(e,t)=>setActiveTab(t)}>
                           <Tab label={<TextDecreaseIcon/>} value="0" />
                           <Tab label={<TextIncreaseIcon/>} value="1" />
-                          <Tab label={<MoveDownOutlinedIcon/>} value="2" />
+                          {/* <Tab label={<MoveDownOutlinedIcon/>} value="2" /> */}
                         </TabsList>
                         <TabPanel value="0" sx={{ p:0 }}>
                             <SCNewTransactionFormWithdrawal subCustomer={subCustomerUpdateAmount} onSuccess={handleAmountUpdated}/>
@@ -154,9 +154,9 @@ export default function VCSubCustomers() {
                         <TabPanel value="1" sx={{ p:0 }}>
                             <SCNewTransactionFormDeposit subCustomer={subCustomerUpdateAmount} onSuccess={handleAmountUpdated}/>
                         </TabPanel>
-                        <TabPanel value="2" sx={{ p:0 }}>
+                        {/* <TabPanel value="2" sx={{ p:0 }}>
                             <SCNewTransactionFormTransferToAccount subCustomer={subCustomerUpdateAmount} onSuccess={handleAmountUpdated}/>
-                        </TabPanel>
+                        </TabPanel> */}
                   </TabContext>
             </CDialog>}
             <CTable

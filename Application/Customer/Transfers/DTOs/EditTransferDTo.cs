@@ -24,5 +24,6 @@ namespace Application.Customer.Transfers.DTOs
         public int CodeNumber { get; set; }
         public Guid FriendId { get; set; }
         public string Comment { get; set; }
+        public string ExchangeType { get; set; }
     }
 }
