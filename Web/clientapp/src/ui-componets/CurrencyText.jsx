@@ -1,4 +1,7 @@
 import NumberFormat from 'react-number-format';
+CurrencyText.defaultProps={
+    priceName:""
+}
 export default function CurrencyText({ value, priceName }) {
     return (
         <NumberFormat value={value}

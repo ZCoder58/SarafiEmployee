@@ -1,22 +1,38 @@
 import React from 'react'
 import { Grow, Alert, Stack, Box, InputAdornment } from '@mui/material'
 import { CSelect,CurrencyInput } from '..'
+import authAxiosApi from '../../axios'
 ExchangeRateAlert.defaultProps = {
     label: "مقدار پول دریافتی",
     onTypeChange:()=>{},
-    onResultAmountChange:()=>{},
+    onChange:()=>{},
     defaultType:"buy"
 }
-export default function ExchangeRateAlert({onResultAmountChange, exchangeRate, sourceRate, distRate, amount, label,onTypeChange,defaultType }) {
+export default function ExchangeRateAlert({onChange, sourceRate, distRate, amount, label,onTypeChange,defaultType }) {
     const [amountResult, setAmountResult] = React.useState(0)
     const [exchangeType,setExhcangeType]=React.useState(defaultType)
+    const [exchangeRate,setExchangeRate]=React.useState(null)
     function getExchangeRate(){
         if(exchangeType==="buy"){
             return exchangeRate.toExchangeRateBuy
         }
         return exchangeRate.toExchangeRateSell
     }
-
+    React.useEffect(() => {
+        (async () => {
+            if (sourceRate && distRate) {
+                await authAxiosApi.get('customer/rates/exchangeRate', {
+                    params: {
+                        from: sourceRate.id,
+                        to: distRate.id
+                    }
+                }).then(r => {
+                    setExchangeRate(r)
+                })
+            }
+        })()
+        return () => setExchangeRate(null)
+    }, [sourceRate, distRate])
     React.useEffect(() => {
         onTypeChange(exchangeType)
         if(exchangeRate&& exchangeRate.reverse){
@@ -29,7 +45,10 @@ export default function ExchangeRateAlert({onResultAmountChange, exchangeRate, s
         }
     }, [amount, sourceRate, distRate, exchangeRate,exchangeType])
     React.useEffect(() => {
-        onResultAmountChange(amountResult)
+        onChange({
+            ...exchangeRate,
+            result:amountResult
+        })
     }, [amountResult])
     return (
         <>

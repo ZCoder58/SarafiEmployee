@@ -36,7 +36,6 @@ namespace Application.Customer.ExchangeRates.Commands.CreateExchangeRate
                 FromRatesCountryId = fromCurrency.Id,
                 ToRatesCountryId = toCurrency.Id,
                 Updated = request.Updated,
-                Reverse = false,
                 FromAmount = request.FromAmount,
                 ToExchangeRateSell = request.ToAmountSell,
                 ToExchangeRateBuy = request.ToAmountBuy

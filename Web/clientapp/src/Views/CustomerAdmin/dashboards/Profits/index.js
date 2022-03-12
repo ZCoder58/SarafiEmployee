@@ -44,8 +44,8 @@ export default function Profits() {
                                         primary={
                                             <React.Fragment>
                                                 <Stack component="span" direction="row" spacing={1} alignItems="flex-end">
-                                                    <Typography component="span" variant="h3"><CurrencyText value={e.totalProfit} priceName={<Typography component="span" variant="h5">{e.currencyName}</Typography>}/></Typography>
-                                                    
+                                                    <Typography component="span" variant="h3"><CurrencyText value={e.totalProfit}/></Typography>
+                                                    <Typography component="span" variant="h5">{e.currencyName}</Typography>
                                                 </Stack>
                                             </React.Fragment>
                                         }
@@ -83,8 +83,8 @@ export default function Profits() {
                                         primary={
                                             <React.Fragment>
                                                 <Stack component="span" direction="row" spacing={1} alignItems="flex-end">
-                                                <Typography component="span" variant="h3"><CurrencyText value={e.totalProfit} priceName={<Typography component="span" variant="h5">{e.currencyName}</Typography>}/></Typography>
-
+                                                <Typography component="span" variant="h3"><CurrencyText value={e.totalProfit} /></Typography>
+                                                <Typography component="span" variant="h5">{e.currencyName}</Typography>
                                                 </Stack>
                                             </React.Fragment>
                                         }

@@ -6,7 +6,7 @@ namespace Application.SubCustomers.Commands.EditAccountRate
     public class CsEditAccountRateCommand:IRequest<SubCustomerAccountRateDTo>
     {
         public Guid Id { get; set; }
-        public Guid SubCustomerAccountId { get; set; }
-        public Guid RatesCountryId { get; set; }
+        public Guid ToRatesCountryId { get; set; }
+        public string ExchangeType { get; set; }
     }
 }
