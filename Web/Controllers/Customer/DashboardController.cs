@@ -23,6 +23,16 @@ namespace Web.Controllers.Customer
         public Task<IEnumerable<TransferProfitDTo>> GetTodayOutProfits()
         {
             return Mediator.Send(new GetTodayOutTransfersProfitQuery());
+        } 
+        [HttpGet("PTodayInProfits")]
+        public Task<IEnumerable<TransferProfitDTo>> GetPendingTodayInProfits()
+        {
+            return Mediator.Send(new GetUnCompleteTodayInTransfersProfitQuery());
+        }
+        [HttpGet("PTodayOutProfits")]
+        public Task<IEnumerable<TransferProfitDTo>> GetPendingTodayOutProfits()
+        {
+            return Mediator.Send(new GetUnCompleteTodayOutTransfersProfitQuery());
         }
     }
 }
