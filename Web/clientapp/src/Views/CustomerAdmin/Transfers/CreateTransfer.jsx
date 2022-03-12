@@ -50,9 +50,8 @@ export default function CreateTransfer() {
     const [sourceRate, setSourceRate] = React.useState(null)
     const [distRate, setDistRate] = React.useState(null)
     // const [transferCode, setTransferCode] = React.useState(0)
-    const [exchangeRate, setExchangeRate] = React.useState(null)
     const [askOpen, setAskOpen] = React.useState(false)
-    const [receivedAmount, setReceivedAmount] = React.useState(0)
+    const [exchangeRate, setExchangeRate] = React.useState(null)
     const navigate = useNavigate()
     const formik = useFormik({
         validationSchema: validationSchema,
@@ -78,25 +77,7 @@ export default function CreateTransfer() {
         setDistRate(s => s = newDistValue)
     }
 
-    React.useEffect(() => {
-        (async () => {
-            try {
-                await authAxiosApi.get('customer/rates/exchangeRate', {
-                    params: {
-                        from: sourceRate.id,
-                        to: distRate.id
-                    }
-                }).then(r => {
-                    setExchangeRate(r)
-                })
-                // setTransferCode(Util.GenerateRandom(50, 5000))
-
-            } catch {
-
-            }
-        })()
-        return () => setExchangeRate(null)
-    }, [sourceRate, distRate])
+ 
 
 
     return (
@@ -236,12 +217,11 @@ export default function CreateTransfer() {
                             />
 
                             <ExchangeRateAlert
-                                exchangeRate={exchangeRate}
                                 sourceRate={sourceRate}
                                 distRate={distRate}
                                 amount={formik.values.amount}
                                 onTypeChange={(v) => formik.setFieldValue("exchangeType", v)}
-                                onResultAmountChange={(resultAmount) => setReceivedAmount(resultAmount)}
+                                onChange={(v) => setExchangeRate(v)}
                             />
                             <TextField
                                 name='fee'
@@ -292,8 +272,7 @@ export default function CreateTransfer() {
                                 name='receiverFee'
                                 label="مجموع پول طلب :"
                                 size="small"
-
-                                value={Number(formik.values.receiverFee) + Number(receivedAmount)}
+                                value={Number(formik.values.receiverFee) + Number(exchangeRate?exchangeRate.result:0)}
                                 InputProps={{
                                     readOnly: true,
                                     endAdornment: (

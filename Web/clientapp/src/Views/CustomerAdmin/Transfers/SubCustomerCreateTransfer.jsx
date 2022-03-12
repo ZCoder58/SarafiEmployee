@@ -51,9 +51,8 @@ export default function SubCustomerCreateTransfer() {
     const [accountRate, setAcountRate] = React.useState(null)
     const [distRate, setDistRate] = React.useState(null)
     // const [transferCode, setTransferCode] = React.useState(0)
-    const [exchangeRate, setExchangeRate] = React.useState(null)
     const [askOpen, setAskOpen] = React.useState(false)
-    const [receivedAmount, setReceivedAmount] = React.useState(0)
+    const [exchangeRate, setExchangeRate] = React.useState(null)
 
     const navigate = useNavigate()
     const formik = useFormik({
@@ -73,9 +72,12 @@ export default function SubCustomerCreateTransfer() {
     })
     const handleAccountRateChange = (newAccountRate) => {
         formik.setFieldValue("subCustomerAccountRateId", newAccountRate ? newAccountRate.id : "")
-        setAcountRate(newAccountRate)
-        if (!newAccountRate) {
-            setExchangeRate(null)
+        if(!newAccountRate){
+            setAcountRate({
+                id:newAccountRate.ratesCountryId
+                ,...newAccountRate})
+        }else{
+            setAcountRate(newAccountRate)
         }
     }
     const handleDistChange = (newDistValue) => {
@@ -90,25 +92,7 @@ export default function SubCustomerCreateTransfer() {
         await formik.setFieldValue("fromFatherName", newSubCustomer ? newSubCustomer.fatherName : "")
         await formik.setFieldValue("fromPhone", newSubCustomer ? newSubCustomer.phone : "")
     }
-    React.useEffect(() => {
-        (async () => {
-            try {
-                await authAxiosApi.get('customer/rates/exchangeRate', {
-                    params: {
-                        from: accountRate.ratesCountryId,
-                        to: distRate.id
-                    }
-                }).then(r => {
-                    setExchangeRate(r)
-                })
 
-
-            } catch {
-
-            }
-        })()
-        return () => setExchangeRate(null)
-    }, [accountRate, distRate])
     // React.useEffect(() => {
     //     setTransferCode(Util.GenerateRandom(50, 5000))
     // }, [])
@@ -264,12 +248,11 @@ export default function SubCustomerCreateTransfer() {
                             />
                             
                             <ExchangeRateAlert
-                                exchangeRate={exchangeRate}
                                 sourceRate={accountRate}
                                 distRate={distRate}
                                 amount={formik.values.amount}
                                 onTypeChange={(v)=>formik.setFieldValue("exchangeType",v)}
-                                onResultAmountChange={(resultAmount)=>setReceivedAmount(resultAmount)}
+                                onChange={(result)=>setExchangeRate(result)}
                             />
 
 
@@ -325,7 +308,7 @@ export default function SubCustomerCreateTransfer() {
                                 name='receiverFee'
                                 label="مجموع پول طلب :"
                                 size="small"
-                                value={Number(formik.values.receiverFee) + Number(receivedAmount)}
+                                value={Number(formik.values.receiverFee) + Number(exchangeRate?exchangeRate.result:0)}
                                 InputProps={{
                                     readOnly:true,
                                     endAdornment: (

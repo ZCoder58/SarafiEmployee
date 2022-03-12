@@ -48,7 +48,6 @@ const validationSchema = Yup.object().shape({
 
 });
 export default function VCEditTransfer() {
-    const [receivedAmount, setReceivedAmount] = React.useState(0)
     const [loading, setLoading] = React.useState(true)
     const [sourceRate, setSourceRate] = React.useState(null)
     const [distRate, setDistRate] = React.useState(null)
@@ -92,20 +91,7 @@ export default function VCEditTransfer() {
         })()
 
     }, [transferId])
-    React.useEffect(() => {
-        if (distRate && sourceRate) {
-            (async () => await authAxiosApi.get('customer/rates/exchangeRate', {
-                params: {
-                    from: sourceRate.id,
-                    to: distRate.id
-                }
-            }).then(r => {
-                setExchangeRate(r)
-            })
-            )()
-        }
-        return () => setExchangeRate(null)
-    }, [distRate, sourceRate])
+ 
     return (
         loading ? <SkeletonFull /> :
             <CCard
@@ -254,13 +240,12 @@ export default function VCEditTransfer() {
                                 />
 
                                 <ExchangeRateAlert
-                                    exchangeRate={exchangeRate}
                                     sourceRate={sourceRate}
                                     distRate={distRate}
                                     amount={formik.values.amount}
                                     defaultType={formik.values.exchangeType}
                                     onTypeChange={(v) => formik.setFieldValue("exchangeType", v)}
-                                    onResultAmountChange={(resultAmount) => setReceivedAmount(resultAmount)}
+                                    onChange={(result) => setExchangeRate(result)}
                                 />
                                 <TextField
                                     name='fee'
@@ -313,7 +298,7 @@ export default function VCEditTransfer() {
                                     name='receiverFee'
                                     label="مجموع پول طلب :"
                                     size="small"
-                                    value={Number(formik.values.receiverFee) + Number(receivedAmount)}
+                                    value={Number(formik.values.receiverFee) + Number(exchangeRate?exchangeRate.result:0)}
                                     InputProps={{
                                         readOnly: true,
                                         endAdornment: (

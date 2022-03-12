@@ -48,12 +48,11 @@ const validationSchema = Yup.object().shape({
     receiverFee: Yup.number().min(0, "کمتر از 0 مجاز نیست"),
 });
 export default function SubCustomerEditTransfer() {
-    const [receivedAmount, setReceivedAmount] = React.useState(0)
     const [accountRate, setAccountRate] = React.useState(null)
     const [distRate, setDistRate] = React.useState(null)
-    const [exchangeRate, setExchangeRate] = React.useState(null)
     const [askOpen, setAskOpen] = React.useState(false)
     const[loading,setLoading]=React.useState(false)
+    const[exchangeRate,setExchangeRate]=React.useState(null)
     const navigate = useNavigate()
     const {transferId}=useParams()
     const formik = useFormik({
@@ -72,9 +71,13 @@ export default function SubCustomerEditTransfer() {
     })
     const handleAccountRateChange = (newAccountRate) => {
         formik.setFieldValue("subCustomerAccountRateId", newAccountRate ? newAccountRate.id : "")
-        setAccountRate(s=>s=newAccountRate)
+        
         if(!newAccountRate){
-            setExchangeRate(null)
+            setAccountRate({
+                id:newAccountRate.ratesCountryId
+                ,...newAccountRate})
+        }else{
+            setAccountRate(newAccountRate)
         }
     }
     const handleDistChange = (newDistValue) => {
@@ -92,22 +95,6 @@ export default function SubCustomerEditTransfer() {
             setLoading(false)
         })()
     }, [transferId])
-    React.useEffect(() => {
-        if (distRate && accountRate) {
-        (async () => {
-           
-                await authAxiosApi.get('customer/rates/exchangeRate', {
-                    params: {
-                        from: accountRate.ratesCountryId,
-                        to: distRate.id
-                    }
-                }).then(r => {
-                    setExchangeRate(r)
-                })
-        })()
-    }
-        return () => setExchangeRate(null)
-    }, [accountRate, distRate])
    
     return (
         <CCard
@@ -268,13 +255,12 @@ export default function SubCustomerEditTransfer() {
                             />
                            
                            <ExchangeRateAlert
-                                exchangeRate={exchangeRate}
                                 sourceRate={accountRate}
                                 distRate={distRate}
                                 amount={formik.values.amount}
                                 defaultType={formik.values.exchangeType}
                                 onTypeChange={(v)=>formik.setFieldValue("exchangeType",v)}
-                                onResultAmountChange={(resultAmount)=>setReceivedAmount(resultAmount)}
+                                onChange={(result)=>setExchangeRate(result)}
                             />
 
                             <TextField
@@ -327,7 +313,7 @@ export default function SubCustomerEditTransfer() {
                                 name='receiverFee'
                                 label="مجموع پول طلب :"
                                 size="small"
-                                value={Number(formik.values.receiverFee) + Number(receivedAmount)}
+                                value={Number(formik.values.receiverFee) + Number(exchangeRate?exchangeRate.result:0)}
                                 InputProps={{
                                     readOnly:true,
                                     endAdornment: (
