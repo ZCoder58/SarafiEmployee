@@ -1,6 +1,6 @@
-import { CheckCircleOutline } from '@mui/icons-material';
+import { CheckCircleOutline, ExpandMoreOutlined } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { Accordion, AccordionDetails, AccordionSummary, Alert, AlertTitle, Box, InputAdornment, Typography } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Alert, AlertTitle, Box, Grid, InputAdornment, Stack, Typography } from '@mui/material'
 import { useFormik } from 'formik';
 import React from 'react'
 import { useNavigate } from 'react-router';
@@ -11,12 +11,12 @@ import { RatesDropdown, SkeletonFull, CurrencyInput, ExchangeRateAlert } from '.
 const initialModel = {
     id: "",
     amount: 0,
-    toRateCountryId: undefined,
+    toRatesCountryId: undefined,
     ratesCountryId: undefined,
     exchangeType: "buy"
 }
 const validationSchema = Yup.object().shape({
-    toRateCountryId: Yup.string().required("انتخاب ارز حساب ضروری میباشد")
+    toRatesCountryId: Yup.string().required("انتخاب ارز حساب ضروری میباشد")
 });
 export default function EditSubCustomerAccountRateForm({ subCustomerAcccountRateId, onSubmit }) {
     const navigate = useNavigate()
@@ -67,42 +67,52 @@ export default function EditSubCustomerAccountRateForm({ subCustomerAcccountRate
                 />
                 <Accordion sx={{
                     my: 2
-                }}>
-                    <AccordionSummary>تغیر نوع ارز حساب</AccordionSummary>
+                }}
+                
+                >
+                    <AccordionSummary expandIcon={<ExpandMoreOutlined/>}>تغیر نوع ارز حساب</AccordionSummary>
                     <AccordionDetails>
                         <Alert severity='warning'>
                             <AlertTitle>اخطار !</AlertTitle>
                             <Typography>با تغیر نوع ارز حساب تمامی پول موجود در حساب مشتری به ارز جدید تبدیل خواهد شد.</Typography>
                         </Alert>
-                        <RatesDropdown
-                            name='ratesCountryId'
-                            defaultId={formik.values.ratesCountryId}
-                            size='small'
-                            label="ارز حساب"
-                            disabled
-                            disableClearable
-                            onValueChange={(v) => {
-                                formik.setFieldValue("ratesCountryId", v ? v.id : "")
-                                setSourceRate(v)
-                            }}
-                        />
-                        <RatesDropdown
-                            name='toRateCountryId'
-                            helperText={formik.errors.toRateCountryId}
-                            defaultId={formik.values.toRateCountryId}
-                            size='small'
-                            label="به ارز حساب"
-                            required
-                            error={formik.errors.toRateCountryId ? true : false}
-                            onValueChange={(v) => {
-                                formik.setFieldValue("toRateCountryId", v ? v.id : "")
-                                setDistRate(v)
-                            }}
-                        />
+                        <Grid container spacing={2}>
+                            <Grid item sm={6} xs={12}>
+                                <RatesDropdown
+                                    name='ratesCountryId'
+                                    defaultId={formik.values.ratesCountryId}
+                                    size='small'
+                                    label="ارز حساب"
+                                    disabled
+                                    onValueChange={(v) => {
+                                        formik.setFieldValue("ratesCountryId", v ? v.id : "")
+                                        setSourceRate(v)
+                                    }}
+                                />
+
+                            </Grid>
+                            <Grid item sm={6} xs={12}>
+                                <RatesDropdown
+                                    name='toRatesCountryId'
+                                    helperText={formik.errors.toRatesCountryId}
+                                    defaultId={formik.values.toRatesCountryId}
+                                    size='small'
+                                    label="به ارز حساب"
+                                    required
+                                    error={formik.errors.toRatesCountryId ? true : false}
+                                    onValueChange={(v) => {
+                                        formik.setFieldValue("toRatesCountryId", v ? v.id : "")
+                                        setDistRate(v)
+                                    }}
+                                />
+                            </Grid>
+                        </Grid>
+
                         <ExchangeRateAlert
                             amount={formik.values.amount}
                             sourceRate={sourceRate}
                             distRate={distRate}
+                            onTypeChange={(t)=>formik.setFieldValue("exchangeType",t)}
                         />
                     </AccordionDetails>
                 </Accordion>

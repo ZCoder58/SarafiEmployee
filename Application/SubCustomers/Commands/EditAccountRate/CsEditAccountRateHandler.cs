@@ -40,6 +40,7 @@ namespace Application.SubCustomers.Commands.EditAccountRate
                     request.ToRatesCountryId,
                     targetAccountRate.Amount,
                     request.ExchangeType);
+                targetAccountRate.RatesCountryId = request.ToRatesCountryId;
                 await _dbContext.SaveChangesAsync(cancellationToken);
             }
 

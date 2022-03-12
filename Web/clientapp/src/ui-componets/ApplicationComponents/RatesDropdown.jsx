@@ -1,7 +1,10 @@
 import { Autocomplete, ListItem, ListItemText, TextField,Stack,Typography } from '@mui/material'
 import React from 'react'
 import authAxiosApi from '../../axios'
-export default function RatesDropdown({defaultId, onValueChange, ...props }) {
+RatesDropdown.defaultProps={
+    disabled:false
+}
+export default function RatesDropdown({disabled,defaultId, onValueChange, ...props }) {
     const [rates, setRates] = React.useState([])
     const [value, setValue] = React.useState(null)
     const [loading, setLoading] = React.useState(true)
@@ -35,7 +38,7 @@ export default function RatesDropdown({defaultId, onValueChange, ...props }) {
                 setValue(newValue)
                 onValueChange(newValue)
             }}
-            
+           disabled={disabled}
             isOptionEqualToValue={(option,value)=>option.id===value.id}
             getOptionLabel={(option) => `${option.faName} (${option.priceName})`}
             renderInput={(params) => <TextField {...params} {...props}  />}

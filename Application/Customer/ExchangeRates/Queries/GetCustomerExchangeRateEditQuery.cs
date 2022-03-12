@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
+using Application.Common.Statics;
 using Application.Customer.ExchangeRates.DTos;
 using AutoMapper;
 using Domain.Interfaces;
@@ -34,7 +35,7 @@ namespace Application.Customer.ExchangeRates.Queries
                 .Include(a=>a.ToRatesCountry)
                 .GetById(request.ExchangeRateId);
             if (targetCustomerExchangeRate.CustomerId != _httpUserContext.GetCurrentUserId().ToGuid() && 
-                targetCustomerExchangeRate.CreatedDate?.Date!=DateTime.UtcNow.Date)
+                targetCustomerExchangeRate.CreatedDate?.Date!=CDateTime.Now.Date)
             {
                 throw new EntityNotFoundException();
             }

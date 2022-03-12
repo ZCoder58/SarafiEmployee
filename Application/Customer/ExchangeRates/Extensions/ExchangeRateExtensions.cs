@@ -23,9 +23,9 @@ namespace Application.Customer.ExchangeRates.Extensions
         public static CustomerExchangeRate GetTodayExchangeRateById(this IQueryable<CustomerExchangeRate> query,
             Guid customerId, Guid fromCountryRateId, Guid toCountryRateId)
         {
-            return query.OrderAscending().FirstOrDefault(a =>
+            return query.Where(a=>a.CreatedDate.Value.Date==CDateTime.Now.Date)
+                .FirstOrDefault(a =>
                 a.CustomerId == customerId &&
-                a.CreatedDate.Value.Date==CDateTime.Now.Date &&
                 (a.FromRatesCountryId == fromCountryRateId &&
                  a.ToRatesCountryId == toCountryRateId) ||
                 (a.FromRatesCountryId == toCountryRateId &&
@@ -43,7 +43,7 @@ namespace Application.Customer.ExchangeRates.Extensions
         public static double ConvertCurrencyById(this IQueryable<CustomerExchangeRate> query,
             Guid customerId, Guid fromCountryRateId, Guid toCountryRateId, double amount, string type)
         {
-            var lastExchangeRate = query.OrderDescending()
+            var lastExchangeRate = query.Where(a=>a.CreatedDate.Value.Date==CDateTime.Now.Date)
                 .FirstOrDefault(a =>
                     a.CustomerId == customerId &&
                     (a.FromRatesCountryId == fromCountryRateId &&

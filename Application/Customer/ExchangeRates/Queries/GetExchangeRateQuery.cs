@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
+using Application.Common.Statics;
 using Application.Customer.ExchangeRates.Commands.CreateExchangeRate;
 using Application.Customer.ExchangeRates.DTos;
 using AutoMapper;
@@ -33,8 +34,9 @@ namespace Application.Customer.ExchangeRates.Queries
         public async Task<ExchangeRatesDTo> Handle(GetExchangeRateQuery request, CancellationToken cancellationToken)
         {
             var userId = _httpUserContext.GetCurrentUserId().ToGuid();
-            var targetExchangeRate = _dbContext.CustomerExchangeRates.FirstOrDefault(a =>
-                a.CreatedDate.Value.Date == DateTime.UtcNow.Date &&
+            var targetExchangeRate = _dbContext.CustomerExchangeRates.Where(a=>
+                                         a.CreatedDate.Value.Date == CDateTime.Now.Date.Date )
+                .FirstOrDefault(a =>
                 a.CustomerId==userId&&
                 (a.FromRatesCountry.Id == request.FromCurrencyId &&
                  a.ToRatesCountry.Id == request.ToCurrencyId) ||
