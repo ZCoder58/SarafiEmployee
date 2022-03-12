@@ -18,8 +18,7 @@ namespace Application.SubCustomers.Commands.CreateAccountRate
                     a.Id==subCustomerId)).WithMessage("مشتری نامعتبر");
             RuleFor(a => a.Amount)
                 .Cascade(CascadeMode.Stop)
-                .NotNull().WithMessage("مقدار پول اولیه حساب ضروری میباشد")
-                .GreaterThanOrEqualTo(0).WithMessage("کم تر از صفر مجاز نیست");
+                .NotNull().WithMessage("مقدار پول اولیه حساب ضروری میباشد");
             RuleFor(a => a.RatesCountryId)
                 .Cascade(CascadeMode.Stop)
                 .NotEqual(Guid.Empty).WithMessage("انتخاب نوع ارز ضروری میباشد")

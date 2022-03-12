@@ -34,8 +34,9 @@ namespace Application.SubCustomers.Commands.Transactions.RollbackTransaction
                 targetTransaction.TransactionType == TransactionTypes.WithdrawalWithDebt)
             {
                 targetSubCustomerAccountRate.Amount += targetTransaction.Amount;
-                if (targetTransaction.TransactionType == TransactionTypes.Withdrawal ||
-                    targetTransaction.TransactionType == TransactionTypes.WithdrawalWithDebt)
+                if (targetTransaction.AccountTransaction &&
+                    (targetTransaction.TransactionType == TransactionTypes.Withdrawal ||
+                     targetTransaction.TransactionType == TransactionTypes.WithdrawalWithDebt))
                 {
                     await _mediator.Send(new CDepositAccountCommand(
                         true,
@@ -49,13 +50,16 @@ namespace Application.SubCustomers.Commands.Transactions.RollbackTransaction
             else
             {
                 targetSubCustomerAccountRate.Amount -= targetTransaction.Amount;
-                await _mediator.Send(new CWithdrawalAccountCommand(
-                    true,
-                    targetSubCustomerAccountRate.RatesCountryId,
-                    targetTransaction.Amount,
-                    "",
-                    false
-                ), cancellationToken);
+                if (targetTransaction.AccountTransaction)
+                {
+                    await _mediator.Send(new CWithdrawalAccountCommand(
+                        true,
+                        targetSubCustomerAccountRate.RatesCountryId,
+                        targetTransaction.Amount,
+                        "",
+                        false
+                    ), cancellationToken);
+                }
             }
 
             _dbContext.SubCustomerTransactions.Remove(targetTransaction);

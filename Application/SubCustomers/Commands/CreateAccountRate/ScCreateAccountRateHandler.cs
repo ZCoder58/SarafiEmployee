@@ -38,14 +38,17 @@ namespace Application.SubCustomers.Commands.CreateAccountRate
             await _dbContext.SaveChangesAsync(cancellationToken);
             var targetRate = _dbContext.RatesCountries.GetById(request.RatesCountryId);
             newAccount.RatesCountry = targetRate;
-            await _mediator.Send(new CsCreateTransactionCommand()
-            {
-                Amount = request.Amount,
-                PriceName = targetRate.PriceName,
-                Comment = "سرمایه اولیه اضافه شد",
-                TransactionType = TransactionTypes.Deposit,
-                SubCustomerAccountRateId = newAccount.Id
-            }, cancellationToken);
+            if (request.EnableTransaction) 
+            { 
+                await _mediator.Send(new CsCreateTransactionCommand()
+                {
+                    Amount = request.Amount,
+                    PriceName = targetRate.PriceName,
+                    Comment = "سرمایه اولیه اضافه شد",
+                    TransactionType = TransactionTypes.Deposit,
+                    SubCustomerAccountRateId = newAccount.Id
+                }, cancellationToken);
+            }
             if (request.AddToAccount)
             {
                 await _mediator.Send(new CDepositAccountCommand(

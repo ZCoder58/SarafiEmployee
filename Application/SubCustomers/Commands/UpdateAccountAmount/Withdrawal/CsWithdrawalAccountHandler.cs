@@ -28,13 +28,16 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.Withdrawal
             var targetSubCustomerAccountRate = _dbContext.SubCustomerAccountRates
                 .Include(a => a.RatesCountry)
                 .GetById(request.SubCustomerAccountRateId);
-            await _mediator.Send(new CWithdrawalAccountCommand(
-                true,
-                targetSubCustomerAccountRate.RatesCountryId,
-                request.Amount,
-                "",
-                false
-            ), cancellationToken);
+            if (request.WithdrawalAccount)
+            {
+                await _mediator.Send(new CWithdrawalAccountCommand(
+                    true,
+                    targetSubCustomerAccountRate.RatesCountryId,
+                    request.Amount,
+                    "",
+                    false
+                ), cancellationToken);
+            }
             
             var transactionType = targetSubCustomerAccountRate.Amount >= request.Amount
                 ? TransactionTypes.Withdrawal
@@ -48,7 +51,8 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.Withdrawal
                 Comment = request.Comment,
                 PriceName = targetSubCustomerAccountRate.RatesCountry.PriceName,
                 TransactionType = transactionType,
-                SubCustomerAccountRateId = request.SubCustomerAccountRateId
+                SubCustomerAccountRateId = request.SubCustomerAccountRateId,
+                AccountTransaction = request.WithdrawalAccount
             }, cancellationToken);
           
             return Unit.Value;

@@ -38,16 +38,20 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.Deposit
                     Comment = request.Comment,
                     PriceName = targetSubCustomerAccountRate.RatesCountry.PriceName,
                     TransactionType = TransactionTypes.Deposit,
-                    SubCustomerAccountRateId = request.SubCustomerAccountRateId
+                    SubCustomerAccountRateId = request.SubCustomerAccountRateId,
+                    AccountTransaction = request.AddToAccount
                 }, cancellationToken);
                 
-                await _mediator.Send(new CDepositAccountCommand(
-                    true,
-                    targetSubCustomerAccountRate.RatesCountryId,
-                    request.Amount,
-                    "",
-                    false
-                ), cancellationToken);
+                if (request.AddToAccount)
+                {
+                    await _mediator.Send(new CDepositAccountCommand(
+                        true,
+                        targetSubCustomerAccountRate.RatesCountryId,
+                        request.Amount,
+                        "",
+                        false
+                    ), cancellationToken);
+                }
             return Unit.Value;
         }
     }

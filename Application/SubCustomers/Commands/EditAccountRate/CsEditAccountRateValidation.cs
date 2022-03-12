@@ -34,20 +34,21 @@ namespace Application.SubCustomers.Commands.EditAccountRate
             RuleFor(a => a.ToRatesCountryId)
                 .Cascade(CascadeMode.Stop)
                 .NotEqual(Guid.Empty).WithMessage("انتخاب نوع ارز ضروری میباشد")
-                .Must(dbContext.RatesCountries.IsExists).WithMessage("ارز نامعتبر")
-                .Must(IsAlreadyExists).WithMessage("حساب با این ارز قبلا اضافه شده است");
+                .Must(dbContext.RatesCountries.IsExists).WithMessage("ارز نامعتبر");
+            // .Must(IsAlreadyExists).WithMessage("حساب با این ارز قبلا اضافه شده است");
         }
 
-        public bool IsAlreadyExists(CsEditAccountRateCommand model, Guid toRateCountryId)
-        {
-            var targetAccount = _dbContext.SubCustomerAccountRates
-                .Include(a => a.SubCustomerAccount).FirstOrDefault(a =>
-                    a.Id == model.Id);
-            return targetAccount.RatesCountryId == toRateCountryId || _dbContext.SubCustomerAccountRates
-                .Include(a => a.SubCustomerAccount).Any(a =>
-                    a.Id != targetAccount.Id &&
-                    a.RatesCountryId == toRateCountryId &&
-                    a.SubCustomerAccount.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid());
-        }
+        // public bool IsAlreadyExists(CsEditAccountRateCommand model, Guid toRateCountryId)
+        // {
+        //     var targetAccountRate = _dbContext.SubCustomerAccountRates
+        //         .Include(a => a.SubCustomerAccount).FirstOrDefault(a =>
+        //             a.Id == model.Id);
+        //     return !_dbContext.SubCustomerAccountRates
+        //         .Include(a => a.SubCustomerAccount).Any(a =>
+        //             a.Id != targetAccountRate.Id &&
+        //             a.SubCustomerAccountId==targetAccountRate.SubCustomerAccountId &&
+        //             a.RatesCountryId == toRateCountryId &&
+        //             a.SubCustomerAccount.CustomerId == _httpUserContext.GetCurrentUserId().ToGuid());
+        // }
     }
 }

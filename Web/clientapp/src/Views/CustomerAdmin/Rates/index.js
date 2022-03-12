@@ -9,6 +9,7 @@ import TableDesktopview from './exchangeRatesReponsive/TableDesktopView'
 import { useSelector } from 'react-redux'
 import TableMobileView from './exchangeRatesReponsive/TableMobileView'
 import {AddOutlined} from '@mui/icons-material'
+import LocalDateStatic from '../../../helpers/statics/LocalDateStatic'
 export default function VCRateExchangeRates() {
     const [loading, setLoading] = React.useState(false)
     const [exchangeRates, setExchangeRates] = React.useState([])
@@ -43,7 +44,7 @@ export default function VCRateExchangeRates() {
             <Grid item lg={12} md={12} sm={12} xs={12}>
                 <CCard
                     title={`نرخ اسعار معادل`}
-                    subHeader={`نرخ اسعار ${new Date().toLocaleDateString()}`}
+                    subHeader={`نرخ اسعار امروز ${LocalDateStatic.fullDate(new Date())}`}
                     headerIcon={<CurrencyExchangeIcon />}
                 >
                     {updateDialogOpen && <CDialog

@@ -8,6 +8,10 @@ namespace Domain.Entities
         public double Amount { get; set; }
         public string PriceName { get; set; }
         public int TransactionType { get; set; }
+        /// <summary>
+        /// if true amount has dec/inc from customer account
+        /// </summary>
+        public bool AccountTransaction { get; set; }
         public string Comment { get; set; }
         public Guid? TransferId { get; set; }
         public Transfer Transfer { get; set; }

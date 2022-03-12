@@ -1,5 +1,6 @@
 import { Autocomplete, ListItem, ListItemText, TextField,Typography,Alert,AlertTitle } from '@mui/material'
 import React from 'react'
+import { CurrencyText } from '..'
 import authAxiosApi from '../../axios'
 
 
@@ -67,13 +68,13 @@ export default function SubCustomerAccountRatesSelect({subCustomerId,defaultAcco
 
        {value&&value.amount<1?
         <>
-        <Typography variant="caption" color="error" >{value&&`موجودی حساب : ${value.amount} ${value.priceName}`}</Typography>
+        <Typography variant="caption" color="error" >{value&&`موجودی حساب : `} <CurrencyText value={value&&value.amount} priceName={value&&value.priceName}/></Typography>
         <Alert severity='warning'>
             <AlertTitle>هشدار!</AlertTitle>
             <Typography>موجودی حساب مشتری صفر است هرگونه برداشت ازین حساب مشتری را قرض دار خواهد کرد</Typography>
         </Alert>
         </>:
-        <Typography variant="caption" >{value&&`موجودی حساب : ${value.amount} ${value.priceName}`}</Typography>
+        <Typography variant="caption" >{value&&`موجودی حساب : `} <CurrencyText value={value&&value.amount} priceName={value&&value.priceName}/></Typography>
         }
         </React.Fragment>
         

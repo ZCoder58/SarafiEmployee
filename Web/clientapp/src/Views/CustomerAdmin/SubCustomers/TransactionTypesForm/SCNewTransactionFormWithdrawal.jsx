@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, InputAdornment, TextField } from '@mui/material'
+import { Box, Checkbox, FormControlLabel, InputAdornment, TextField } from '@mui/material'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import authAxiosApi from '../../../../axios'
@@ -12,6 +12,7 @@ const initialModel = {
     subCustomerAccountRateId:"",
     comment: "",
     amount: 1,
+    withdrawalAccount:true
 }
 const validationSchema = Yup.object().shape({
     amount: Yup.number().required("مقدار پول ضروری میباشد").moreThan(0,"کمتر از 1 مجاز نیست"),
@@ -67,6 +68,10 @@ export default function SCNewTransactionFormWithdrawal({subCustomer, onSuccess})
                         {accountRate?accountRate.priceName:"هیچ"}
                     </InputAdornment>
                 }}
+            />
+             <FormControlLabel
+            label={"کم کردن پول از دخل"}
+            control={<Checkbox name='addToAccount' checked={formik.values.withdrawalAccount} onChange={(e)=>formik.setFieldValue("withdrawalAccount",e.target.checked)}/>}
             />
             <TextField
                 variant='outlined'

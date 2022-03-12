@@ -10,5 +10,6 @@ namespace Application.SubCustomers.Commands.CreateAccountRate
         public double Amount { get; set; }
         public Guid RatesCountryId { get; set; }
         public bool AddToAccount { get; set; }
+        public bool EnableTransaction { get; set; } = true;
     }
 }

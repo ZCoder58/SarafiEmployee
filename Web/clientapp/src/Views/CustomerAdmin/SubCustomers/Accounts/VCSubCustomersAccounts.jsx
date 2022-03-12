@@ -22,6 +22,9 @@ export default function VCSubCustomerAccounts() {
         setAccountRateId(subCustomerAccountRateId)
         setEditFormOpen(true)
     }
+    function refreshTable(){
+        setRefreshTableState(!refreshTableState)
+    }
     React.useEffect(() => {
         (async () => {
             await authAxiosApi.get('subCustomers/' + subCustomerId)
@@ -72,7 +75,8 @@ export default function VCSubCustomerAccounts() {
                 <EditSubCustomerAccountRateForm subCustomerAcccountRateId={accountRateId}
                     onSubmit={(editedAccount) => {
                         setEditFormOpen(false)
-                        setAccounts(Util.updateArray(accounts,editedAccount,"id"))
+                        // setAccounts(Util.updateArray(accounts,editedAccount,"id"))
+                        refreshTable()
                     }} />
             </CDialog>}
         </CCard>

@@ -7,5 +7,6 @@ namespace Application.SubCustomers.Commands.UpdateAccountAmount.Deposit
         Guid SubCustomerId,
         Guid SubCustomerAccountRateId,
         double Amount,
-        string Comment) : IRequest;
+        string Comment,
+        bool AddToAccount=true) : IRequest;
 }

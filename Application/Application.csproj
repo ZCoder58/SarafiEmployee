@@ -40,6 +40,8 @@
     <ItemGroup>
       <Folder Include="Company\Employees\EventHandlers" />
       <Folder Include="Countries\Commands" />
+      <Folder Include="Customer\CurrencyByAndSell\Commands" />
+      <Folder Include="Customer\CurrencyByAndSell\Queries" />
       <Folder Include="SunriseSuperAdmin\Customers\EventHandlers" />
       <Folder Include="SunriseSuperAdmin\Customers\Extensions" />
       <Folder Include="Website\Management\extensions" />

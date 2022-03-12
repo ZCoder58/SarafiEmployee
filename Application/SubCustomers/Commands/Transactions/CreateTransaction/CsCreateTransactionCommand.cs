@@ -11,6 +11,7 @@ namespace Application.SubCustomers.Commands.Transactions.CreateTransaction
         public string Comment { get; set; }
         public string PriceName { get; set; }
         public int TransactionType { get; set; }
+        public bool AccountTransaction { get; set; } = true;
         public Guid? TransferId { get; set; }
         
     }
