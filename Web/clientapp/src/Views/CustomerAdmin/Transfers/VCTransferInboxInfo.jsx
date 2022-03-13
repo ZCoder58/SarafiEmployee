@@ -145,7 +145,7 @@ export default function VCTransferInfo() {
                                 open={completeDialogOpen}
                                 onClose={() => setCompleteDialogOpen(!completeDialogOpen)}
                             >
-                                <SetTransferCompleteForm transferId={transfer.id} onSubmited={()=> navigate("/customer/transfers")} />
+                                <SetTransferCompleteForm transfer={transfer} onSubmited={()=> navigate("/customer/transfers")} />
                             </CDialog>}
                         </CardContent>
                     }

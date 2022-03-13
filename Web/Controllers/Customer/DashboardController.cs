@@ -34,5 +34,10 @@ namespace Web.Controllers.Customer
         {
             return Mediator.Send(new GetUnCompleteTodayOutTransfersProfitQuery());
         }
+        [HttpGet("transfersStatic")]
+        public Task<TransfersStaticsDTo> GetTransfersStatic()
+        {
+            return Mediator.Send(new GetTransfersStaticsQuery());
+        }
     }
 }

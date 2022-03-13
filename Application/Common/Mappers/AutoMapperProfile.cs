@@ -102,7 +102,10 @@ namespace Application.Common.Mappers
             CreateMap<CreateTransferCommand, Transfer>().ReverseMap();
             CreateMap<SubCustomerCreateTransferCommand, Transfer>().ReverseMap();
             CreateMap<SubCustomerEditTransferCommand, Transfer>().ReverseMap();
-            CreateMap<Transfer, TransferInboxTableDTo>();
+            CreateMap<Transfer, TransferInboxTableDTo>()
+                .ForMember(dist => dist.Deniable, option =>
+                    option.MapFrom(source =>source.State==TransfersStatusTypes.InProgress||
+                                            source.CompleteDate.Value.Date>=CDateTime.Now.AddDays(-1).Date));
             CreateMap<Transfer, TransferOutboxTableDTo>();
             CreateMap<Transfer, TransferInboxDetailDTo>();
             CreateMap<Transfer, TransferOutboxDetailDTo>();

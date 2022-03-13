@@ -94,6 +94,8 @@ export default function CustomerAccounts() {
                 {transactionDialogOpen && <CDialog title="ثبت انتقال"
                     open={transactionDialogOpen}
                     onClose={() => setTransactionDialogOpen(false)} >
+                       
+                        <Typography fontWieght={900}>{customerAccount&& `موجودی حساب: `}<CurrencyText value={customerAccount.amount} priceName={customerAccount.priceName}/></Typography>
                     <TabContext value={activeTab}>
                         <TabsList onChange={(e, t) => setActiveTab(t)}>
                             <Tab label={<TextDecreaseIcon />} value="0" />
@@ -110,6 +112,7 @@ export default function CustomerAccounts() {
                             <SCustomerNewTransactionFormTransferToAccount customerAccount={customerAccount} onSuccess={handleAmountUpdated}/>
                         </TabPanel> */}
                     </TabContext>
+                        
                 </CDialog>}
                 <CTable
                     columns={screenXs ? mobileColumns : desktopColumns}

@@ -32,7 +32,7 @@ namespace Application.Customer.Transfers.Commands.SetTransferComplete
                 true,
                 targetCountryRate.Id,
                 targetTransfer.DestinationAmount,
-                "برداشت پول برای اجرای حوابه",
+                "برداشت پول برای اجرای حواله",
                 targetTransfer.Id
             ), cancellationToken);
             targetTransfer.State = TransfersStatusTypes.Completed;

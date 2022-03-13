@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, useTheme, Box, useMediaQuery, IconButton } from '@mui/material'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { AdminSideMenuToggler, CTooltip, NotificationButton, SunriseNavLogo,ConvertCurrencyButton } from '../../../ui-componets'
+import { AdminSideMenuToggler, CTooltip, NotificationButton, SunriseNavLogo, ConvertCurrencyButton } from '../../../ui-componets'
 import ProfileAccount from './ProfileAccount'
 import Friends from './Friends'
 import { SearchOutlined } from '@mui/icons-material'
@@ -12,7 +12,7 @@ export const Header = ({ sidebarWidth }) => {
   const { menuOpen } = useSelector(state => state.R_AdminLayout)
   const isMachedDownMd = useMediaQuery(theme.breakpoints.down("md"))
   const isMachedXs = useMediaQuery(theme.breakpoints.only("xs"))
-  const {isCustomer}=useAuth()
+  const { isCustomer } = useAuth()
   const navigate = useNavigate()
   return (
     <AppBar
@@ -29,14 +29,14 @@ export const Header = ({ sidebarWidth }) => {
       <Toolbar>
         {!menuOpen && (!isMachedXs ? <SunriseNavLogo /> : "")}
         <AdminSideMenuToggler />
-       {isCustomer()&& <CTooltip title="جستجوی همکار">
+        {isCustomer() && <CTooltip title="جستجوی همکار">
           <IconButton size="small" onClick={() => navigate("/customer/search")}>
             <SearchOutlined />
           </IconButton>
         </CTooltip>}
-        <ConvertCurrencyButton/>
+        <ConvertCurrencyButton />
         <Box sx={{ flexGrow: 1 }} />
-        {isCustomer()&& <Friends />}
+        {isCustomer() && <Friends />}
         <NotificationButton />
         <ProfileAccount />
       </Toolbar>

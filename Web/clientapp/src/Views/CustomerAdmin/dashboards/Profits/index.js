@@ -6,11 +6,11 @@ import InTransfersProfits from './InTransfersProfits';
 import OutTransfersProfits from './OutTransfersProfits';
 import PInTransfersProfits from './PInTransfersProfits';
 import POutTransfersProfits from './POutTransfersProfits';
+import CDTransfersStatics from './Statics/CDTransfersStatics';
 export default function Profits() {
- 
     return (
         <>
-
+            <CDTransfersStatics/>
             <Grid item lg={6} md={6} sm={6} xs={12}>
                 <Card>
                     <CardHeader

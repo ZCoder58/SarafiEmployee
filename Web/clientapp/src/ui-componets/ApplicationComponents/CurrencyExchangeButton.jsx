@@ -1,8 +1,9 @@
 import React from 'react'
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import {IconButton} from '@mui/material';
-import { CDialog, ConvertCurrency, CTooltip } from '..';
-export default function ConvertCurrecyButton() {
+import { CDialog, CTooltip } from '..';
+import CurrencyExchange from '../../Views/CustomerAdmin/BuyAndSellMoney/CurrencyExchange'
+export default function CurrencyExchangeButton() {
     const [open, setOpen] = React.useState(false)
     return (
         <>
@@ -14,7 +15,7 @@ export default function ConvertCurrecyButton() {
             <CDialog open={open}
                 title="تبدیل ارز"
                 onClose={() => setOpen(false)}>
-                <ConvertCurrency />
+                <CurrencyExchange onSuccess={()=>setOpen(!open)}/>
             </CDialog>          
         </>
     )

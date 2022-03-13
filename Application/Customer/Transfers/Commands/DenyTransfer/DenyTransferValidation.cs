@@ -23,9 +23,10 @@ namespace Application.Customer.Transfers.Commands.DenyTransfer
 
         public bool Valid(Guid transferId)
         {
-            var targetTransferId = _dbContext.Transfers.GetById(transferId);
-            return targetTransferId.ReceiverId == _httpUserContext.GetCurrentUserId().ToGuid() &&
-                   targetTransferId.State == TransfersStatusTypes.InProgress;
+            var targetTransfer = _dbContext.Transfers.GetById(transferId);
+            return targetTransfer.ReceiverId == _httpUserContext.GetCurrentUserId().ToGuid() &&
+                   targetTransfer.State == TransfersStatusTypes.InProgress ||
+                   targetTransfer.CompleteDate?.Date>=CDateTime.Now.AddDays(-1).Date;
         }
     }
 }

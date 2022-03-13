@@ -50,7 +50,7 @@ export default function InnerTransferInbox() {
                    <Button variant="contained" size="small" onClick={() => navigate("/customer/transfers/inbox/" + row.id)}>
                        {row.state===0?"اجرا کردن":"جزییات"}
                     </Button>
-                    {row.state===0&&
+                    {row.deniable&&
                     <Button variant="contained" color="error" size="small" onClick={()=>askForDeny(row.id)}>
                         رد کردن
                     </Button>}
@@ -122,7 +122,7 @@ export default function InnerTransferInbox() {
                         <InfoOutlinedIcon />
                     </IconButton>
                 </CTooltip>
-               {row.state===0&&
+               {row.deniable&&
                 <CTooltip title="رد کردن">
                 <IconButton onClick={() =>askForDeny(row.id)}>
                     <DoDisturbOffOutlinedIcon  />

@@ -14,7 +14,7 @@ namespace Application.Customer.Transfers.DTOs
 
         public string FromCurrency { get; set; }
         public string ToCurrency { get; set; }
-
+        public bool Deniable { get; set; }
         public double SourceAmount { get; set; }
         public double DestinationAmount { get; set; }
         public int CodeNumber { get; set; }

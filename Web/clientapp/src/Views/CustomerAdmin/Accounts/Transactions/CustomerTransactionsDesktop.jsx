@@ -21,7 +21,9 @@ export default function CustomerTransactionsDesktop({ transactions=[] }) {
         await authAxiosApi.post('customer/accounts/transactions/rollback',{
             transactionId:transactionId
         }).then(r=>{
-            setTransactionsList(transactionsList.filter(t => t.id !== transactionId))
+            if(r){
+                setTransactionsList(transactionsList.filter(t => t.id !== transactionId))
+            }
             setOpenAskRollback(false)
         })
     }
@@ -41,7 +43,7 @@ export default function CustomerTransactionsDesktop({ transactions=[] }) {
             <AskDialog 
             open={openAskRollback}
             onYes={()=>rollback()}
-            message={"این تغیرات به حساب مشتری بازگردانده خواهد شد"}
+            message={"این تغیرات به حساب شما بازگردانده خواهد شد"}
             onNo={()=>setOpenAskRollback(false)}/>
             <Table size='small'>
                 <TableHead>

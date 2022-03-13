@@ -32,11 +32,15 @@ export default function NotificationButton() {
     const notificDataRender = <List dense>
         {notifications.map((d, i) =>
             <ListItemButton key={i} sx={{ width: "100%", minWidth: 280 }} onClick={()=>{
-                if(d.type==="newTransfer" || d.type==="deniedTransfer"){
+                if(d.type==="newTransfer"){
                     navigate(`/${auth.isCompany()?"company":"customer"}/transfers/inbox/${d.baseId}`)
                     handleClose()
                 }else if(d.type==="request"){
                     navigate(`/${auth.isCompany()?"company":"customer"}/profile/${d.baseId}`)
+                    handleClose()
+                
+                }else if(d.type==="deniedTransfer"){
+                    navigate(`/${auth.isCompany()?"company":"customer"}/transfers/outBox/${d.baseId}`)
                     handleClose()
                 }
             }}>

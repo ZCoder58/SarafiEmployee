@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Common.Models;
+using Application.Customer.CurrencyByAndSell.Commands.CreateMoneyExchange;
 using Application.Customer.CustomerAccounts.Commands.CreateAccountRate;
 using Application.Customer.CustomerAccounts.Commands.Deposit;
 using Application.Customer.CustomerAccounts.Commands.Transactions.RollbackTransaction;
@@ -59,6 +60,11 @@ namespace Web.Controllers.Customer
         }
         [HttpPost("transactions/rollback")]
         public Task RollbackTransaction([FromBody]CRollbackTransactionCommand request)
+        {
+            return Mediator.Send(request);
+        }
+        [HttpPost("exchangeMoney")]
+        public Task ExchangeMoney([FromForm]CCreateMoneyExchangeCommand request)
         {
             return Mediator.Send(request);
         }
