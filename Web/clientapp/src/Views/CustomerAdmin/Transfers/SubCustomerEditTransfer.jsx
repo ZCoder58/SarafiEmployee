@@ -1,6 +1,6 @@
 import { AskDialog, CCard, CurrencyInput, CurrencyText, ExchangeRateAlert, SearchFriendDropdown, SubCustomersDropdown } from '../../../ui-componets'
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
-import { Grid, Box, TextField, Stack, Typography, Divider, Alert, Grow, IconButton } from '@mui/material'
+import { Grid, Box, TextField, Stack, Typography, Divider, IconButton } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import React from 'react'
@@ -71,15 +71,16 @@ export default function SubCustomerEditTransfer() {
     })
     const handleAccountRateChange = (newAccountRate) => {
         formik.setFieldValue("subCustomerAccountRateId", newAccountRate ? newAccountRate.id : "")
-        
-        if(!newAccountRate){
+        if(newAccountRate){
             setAccountRate({
+                ...newAccountRate,
                 id:newAccountRate.ratesCountryId
-                ,...newAccountRate})
+                })
         }else{
             setAccountRate(newAccountRate)
         }
     }
+    
     const handleDistChange = (newDistValue) => {
         formik.setFieldValue("tCurrency", newDistValue ? newDistValue.id : "")
         setDistRate(s => s = newDistValue)

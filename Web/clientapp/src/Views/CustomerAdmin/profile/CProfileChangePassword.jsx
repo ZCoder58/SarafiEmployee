@@ -39,7 +39,7 @@ export default function EProfileChangePassword() {
         }
     })
     return (
-        <Grid container spacing={2}>
+        <Grid container>
             <Grid item lg={6} md={6} sm={8} xs={12}>
                 <Stack direction="column" component="form" onSubmit={formik.handleSubmit} spacing={2}>
                 <TextField

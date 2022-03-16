@@ -1,8 +1,10 @@
 import React from 'react'
 import { Card, Grid, Stack, Typography, CardContent } from '@mui/material'
 import authAxiosApi from '../../../../../axios'
-import { SkeletonFull } from '../../../../../ui-componets'
-var StaticItem = ({ amount, text }) => (
+import { FieldValue, SkeletonFull } from '../../../../../ui-componets'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import PendingOutlinedIcon from '@mui/icons-material/PendingOutlined';
+var StaticItem = ({ amount, text,children }) => (
     <Card>
         <CardContent>
 
@@ -10,6 +12,7 @@ var StaticItem = ({ amount, text }) => (
             <Typography variant="h5">{amount}</Typography>
             <Typography >{text}</Typography>
         </Stack>
+            {children}
         </CardContent>
     </Card>
 
@@ -33,29 +36,27 @@ export default function CDTransfersStatics() {
     }, [])
     return (
         <>
-            <Grid item lg={3} md={3} sm={3} xs={12}>
+              <Grid item lg={6} md={6} sm={6} xs={12}>
                 {loading ? <SkeletonFull /> :
                     <StaticItem
-                        amount={statics.completedInTransfers}
-                        text="حواله های اجرا شده دریافتی" />}
+                        amount={(statics.completedInTransfers+statics.pendingInTransfers)}
+                        text="حواله های دریافتی" >
+                            <Stack direction="column" spacing={1}>
+                            <FieldValue variant="caption" icon={<CheckCircleOutlineIcon color="success" fontSize="small"/>} label="اجرا شده" value={statics.completedInTransfers}/>
+                            <FieldValue variant="caption" icon={<PendingOutlinedIcon color="warning" fontSize="small"/>} label="اجرا نشده" value={statics.pendingInTransfers}/>
+                            </Stack>
+                            </StaticItem>}
             </Grid>
-            <Grid item lg={3} md={3} sm={3} xs={12}>
+            <Grid item lg={6} md={6} sm={6} xs={12}>
                 {loading ? <SkeletonFull /> :
                     <StaticItem
-                        amount={statics.completedOutTransfers}
-                        text="حواله های اجرا شده ارسالی" />}
-            </Grid>
-            <Grid item lg={3} md={3} sm={3} xs={12}>
-                {loading ? <SkeletonFull /> :
-                    <StaticItem
-                        amount={statics.pendingInTransfers}
-                        text="حواله های اجرا نشده دریافتی" />}
-            </Grid>
-            <Grid item lg={3} md={3} sm={3} xs={12}>
-                {loading ? <SkeletonFull /> :
-                    <StaticItem
-                        amount={statics.pendingOutTransfers}
-                        text="حواله های اجرا نشده ارسالی" />}
+                        amount={(statics.completedOutTransfers+statics.pendingOutTransfers)}
+                        text="حواله های ارسالی" >
+                             <Stack direction="column" spacing={1}>
+                            <FieldValue variant="caption" icon={<CheckCircleOutlineIcon color="success" fontSize="small"/>} label="اجرا شده" value={statics.completedOutTransfers}/>
+                            <FieldValue variant="caption"  icon={<PendingOutlinedIcon color="warning" fontSize="small"/>} label="اجرا نشده" value={statics.pendingOutTransfers}/>
+                            </Stack>
+                        </StaticItem>}
             </Grid>
         </>
     )

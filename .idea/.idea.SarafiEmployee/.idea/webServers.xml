@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="18a1e139-5647-429f-9c56-5192f9f73d3b" name="win5036.site4now.net" url="http://win5036.site4now.net">
-        <fileTransfer rootFolder="/saraffi" host="win5036.site4now.net" port="21">
+      <webServer id="18a1e139-5647-429f-9c56-5192f9f73d3b" name="win5036.site4now.net" url="http://win5216.site4now.net">
+        <fileTransfer host="win5216.site4now.net" port="21">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

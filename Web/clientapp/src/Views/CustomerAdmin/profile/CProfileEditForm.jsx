@@ -10,7 +10,7 @@ import authAxiosApi from '../../../axios'
 import Util from '../../../helpers/Util'
 const validationSchema = Yup.object().shape({
     userName: Yup.string().required("نام کاربری ضروری میباشد"),
-    phone: Yup.number().required("شماره تماس شما ضروری میباشد"),
+    phone: Yup.string().required("شماره تماس شما ضروری میباشد"),
     name: Yup.string().required("نام شما ضروری میباشد"),
     fatherName: Yup.string().required("ولد شما ضروری میباشد"),
     city: Yup.string().required("شهر شما ضروری میباشد"),
@@ -61,7 +61,7 @@ export default function EProfileEditForm() {
         }
     }, [])
     return (
-        <Box component="form" onSubmit={formik.handleSubmit} noValidate>
+        <Box component="form" onSubmit={formik.handleSubmit} noValidate p={1}>
             {loading ? <SkeletonFull /> :
                 <Grid container spacing={1}>
                     <Grid item lg={6} md={6} sm={6} xs={12}>
@@ -117,7 +117,7 @@ export default function EProfileEditForm() {
                             helperText={formik.errors.phone}
                             size='small'
                             label='شماره تماس'
-                            type='number'
+                            type='text'
                             required
                             error={formik.errors.phone ? true : false}
                             onChange={formik.handleChange}

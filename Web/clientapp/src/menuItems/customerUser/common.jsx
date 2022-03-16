@@ -68,7 +68,7 @@ const common = {
           url:"transfers/bills"
         },
         {
-          title:"بیلانس رسید و برد",
+          title:"بیلانس رسید و برد مشتریان",
           type:"item",
           url:"subCustomers/bills"
         }

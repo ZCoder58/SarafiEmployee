@@ -31,7 +31,8 @@ const VCSubCustomersAccounts=LoadablePage(React.lazy(()=>import("../Views/Custom
 const VSubCustomerBills=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/SubCustomers/Bills")))
 //customer account
 const VCAccounts=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/Accounts")))
-
+//customer balances
+const VCustomerBalance=LoadablePage(React.lazy(()=>import("../Views/CustomerAdmin/CustomerBalance")))
 
 export const CustomerAuthRoutes={
     path:"/customer",
@@ -44,6 +45,11 @@ export const CustomerAuthRoutes={
         {
             path:"dashboard",
             element:<VDashboard/>
+        },
+        //CustomerBalance 
+        {
+            path:"balances/:friendId",
+            element:<VCustomerBalance/>
         },
         //accounts 
         {

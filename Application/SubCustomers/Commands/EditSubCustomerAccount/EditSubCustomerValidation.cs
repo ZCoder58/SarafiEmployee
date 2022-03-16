@@ -27,7 +27,8 @@ namespace Application.SubCustomers.Commands.EditSubCustomerAccount
                 .NotNull().WithMessage("شماره تذکره ضروری میباشد");
             RuleFor(a => a.CodeNumber)
                 .NotNull().WithMessage("کد نمبر مشتری ضروری میباشد")
-                .Must((model, codeNumber) => dbContext.SubCustomerAccounts.Any(a => a.CodeNumber == codeNumber &&
+                .Must((model, codeNumber) => !dbContext.SubCustomerAccounts
+                    .Any(a => a.CodeNumber == codeNumber &&
                     a.Id != model.Id)).WithMessage("کد نمبر قبلا استفاده شده است");
         }
     }

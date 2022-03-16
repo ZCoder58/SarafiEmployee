@@ -1,7 +1,7 @@
 import { Popover, IconButton, Paper, List, ListItemButton, Stack, Typography, useTheme, useMediaQuery, Drawer, Box, Divider, Button, Badge } from '@mui/material'
 import React from 'react'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import TimeAgo from 'react-timeago'
+// import TimeAgo from 'react-timeago'
 import faString from 'react-timeago/lib/language-strings/fa'
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
 import { CTooltip } from '.';
@@ -10,8 +10,19 @@ import { CloseOutlined } from '@mui/icons-material';
 import useNotifications from '../hooks/useNotifications'
 import { useNavigate } from 'react-router';
 import useAuth from '../hooks/useAuth'
+import moment from 'moment'
+import TimeAgo from 'timeago-react';
+import * as timeago from 'timeago.js';
+
+// import it first.
+import fa from 'timeago.js/lib/lang/fa';
+
+// register it.
+timeago.register('fa', fa);
+moment.locale("fa")
 const formatter = buildFormatter(faString)
 export default function NotificationButton() {
+ 
     const { loading, notifications, notificationCount,unSeensCount,seenNotifications } = useNotifications()
     const theme = useTheme()
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -50,7 +61,9 @@ export default function NotificationButton() {
                             {d.title}
                         </Typography>
                         <Typography fontSize="11px" color="primary">
-                            <TimeAgo date={d.date} formatter={formatter} live />
+                            <TimeAgo datetime={new Date(d.date+'Z')} locale='fa' live opts={{
+                                relativeDate:new Date().toUTCString()
+                            }}/>
                         </Typography>
                     </Stack>
                     <Typography fontSize="12px" sx={{ color: theme.palette.grey[500] }}>
@@ -87,7 +100,7 @@ export default function NotificationButton() {
                                     alignItems: "center"
                                 }}>
                                     <Typography fontSize="14px" color="primary">
-                                        {`رویداد ها ${unSeensCount>0?unSeensCount:""}`}
+                                        {`اعلان ها ${unSeensCount>0?unSeensCount:""}`}
                                     </Typography>
                                 </Box>
                             </Stack>
@@ -142,7 +155,7 @@ export default function NotificationButton() {
                                         py: 1
                                     }}>
                                         <Typography fontSize="14px" color="primary">
-                                            {`رویداد ها ${unSeensCount>0?unSeensCount:""}`}
+                                            {`اعلان ها ${unSeensCount>0?unSeensCount:""}`}
                                         </Typography>
                                     </Box>
                                 </Stack>

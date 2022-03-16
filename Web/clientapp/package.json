@@ -52,6 +52,7 @@
     "stylis-plugin-rtl": "^2.1.1",
     "suneditor": "^2.42.0",
     "suneditor-react": "^3.3.1",
+    "timeago-react": "^3.0.4",
     "web-vitals": "^2.1.2",
     "yup": "^0.32.11"
   },

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Common.Statics;
 using Application.Customer.ExchangeRates.Commands.CreateExchangeRate;
 using Application.Customer.ExchangeRates.Commands.UpdateExchangeRate;
 using Application.Customer.ExchangeRates.DTos;
@@ -20,7 +21,7 @@ namespace Web.Controllers.Customer
         [HttpGet("todayExchangeRates")]
         public Task<IEnumerable<CustomerExchangeRatesListDTo>> GetExchangeRatesForToday()
         {
-            return Mediator.Send(new GetTodayExchangeRatesTableQuery(DateTime.UtcNow));
+            return Mediator.Send(new GetTodayExchangeRatesTableQuery(CDateTime.Now));
         }
         [HttpPost("exchangeRates")]
         public Task CreateExchangeRate([FromForm]CreateExchangeRateCommand request)

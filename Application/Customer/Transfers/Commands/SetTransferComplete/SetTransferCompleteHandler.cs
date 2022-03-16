@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
 using Application.Common.Statics;
+using Application.Customer.Balances.Commands.CreateBalanceTransaction;
+using Application.Customer.Balances.Commands.CreateTalab;
 using Application.Customer.CustomerAccounts.Commands.UpdateAccountAmount.WithdrawalTransfer;
 using Application.Customer.Transfers.EventHandlers;
 using Application.SunriseSuperAdmin.Rates.Extensions;
@@ -40,6 +42,13 @@ namespace Application.Customer.Transfers.Commands.SetTransferComplete
             targetTransfer.ToSId = request.SId;
             targetTransfer.CompleteDate=CDateTime.Now;
             await _dbContext.SaveChangesAsync(cancellationToken);
+            await _mediator.Send(new CCreateTalabCommand(
+                targetTransfer.ReceiverId.ToGuid(),
+                targetTransfer.SenderId,
+                targetCountryRate.Id,
+                targetTransfer.ReceiverFee+targetTransfer.DestinationAmount,
+                "",
+                false),cancellationToken);
            await _mediator.Publish(new TransferCompleted(),cancellationToken);
            return Unit.Value;
         }

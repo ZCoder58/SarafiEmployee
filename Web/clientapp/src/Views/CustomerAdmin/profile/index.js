@@ -1,5 +1,5 @@
 import { TabContext, TabPanel } from '@mui/lab'
-import { Card, Grid, Tab } from '@mui/material'
+import { Box, Card, Grid, Tab } from '@mui/material'
 import CProfileInfo from './CProfileInfo'
 import React from 'react'
 import { TabsList } from '../../../ui-componets'
@@ -22,7 +22,8 @@ export default function VEProfile() {
                     <TabPanel value="1">
                         <CProfileEditForm />
                     </TabPanel>
-                    <TabPanel value="2">
+                    <TabPanel value="2" sx={{ p:1 }}>
+
                         <CProfileChangePassword />
                     </TabPanel>
                 </TabContext>

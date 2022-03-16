@@ -12,11 +12,10 @@ namespace Application.SubCustomers.Commands.CreateTransfer
     {
         public SubCustomerCreateTransferValidation(IApplicationDbContext dbContext,IHttpUserContext httpUserContext)
         {
-          
+
             RuleFor(a => a.CodeNumber)
                 .Cascade(CascadeMode.Stop)
-                .NotNull().WithMessage("کود حواله ضروری میباشد")
-                .ExclusiveBetween(50, 5001).WithMessage("کود نمبر حواله درست نمیباشد"); 
+                .NotNull().WithMessage("کود حواله ضروری میباشد");
             RuleFor(a => a.FromName)
                 .NotNull().WithMessage("نام ارسال کننده پول ضروری میباشد");
             RuleFor(a => a.FromName)

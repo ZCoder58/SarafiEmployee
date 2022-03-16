@@ -17,7 +17,7 @@ CSelect.propTypes={
 }
 /**
  * 
- * @param {data=[{value,label}]} param0 
+ * @param {data=[{value,label,selected}]} param0 
  * @returns 
  */
 export default function CSelect({data=[],helperText,...props}){
@@ -31,7 +31,7 @@ export default function CSelect({data=[],helperText,...props}){
             labelId={"select-"+id.toString()}
             >
                 {data.map((e,i)=>(
-                    <MenuItem key={i} value={e.value}>{e.label}</MenuItem>
+                    <MenuItem key={i} value={e.value} selected={e.selected}>{e.label}</MenuItem>
                 ))}
             </Select>
             <FormHelperText error={props.error?true:false}>{helperText}</FormHelperText>

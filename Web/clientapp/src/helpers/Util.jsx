@@ -16,6 +16,9 @@ const Util ={
     displayText:(text)=>{
         return text?text:"وجود ندارد"
     },
+    displayTextNull:(text)=>{
+        return text?text:""
+    },
      updateArray(collection,newObject,id) {
         const index = collection.findIndex((ac) => ac[id] === newObject[id]);
         const updatedCollection = update(collection, {$splice: [[index, 1, newObject]]});  // array.splice(start, deleteCount, item1)

@@ -72,21 +72,22 @@ export default function ExchangeRateAlert({onChange, sourceRate, distRate, amoun
                         </Stack>
                     </Alert>
                 </Grow>}
-            <CSelect
-                data={[
-                    { value: "buy", label: "خرید" },
-                    { value: "sell", label: "فروش" }
-                ]}
-                name="exchangeType"
-                label="نوعیت معامله"
-                size="small"
-                defaultValue={exchangeType}
-                value={exchangeType}
-                onChange={(v)=>{
-                    onTypeChange(v.target.value)
-                    setExhcangeType(v.target.value)
-                }}
-            />
+           {(sourceRate && distRate && sourceRate.id!==distRate.id)?
+           <CSelect
+           data={[
+               { value: "buy", label: "خرید" },
+               { value: "sell", label: "فروش" }
+           ]}
+           name="exchangeType"
+           label="نوعیت معامله"
+           size="small"
+           defaultValue={exchangeType}
+           value={exchangeType}
+           onChange={(v)=>{
+               onTypeChange(v.target.value)
+               setExhcangeType(v.target.value)
+           }}
+       />:"" }
             <CurrencyInput
                 label={label}
                 value={amountResult}

@@ -16,6 +16,8 @@ namespace Persistence
         {
         }
 
+        public DbSet<CustomerBalanceTransaction> CustomerBalanceTransactions { get; set; }
+        public DbSet<CustomerBalance> CustomerBalances { get; set; }
         public DbSet<CustomerAccountTransaction> CustomerAccountTransactions { get; set; }
         public DbSet<CompanyAgency> CompanyAgencies { get; set; }
         public DbSet<CompanyInfo> CompaniesInfos { get; set; }

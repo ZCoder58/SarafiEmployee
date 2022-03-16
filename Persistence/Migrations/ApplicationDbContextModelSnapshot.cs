@@ -272,6 +272,80 @@ namespace Persistence.Migrations
                     b.ToTable("CustomerAccountTransactions");
                 });
 
+            modelBuilder.Entity("Domain.Entities.CustomerBalance", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CustomerFriendId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RatesCountryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerFriendId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("RatesCountryId");
+
+                    b.ToTable("CustomerBalances");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CustomerBalanceTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CustomerBalanceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PriceName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("TransferId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerBalanceId");
+
+                    b.HasIndex("TransferId");
+
+                    b.ToTable("CustomerBalanceTransactions");
+                });
+
             modelBuilder.Entity("Domain.Entities.CustomerExchangeRate", b =>
                 {
                     b.Property<Guid>("Id")
@@ -780,6 +854,48 @@ namespace Persistence.Migrations
                     b.Navigation("CustomerAccount");
 
                     b.Navigation("ToCustomerAccount");
+
+                    b.Navigation("Transfer");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CustomerBalance", b =>
+                {
+                    b.HasOne("Domain.Entities.Customer", "CustomerFriend")
+                        .WithMany()
+                        .HasForeignKey("CustomerFriendId");
+
+                    b.HasOne("Domain.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.RatesCountry", "RatesCountry")
+                        .WithMany()
+                        .HasForeignKey("RatesCountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("CustomerFriend");
+
+                    b.Navigation("RatesCountry");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CustomerBalanceTransaction", b =>
+                {
+                    b.HasOne("Domain.Entities.CustomerBalance", "CustomerBalance")
+                        .WithMany()
+                        .HasForeignKey("CustomerBalanceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Transfer", "Transfer")
+                        .WithMany()
+                        .HasForeignKey("TransferId");
+
+                    b.Navigation("CustomerBalance");
 
                     b.Navigation("Transfer");
                 });

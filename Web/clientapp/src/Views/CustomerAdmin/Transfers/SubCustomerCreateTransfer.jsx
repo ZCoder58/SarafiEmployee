@@ -72,10 +72,10 @@ export default function SubCustomerCreateTransfer() {
     })
     const handleAccountRateChange = (newAccountRate) => {
         formik.setFieldValue("subCustomerAccountRateId", newAccountRate ? newAccountRate.id : "")
-        if(!newAccountRate){
+        if(newAccountRate){
             setAcountRate({
-                id:newAccountRate.ratesCountryId
-                ,...newAccountRate})
+                ...newAccountRate,
+                id:newAccountRate.ratesCountryId})
         }else{
             setAcountRate(newAccountRate)
         }

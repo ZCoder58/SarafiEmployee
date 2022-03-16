@@ -92,5 +92,10 @@ namespace Web.Controllers.Customer
         {
             return Mediator.Send(new SearchFriendQuery(search));
         }
+        [HttpGet("info")]
+        public Task<SearchFriendDTo> GetFriendInfo(Guid friendId)
+        {
+            return Mediator.Send(new GetFriendInfoQuery(friendId));
+        }
     }
 }

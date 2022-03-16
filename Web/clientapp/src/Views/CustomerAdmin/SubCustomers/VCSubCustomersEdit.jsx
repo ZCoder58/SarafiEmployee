@@ -27,7 +27,7 @@ const validationSchema = Yup.object().shape({
     phone: Yup.string().required('شماره تماس ضروری میباشد'),
     sId: Yup.string().required('شماره تذکره ضروری میباشد'),
     address: Yup.string().required('آدرس مشتری ضروری میباشد'),
-    codeNumber: Yup.string().required('کد نمبر مشتری ضروری میباشد')
+    codeNumber: Yup.string().required('کد نمبر مشتری ضروری میباشد').typeError("کد نمبر ضروری است")
 
 });
 export default function VCSubCustomersEdit() {

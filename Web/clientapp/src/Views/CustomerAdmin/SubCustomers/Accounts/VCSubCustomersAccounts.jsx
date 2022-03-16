@@ -48,7 +48,7 @@ export default function VCSubCustomerAccounts() {
     return (
       <>
        <CCard
-            title={`حسابات ارز ${subCustomer && subCustomer.name} ${subCustomer && subCustomer.lastName}`}
+            title={`حسابات ارز ${subCustomer && subCustomer.name} ${subCustomer && Util.displayTextNull(subCustomer.lastName)}`}
             headerIcon={<AccountBalanceWalletIcon />}
             enableActions
             enableCollapse={false}

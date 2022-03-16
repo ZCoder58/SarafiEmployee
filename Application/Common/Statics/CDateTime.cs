@@ -4,6 +4,6 @@ namespace Application.Common.Statics
 {
     public static class CDateTime
     {
-        public static DateTime Now => DateTime.Now;
+        public static DateTime Now =>DateTime.UtcNow;
     }
 }

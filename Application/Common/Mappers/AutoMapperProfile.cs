@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Linq;
+using Application.Common.Extensions;
 using Application.Common.Statics;
 using Application.Company.Agencies.DTOs;
 using Application.Company.Employees.Commands.CreateEmployees;
 using Application.Company.Employees.Commands.EditEmployees;
 using Application.Company.Employees.DTOs;
 using Application.Countries.DTOs;
+using Application.Customer.Balances.Commands.CreateBalanceAccount;
+using Application.Customer.Balances.Commands.CreateBalanceTransaction;
+using Application.Customer.Balances.DTOs;
+using Application.Customer.Balances.Statics;
 using Application.Customer.CustomerAccounts.Commands.CreateAccountRate;
 using Application.Customer.CustomerAccounts.Commands.Transactions.CreateTransaction;
 using Application.Customer.CustomerAccounts.DTOs;
@@ -35,6 +40,8 @@ using Application.Website.Customers.Auth.Command.CreateCustomer;
 using Application.Website.Customers.Auth.Command.CreateCustomerCompany;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace Application.Common.Mappers
 {
@@ -97,6 +104,17 @@ namespace Application.Common.Mappers
 
             #endregion
 
+            #region customer balances
+
+            CreateMap<CustomerBalance, CustomerBalanceDTo>();
+            CreateMap<CCreateBalanceTransactionCommand, CustomerBalanceTransaction>();
+            CreateMap<CustomerBalanceTransaction, BalanceTransactionTableDTo>()
+                .ForMember(dist => dist.PriceName, options =>
+                    options.MapFrom(source => source.CustomerBalance.RatesCountry.PriceName))
+                .ForMember(dist => dist.Creator, options =>
+                    options.MapFrom(source =>string.Concat(source.CustomerBalance.Customer.Name," ",
+                        source.CustomerBalance.Customer.FatherName)));
+            #endregion
             #region Transfer
 
             CreateMap<CreateTransferCommand, Transfer>().ReverseMap();
