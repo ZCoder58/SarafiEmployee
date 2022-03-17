@@ -114,5 +114,10 @@ namespace Web.Controllers.Customer
         {
             return Mediator.Send(new GetUnCompletedTransfersBillsQuery(fromDate,toDate,friendId));
         }
+        [HttpGet("lcn")]
+        public Task<int> GetLastCodeNumber(Guid cId)
+        {
+            return Mediator.Send(new GetLastTransferCodeNumberQuery(cId));
+        }
     }
 }

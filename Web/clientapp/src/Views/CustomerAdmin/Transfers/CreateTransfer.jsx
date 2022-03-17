@@ -9,7 +9,7 @@ import { LoadingButton } from '@mui/lab';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import Util from '../../../helpers/Util'
 import { useNavigate } from 'react-router';
-import { FieldSet, RatesDropdown, CurrencyInput, CurrencyText } from '../../../ui-componets'
+import { FieldSet, RatesDropdown, CurrencyInput, CurrencyText ,TransferCodeNumberInput} from '../../../ui-componets'
 import { ArrowBack } from '@mui/icons-material';
 const createModel = {
     fromName: "",
@@ -49,7 +49,7 @@ const validationSchema = Yup.object().shape({
 export default function CreateTransfer() {
     const [sourceRate, setSourceRate] = React.useState(null)
     const [distRate, setDistRate] = React.useState(null)
-    // const [transferCode, setTransferCode] = React.useState(0)
+    const [receiver, setReceiver] = React.useState(null)
     const [askOpen, setAskOpen] = React.useState(false)
     const [exchangeRate, setExchangeRate] = React.useState(null)
     const navigate = useNavigate()
@@ -76,10 +76,7 @@ export default function CreateTransfer() {
         formik.setFieldValue("tCurrency", newDistValue ? newDistValue.id : "")
         setDistRate(s => s = newDistValue)
     }
-
- 
-
-
+   
     return (
         <CCard
             title="فورم ثبت حواله جدید"
@@ -249,7 +246,9 @@ export default function CreateTransfer() {
                                 size="small"
                                 error={formik.errors.friendId ? true : false}
                                 helperText={formik.errors.friendId}
-                                onValueChange={(newValue) => formik.setFieldValue("friendId", newValue ? newValue.id : "")}
+                                onValueChange={(newValue) =>{
+                                    setReceiver(newValue)
+                                     formik.setFieldValue("friendId", newValue ? newValue.id : "")}}
                                 required
                             />
                             <TextField
@@ -283,15 +282,15 @@ export default function CreateTransfer() {
                                     )
                                 }}
                             />
-                            <TextField
+                            <TransferCodeNumberInput
                                 name='codeNumber'
                                 label="کد نمبر حواله"
                                 size="small"
                                 type="number"
+                                customerId={receiver?receiver.customerFriendId:undefined}
                                 required
                                 error={formik.errors.codeNumber?true:false}
                                 helperText={formik.errors.codeNumber}
-                                defaultValue={formik.values.codeNumber}
                                 onChange={formik.handleChange}
                             />
                         </FieldSet>

@@ -17,6 +17,7 @@ namespace Application.Customer.Transfers.Queries.GetEditTransfer
                 .Must(id => dbContext.Transfers.Any(a =>
                     a.Id == id &&
                     a.State == TransfersStatusTypes.InProgress &&
+                    a.State == TransfersStatusTypes.Denied &&
                     a.AccountType==TransferAccountTypesStatic.MyAccount &&
                     a.SenderId == httpUserContext.GetCurrentUserId().ToGuid())).WithMessage("درخواست نامعتبر");
         }

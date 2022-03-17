@@ -4,7 +4,7 @@ import { useFormik } from 'formik'
 import authAxiosApi from '../../../axios'
 import Util from '../../../helpers/Util'
 import { Box, Checkbox, Divider, FormControlLabel, Grid, InputAdornment, TextField } from '@mui/material';
-import { CSelect, RatesDropdown } from '../../../ui-componets';
+import { CSelect, CurrencyInput, RatesDropdown } from '../../../ui-componets';
 import { LoadingButton } from '@mui/lab';
 import { CheckOutlined } from '@mui/icons-material';
 
@@ -57,16 +57,14 @@ export default function CreateBalance({ onSubmitDone,fId }) {
                 </Grid>
                
                 <Grid item lg={6} md={6} sm={6} xs={12}>
-                    <TextField
-                        variant='outlined'
+                    <CurrencyInput
                         name='amount'
                         helperText={formik.errors.amount}
                         size='small'
                         label='مقدار'
-                        type='number'
                         required
                         error={formik.errors.amount ? true : false}
-                        onChange={formik.handleChange}
+                        onChange={(v)=>formik.setFieldValue("amount",v)}
                         InputProps={{
                             endAdornment: <InputAdornment position="end">
                                 {rate ? rate.priceName : "هیچ"}
@@ -92,7 +90,7 @@ export default function CreateBalance({ onSubmitDone,fId }) {
                     ]}
                     />
                 </Grid>
-               {formik.values.type==="1"&& <Grid item lg={12} md={12} sm={12} xs={12}>
+               {formik.values.type===1&& <Grid item lg={12} md={12} sm={12} xs={12}>
                     <FormControlLabel
                     label="به دخل اضافه شود؟"
                     name="addToAccount"

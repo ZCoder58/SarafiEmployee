@@ -26,6 +26,7 @@ namespace Application.SubCustomers.Commands.EditTransfer
                     a.SubCustomerAccountId==model.SubCustomerAccountId &&
                     a.SenderId==httpUserContext.GetCurrentUserId().ToGuid() &&
                     a.State==TransfersStatusTypes.InProgress &&
+                    a.State==TransfersStatusTypes.Denied &&
                     a.AccountType==TransferAccountTypesStatic.SubCustomerAccount)).WithMessage("درخواست شما رد شد");
             RuleFor(a => a.FromName)
                 .NotNull().WithMessage("نام ارسال کننده پول ضروری میباشد");

@@ -54,7 +54,7 @@ export default function TransferOutbox() {
                             <Button variant="contained" size="small" onClick={() => askForResend(row.id)}>
                                 ارسال دوباره
                             </Button>}
-                        {row.state === 0 &&
+                        {(row.state === 0 ||row.state===-1) &&
                             <Button variant="contained" size="small" onClick={() =>navigate(`/customer${row.accountType===1?"/subCustomers":""}/transfers/edit/${row.id}`)}>
                                 ویرایش
                             </Button>}
@@ -130,7 +130,7 @@ export default function TransferOutbox() {
                                 <ReplayIcon />
                             </IconButton>
                         </CTooltip>}
-                    {row.state === 0 &&
+                    {(row.state === 0 || row.state===-1)&&
                         <CTooltip title="ویرایش">
                             <IconButton onClick={() => navigate(`/customer${row.accountType===1?"/subCustomers":""}/transfers/edit/${row.id}`)}>
                                 <ModeEditOutlineOutlinedIcon />

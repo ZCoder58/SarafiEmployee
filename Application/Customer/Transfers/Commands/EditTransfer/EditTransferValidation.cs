@@ -20,6 +20,7 @@ namespace Application.Customer.Transfers.Commands.EditTransfer
                     a.Id==id &&
                     a.SenderId==httpUserContext.GetCurrentUserId().ToGuid() &&
                     a.State==TransfersStatusTypes.InProgress &&
+                    a.State==TransfersStatusTypes.Denied &&
                     a.AccountType==TransferAccountTypesStatic.MyAccount)).WithMessage("درخواست شما رد شد");
             RuleFor(a => a.Amount)
                 .Cascade(CascadeMode.Stop)
