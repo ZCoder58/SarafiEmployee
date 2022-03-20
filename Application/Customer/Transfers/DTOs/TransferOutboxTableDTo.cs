@@ -23,5 +23,7 @@ namespace Application.Customer.Transfers.DTOs
         public string ReceiverName { get; set; }
         public string ReceiverLastName { get; set; }
         public int AccountType { get; set; }
+        public bool Forwarded { get; set; }
+        public bool HasParent { get; set; }
     }
 }

@@ -23,12 +23,13 @@ namespace Application.Customer.Transfers.Commands.ResendTransfer
                 .WithMessage("invalid request");
         }
 
-        public bool Valid(Guid transferId)
+        public bool Valid(ResendTransferCommand model,Guid transferId)
         {
             return _dbContext.Transfers.Any(a =>
                 a.Id == transferId &&
+                (a.ForwardedTransferId==null ||model.EnableForwarded)&&
                 a.State==TransfersStatusTypes.Denied &&
-                a.SenderId == _httpUserContext.GetCurrentUserId().ToGuid());
+                (a.SenderId == _httpUserContext.GetCurrentUserId().ToGuid() || model.EnableForwarded));
         }
     }
 }

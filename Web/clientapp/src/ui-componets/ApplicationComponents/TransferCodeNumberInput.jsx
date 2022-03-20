@@ -1,31 +1,31 @@
 import { Box, TextField, Typography } from '@mui/material';
 import React from 'react'
 import authAxiosApi from '../../axios';
-export default function TransferCodeNumberInput({customerId,...props}){
-    const [lastCodeNumber,setLastCodeNumber]=React.useState(null)
-    React.useEffect(()=>{
-        (async()=>{
-            if(customerId){
-                await authAxiosApi.get('customer/transfers/lcn',{
-                    params:{
-                        cId:customerId
+export default function TransferCodeNumberInput({ customerId, ...props }) {
+    const [lastCodeNumber, setLastCodeNumber] = React.useState(null)
+    React.useEffect(() => {
+        (async () => {
+            if (customerId) {
+                await authAxiosApi.get('customer/transfers/lcn', {
+                    params: {
+                        cId: customerId
                     }
-                }).then(r=>{
+                }).then(r => {
                     setLastCodeNumber(r)
-                }).catch(error=>{
+                }).catch(error => {
                     console.log("no internet connection");
                 })
-            }else{
+            } else {
                 setLastCodeNumber(null)
             }
         })()
-    },[customerId])
+    }, [customerId])
     return (
         <Box>
-            <TextField 
-            {...props}
+            <TextField
+                {...props}
             />
-        <Typography variant="subtitle2">{lastCodeNumber&&lastCodeNumber>=0?`آخرین کد نمبر : ${lastCodeNumber}`:""}</Typography>
+            <Typography variant="subtitle2">{lastCodeNumber && lastCodeNumber >= 0 ? `آخرین کد نمبر : ${lastCodeNumber}` : ""}</Typography>
         </Box>
     )
 }

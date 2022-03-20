@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
 using Application.Customer.CustomerAccounts.Commands.UpdateAccountAmount.Deposit;
 using Application.Customer.CustomerAccounts.Commands.UpdateAccountAmount.Withdrawal;

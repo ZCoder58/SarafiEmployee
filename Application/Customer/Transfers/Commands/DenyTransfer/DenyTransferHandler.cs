@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
@@ -37,13 +38,14 @@ namespace Application.Customer.Transfers.Commands.DenyTransfer
                 await _mediator.Send(new RollbackBalanceAmountCommand(targetTransfer.ReceiverId.ToGuid(),
                     targetTransfer.SenderId,
                     targetRate.Id,
-                    targetTransfer.DestinationAmount+targetTransfer.ReceiverFee,
-                    BalanceTransactionTypes.Talab),cancellationToken);
+                    targetTransfer.DestinationAmount + targetTransfer.ReceiverFee,
+                    BalanceTransactionTypes.Talab), cancellationToken);
             }
 
             targetTransfer.State = TransfersStatusTypes.Denied;
             await _dbContext.SaveChangesAsync(cancellationToken);
-            await _mediator.Publish(new TransferDenied(targetTransfer.SenderId, targetTransfer.Id), cancellationToken);
+            await _mediator.Publish(new TransferDenied(targetTransfer.Id),
+                cancellationToken);
             return Unit.Value;
         }
     }

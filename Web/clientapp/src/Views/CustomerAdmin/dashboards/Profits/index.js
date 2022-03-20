@@ -15,7 +15,7 @@ export default function Profits() {
                 <Card>
                     <CardHeader
                         title="کمیشن حواله های اجرا شده دریافتی"
-                        avatar={<UnarchiveOutlinedIcon />}
+                        avatar={<ArchiveOutlinedIcon/>}
                         titleTypographyProps={{ typography: "body1" }}
                     />
                    <InTransfersProfits/>
@@ -26,7 +26,7 @@ export default function Profits() {
                 <Card>
                     <CardHeader
                         title="کمیشن حواله های اجرا شده ارسالی"
-                        avatar={<ArchiveOutlinedIcon />}
+                        avatar={<UnarchiveOutlinedIcon />}
                         titleTypographyProps={{ typography: "body1" }}
                     />
                     <OutTransfersProfits/>
@@ -36,7 +36,7 @@ export default function Profits() {
                 <Card>
                     <CardHeader
                         title="کمیشن حواله های اجرا نشده دریافتی"
-                        avatar={<UnarchiveOutlinedIcon />}
+                        avatar={<ArchiveOutlinedIcon />}
                         titleTypographyProps={{ typography: "body1" }}
                     />
                    <PInTransfersProfits/>
@@ -47,7 +47,7 @@ export default function Profits() {
                 <Card>
                     <CardHeader
                         title="کمیشن حواله های اجرا نشده ارسالی"
-                        avatar={<ArchiveOutlinedIcon />}
+                        avatar={<UnarchiveOutlinedIcon />}
                         titleTypographyProps={{ typography: "body1" }}
                     />
                     <POutTransfersProfits/>

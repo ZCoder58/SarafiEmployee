@@ -5,6 +5,9 @@ using Application.Common.Models;
 using Application.Customer.Transfers.Commands.CreateTransfer;
 using Application.Customer.Transfers.Commands.DenyTransfer;
 using Application.Customer.Transfers.Commands.EditTransfer;
+using Application.Customer.Transfers.Commands.ForwardedDenyTransfer;
+using Application.Customer.Transfers.Commands.ForwardEditTransfer;
+using Application.Customer.Transfers.Commands.ForwardTransfer;
 using Application.Customer.Transfers.Commands.ResendTransfer;
 using Application.Customer.Transfers.Commands.SetTransferComplete;
 using Application.Customer.Transfers.DTOs;
@@ -15,6 +18,7 @@ using Application.Customer.Transfers.Queries.GetOutTransfersReport;
 using Application.Customer.Transfers.Queries.GetTransferDetailInbox;
 using Application.Customer.Transfers.Queries.GetTransferDetailOutbox;
 using Application.Customer.Transfers.Queries.GetCompletedTransfersBills;
+using Application.Customer.Transfers.Queries.GetForwardEditTransfer;
 using Application.Customer.Transfers.Queries.GetUnCompletedTransfersBills;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -89,6 +93,11 @@ namespace Web.Controllers.Customer
         {
             return Mediator.Send(new DenyTransferCommand(transferId));
         }
+        [HttpPut("fDenyTransfer/{transferId}")]
+        public Task ForwardDenyTransfer(Guid transferId)
+        {
+            return Mediator.Send(new ForwardedDenyTransferCommand(transferId));
+        }
         [HttpPut("resendTransfer/{transferId}")]
         public Task ResendTransfer(Guid transferId)
         {
@@ -118,6 +127,26 @@ namespace Web.Controllers.Customer
         public Task<int> GetLastCodeNumber(Guid cId)
         {
             return Mediator.Send(new GetLastTransferCodeNumberQuery(cId));
+        }
+        [HttpGet("forward")]
+        public Task<ForwardTransferDTo> GetForwardTransfer(Guid tId)
+        {
+            return Mediator.Send(new GetForwardTransferQuery(tId));
+        }
+        [HttpGet("forward/edit")]
+        public Task<ForwardEditTransferDTo> GetForwardEditTransfer(Guid tId)
+        {
+            return Mediator.Send(new GetForwardEditTransferQuery(tId));
+        }
+        [HttpPost("forward")]
+        public Task ForwardTransfer([FromForm] ForwardTransferCommand query)
+        {
+            return Mediator.Send(query);
+        }
+        [HttpPut("forward")]
+        public Task EditForwardTransfer([FromForm] ForwardEditTransferCommand query)
+        {
+            return Mediator.Send(query);
         }
     }
 }

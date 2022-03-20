@@ -1,20 +1,23 @@
-import {  TableGlobalSearch, CToolbar, CTable, CTooltip, AskDialog, CurrencyText } from '../../../ui-componets'
+import { TableGlobalSearch, CToolbar, CTable, CTooltip, AskDialog, CurrencyText, CDialog } from '../../../ui-componets'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'; import React from 'react'
 import { Box, Grid, Stack, Typography, useTheme, Chip, IconButton, ListItem, ListItemText, Button } from '@mui/material'
-import { PhoneOutlined, RefreshOutlined } from '@mui/icons-material';
+import { CheckOutlined, PhoneOutlined, RefreshOutlined } from '@mui/icons-material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useNavigate } from 'react-router'
 import authAxiosApi from '../../../axios';
 import { useSelector } from 'react-redux';
 import DoDisturbOffOutlinedIcon from '@mui/icons-material/DoDisturbOffOutlined';
+import SavedSearchIcon from '@mui/icons-material/SavedSearch';
+import ForwardTransferForm from './ForwardTransferForm'
+import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 export default function InnerTransferInbox() {
-    // const [loading, setLoading] = React.useState(true)
     const [refreshTableState, setRefreshTableState] = React.useState(false)
     const [searchOpen, setSeachOpen] = React.useState(false)
     const [searchText, setSearchText] = React.useState("")
     const [askDenyOpen, setAskDenyOpen] = React.useState(false)
-    const [transferIdForSetDeny, setTransferIdForDeny] = React.useState("")
+    const [forwardOpen, setForwardOpen] = React.useState(false)
+    const [transferOpt, setTransferOpt] = React.useState(null)
     const theme = useTheme()
     const navigate = useNavigate()
     const { screenXs } = useSelector(states => states.R_AdminLayout)
@@ -22,18 +25,20 @@ export default function InnerTransferInbox() {
         {
             name: <Typography variant="body2" fontWeight={600}>از طرف</Typography>,
             selector: row => (
-                <ListItem sx={{ flexDirection: "column",alignItems:"normal",px:0 }} >
+                <ListItem sx={{ flexDirection: "column", alignItems: "normal", px: 0 }} >
                     <ListItemText
                         primary={
                             <React.Fragment>
-                                <Stack direction="row"  component="span" justifyContent="space-between">
+                                <Stack direction="row" component="span" justifyContent="space-between">
                                     <Typography variant="subtitle1" component="span" fontWeight={900}>{row.fromName} {row.fromLastName}</Typography>
                                     {row.state === 0 ? (
                                         <Chip component="span" label="در جریان" color="warning" size="small"></Chip>
                                     ) : (
                                         <Chip component="span" label="اجرا شده" color="success" size="small"></Chip>
                                     )}
+
                                 </Stack>
+                              
                             </React.Fragment>
                         }
                         secondary={
@@ -41,29 +46,39 @@ export default function InnerTransferInbox() {
                                 <Stack direction="column" component="span">
                                     <Typography component="span" variant="subtitle2" color="GrayText">نمبر حواله - {row.codeNumber}</Typography>
                                     <Typography component="span" variant="subtitle2" color="GrayText">دریافت کننده - {row.toName} {row.toLastName}</Typography>
-                                    <Typography component="span" variant="subtitle2" color="GrayText">مبلغ - <CurrencyText value={row.destinationAmount} priceName={row.toCurrency}/> </Typography>
+                                    <Typography component="span" variant="subtitle2" color="GrayText">مبلغ - <CurrencyText value={row.destinationAmount} priceName={row.toCurrency} /> </Typography>
                                     <Typography component="span" variant="subtitle2" color="GrayText">کد نمبر - {row.codeNumber}</Typography>
+                                    {row.forwarded&&<ReplyOutlinedIcon color="info"/>}
                                 </Stack>
                             </React.Fragment>
                         } />
-                   <Stack direction="row" spacing={1} justifyContent="flex-end">
-                   <Button variant="contained" size="small" onClick={() => navigate("/customer/transfers/inbox/" + row.id)}>
-                       {row.state===0?"اجرا کردن":"جزییات"}
-                    </Button>
-                    {row.deniable&&
-                    <Button variant="contained" color="error" size="small" onClick={()=>askForDeny(row.id)}>
-                        رد کردن
-                    </Button>}
-                   </Stack>
+                    <Stack direction="row" spacing={1} justifyContent="flex-end">
+                    {row.state === 1 &&
+                            <>
+                                <Button variant="contained" size="small" onClick={() => navigate("/customer/transfers/inbox/" + row.id)}>
+                                    جزییات
+                                </Button>
+                            </>}
+                        {row.state === 0 &&
+                            <>
+                                <Button variant="contained" size="small" onClick={() => navigate("/customer/transfers/inbox/" + row.id)}>
+                                   {row.forwarded?"جزییات":"اجرا کردن"}
+                                </Button>
+                               {!row.forwarded&& <Button variant="contained" size="small" onClick={() => setForward(row)}>
+                                   ارجاع کردن
+                                </Button>}
+                            </>}
+                        {row.deniable &&
+                            <Button variant="contained" color="error" size="small" onClick={() => askForDeny(row)}>
+                                رد کردن
+                            </Button>}
 
+                    </Stack>
                 </ListItem>
-
             ),
             sortable: false,
             reorder: true,
-        },
-
-
+        }
     ]
     const columnsDesktop = [
         {
@@ -89,7 +104,7 @@ export default function InnerTransferInbox() {
         {
             name: <Typography variant="body2" fontWeight={600}>مبلغ دریافتی</Typography>,
             selector: row => (
-                <Box><CurrencyText value={row.destinationAmount} priceName={row.toCurrency}/></Box>
+                <Box><CurrencyText value={row.destinationAmount} priceName={row.toCurrency} /></Box>
             ),
             sortable: false,
             reorder: true
@@ -116,36 +131,70 @@ export default function InnerTransferInbox() {
         {
             name: <Typography variant="body2" fontWeight={600}>گزینه ها</Typography>,
             selector: row =>
-               <>
-                <CTooltip title={row.state===0?`اجرا کردن`:"جزییات"}>
-                    <IconButton onClick={() => navigate("/customer/transfers/inbox/" + row.id)}>
-                        <InfoOutlinedIcon />
-                    </IconButton>
-                </CTooltip>
-               {row.deniable&&
-                <CTooltip title="رد کردن">
-                <IconButton onClick={() =>askForDeny(row.id)}>
-                    <DoDisturbOffOutlinedIcon  />
+                <>
+                
+                {row.forwarded&&
+                <CTooltip title={`ارجاع شده`}>
+                <IconButton>
+                <ReplyOutlinedIcon color="info"/>
                 </IconButton>
-            </CTooltip>}
-               </>
+            </CTooltip>
+                }
+                    {row.state === 1 &&
+                        <>
+                            <CTooltip title={`جزییات`}>
+                                <IconButton onClick={() => navigate("/customer/transfers/inbox/" + row.id)}>
+                                    <InfoOutlinedIcon />
+                                </IconButton>
+                            </CTooltip>
+                        </>}
+                    {row.state === 0 &&
+                        <>
+                            <CTooltip title={row.forwarded?"جزییات":"اجرا کردن"}>
+                                <IconButton onClick={() => navigate("/customer/transfers/inbox/" + row.id)}>
+                                   {row.forwarded?<InfoOutlinedIcon/>: <CheckOutlined />}
+                                </IconButton>
+                            </CTooltip>
+                           {!row.forwarded && <CTooltip title={`ارجاع کردن`}>
+                                <IconButton onClick={() => setForward(row)}>
+                                    <ReplyOutlinedIcon />
+                                </IconButton>
+                            </CTooltip>}
+                        </>}
+
+                    {row.deniable&&
+                        <CTooltip title="رد کردن">
+                            <IconButton onClick={() => askForDeny(row)}>
+                                <DoDisturbOffOutlinedIcon />
+                            </IconButton>
+                        </CTooltip>}
+                </>
             ,
             sortable: false,
-            reorder: false
+            reorder: false,
+            minWidth:"200px"
         }
     ]
- 
+
     const globalSearch = React.useCallback((searchedText) => {
         setSearchText(s => s = searchedText)
     }, [])
-    function askForDeny(transferId) {
-        setTransferIdForDeny(transferId)
+    function askForDeny(transfer) {
+        setTransferOpt(transfer)
         setAskDenyOpen(true)
     }
+    function setForward(transfer) {
+        setTransferOpt(transfer)
+        setForwardOpen(true)
+        
+    }
     async function setTransferDeny() {
-        await authAxiosApi.put(`customer/transfers/denyTransfer/${transferIdForSetDeny}`).then(r => {
-            refreshTable()
-        })
+        if(transferOpt.hasParent){
+            await authAxiosApi.put(`customer/transfers/fDenyTransfer/${transferOpt.id}`)
+        }else{
+            await authAxiosApi.put(`customer/transfers/denyTransfer/${transferOpt.id}`)
+        }
+        refreshTable()
         setAskDenyOpen(false)
     }
     function refreshTable() {
@@ -153,9 +202,13 @@ export default function InnerTransferInbox() {
     }
 
     return (
-        // loading ? <SkeletonFull /> :
 
         <Grid container spacing={2}>
+            {forwardOpen && <CDialog title={"اشتراک گزاری حواله"} open={forwardOpen} onClose={()=>setForwardOpen(false)}>
+                <ForwardTransferForm transferId={transferOpt.id} onSubmit={() => {
+                    refreshTable()
+                    setForwardOpen(false)}} />
+            </CDialog>}
             <AskDialog
                 open={askDenyOpen}
                 onNo={() => setAskDenyOpen(!askDenyOpen)}
@@ -178,6 +231,11 @@ export default function InnerTransferInbox() {
                             <SearchOutlinedIcon />
                         </IconButton>
                     </CTooltip>
+                    {/* <CTooltip title="جستجو پیشرفته">
+                        <IconButton onClick={() => setSeachOpen(!searchOpen)}>
+                            <SavedSearchIcon />
+                        </IconButton>
+                    </CTooltip> */}
                 </CToolbar>
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>
@@ -187,7 +245,7 @@ export default function InnerTransferInbox() {
                 <CTable
                     striped={true}
                     searchText={searchText}
-                    columns={screenXs?columnsMobile:columnsDesktop}
+                    columns={screenXs ? columnsMobile : columnsDesktop}
                     serverUrl={`customer/transfers/inbox`}
                     refreshState={refreshTableState}
                 />

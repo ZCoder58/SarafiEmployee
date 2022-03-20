@@ -5,23 +5,28 @@ using Application.Common.Statics;
 using Application.Customer.Friend.Extensions;
 using Application.Customer.Transfers.Statics;
 using Domain.Interfaces;
+using Domain.Interfaces.IHubs.IAccessors;
 using FluentValidation;
 
 namespace Application.Customer.Transfers.Commands.EditTransfer
 {
     public class EditTransferValidation:AbstractValidator<EditTransferCommand>
     {
-        public EditTransferValidation(IApplicationDbContext dbContext,IHttpUserContext httpUserContext)
+   
+        public EditTransferValidation(IApplicationDbContext dbContext,IHttpUserContext httpUserContext, INotifyHubAccessor notify)
         {
+        
             RuleFor(a => a.Id)
                 .Cascade(CascadeMode.Stop)
                 .NotEqual(Guid.Empty).WithMessage("ای دی ضروری میباشد")
-                .Must(id=>dbContext.Transfers.Any(a=>
-                    a.Id==id &&
-                    a.SenderId==httpUserContext.GetCurrentUserId().ToGuid() &&
-                    a.State==TransfersStatusTypes.InProgress &&
-                    a.State==TransfersStatusTypes.Denied &&
-                    a.AccountType==TransferAccountTypesStatic.MyAccount)).WithMessage("درخواست شما رد شد");
+                .Must(id => dbContext.Transfers.Any(a =>
+                    a.Id == id &&
+                    a.ParentForwardedId==null&&
+                    a.SenderId == httpUserContext.GetCurrentUserId().ToGuid() &&
+                    (a.State == TransfersStatusTypes.InProgress ||
+                     a.State == TransfersStatusTypes.Denied) &&
+                    a.ParentForwardedId==null&&
+                    a.AccountType == TransferAccountTypesStatic.MyAccount)).WithMessage("درخواست شما رد شد");
             RuleFor(a => a.Amount)
                 .Cascade(CascadeMode.Stop)
                 .NotNull().WithMessage("مقدار پول ارسالی ضروری میباشد")

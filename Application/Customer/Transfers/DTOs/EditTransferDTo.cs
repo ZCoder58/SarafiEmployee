@@ -1,5 +1,4 @@
 ﻿using System;
-
 namespace Application.Customer.Transfers.DTOs
 {
     public class EditTransferDTo

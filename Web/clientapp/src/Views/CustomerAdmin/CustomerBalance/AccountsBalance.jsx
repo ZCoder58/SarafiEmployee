@@ -1,4 +1,4 @@
-import { AddOutlined, RefreshOutlined } from '@mui/icons-material'
+import { AddOutlined, ArrowBackOutlined, RefreshOutlined } from '@mui/icons-material'
 import { Button, Grid, IconButton, Typography } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router'
@@ -44,10 +44,17 @@ export default function AccountsBalance({friendId}){
             subHeader={`ولد : ${friend && Util.displayText(friend.customerFriendFatherName)}`}
             headerIcon={<BalanceIcon />}
             enableActions
-            actions={<IconButton onClick={refreshTable}>
-                <RefreshOutlined />
-            </IconButton>}
-            enableCollapse
+            actions={
+                <>
+          <IconButton size="small" onClick={()=>navigate("/customer/balances")}>
+              <ArrowBackOutlined />
+          </IconButton>
+                <IconButton size="small" onClick={refreshTable}>
+              <RefreshOutlined />
+          </IconButton>
+              </>
+            }
+            enableCollapse={false}
         >
             {loading ? <SkeletonFull /> : <Grid container spacing={1}>
                 <Grid item lg={12} md={12} sm={12} xs={12}>

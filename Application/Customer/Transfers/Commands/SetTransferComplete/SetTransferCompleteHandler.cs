@@ -14,10 +14,11 @@ using MediatR;
 
 namespace Application.Customer.Transfers.Commands.SetTransferComplete
 {
-    public class SetTransferCompleteHandler:IRequestHandler<SetTransferCompleteCommand>
+    public class SetTransferCompleteHandler : IRequestHandler<SetTransferCompleteCommand>
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IMediator _mediator;
+
         public SetTransferCompleteHandler(IApplicationDbContext dbContext, IMediator mediator)
         {
             _dbContext = dbContext;
@@ -26,31 +27,44 @@ namespace Application.Customer.Transfers.Commands.SetTransferComplete
 
         public async Task<Unit> Handle(SetTransferCompleteCommand request, CancellationToken cancellationToken)
         {
-            
             var targetTransfer = _dbContext.Transfers
                 .GetById(request.TransferId);
             var targetCountryRate = _dbContext.RatesCountries.GetByPriceName(targetTransfer.ToCurrency);
-            await _mediator.Send(new CWithdrawalAccountTransferCommand(
-                true,
-                targetCountryRate.Id,
-                targetTransfer.DestinationAmount,
-                "برداشت پول برای اجرای حواله",
-                targetTransfer.Id
-            ), cancellationToken);
+            if (!request.Forwarded)
+            {
+                await _mediator.Send(new CWithdrawalAccountTransferCommand(
+                    true,
+                    targetCountryRate.Id,
+                    targetTransfer.DestinationAmount,
+                    "برداشت پول برای اجرای حواله",
+                    targetTransfer.Id
+                ), cancellationToken);
+            }
+
             targetTransfer.State = TransfersStatusTypes.Completed;
             targetTransfer.ToPhone = request.Phone;
             targetTransfer.ToSId = request.SId;
-            targetTransfer.CompleteDate=CDateTime.Now;
+            targetTransfer.CompleteDate = CDateTime.Now;
             await _dbContext.SaveChangesAsync(cancellationToken);
             await _mediator.Send(new CCreateTalabCommand(
                 targetTransfer.ReceiverId.ToGuid(),
                 targetTransfer.SenderId,
                 targetCountryRate.Id,
-                targetTransfer.ReceiverFee+targetTransfer.DestinationAmount,
+                targetTransfer.ReceiverFee + targetTransfer.DestinationAmount,
                 "",
-                false),cancellationToken);
-           await _mediator.Publish(new TransferCompleted(),cancellationToken);
-           return Unit.Value;
+                false), cancellationToken);
+            if (!request.Forwarded)
+            {
+                await _mediator.Publish(new TransferCompleted(), cancellationToken);
+            }
+
+            if (targetTransfer.ParentForwardedId.IsNotNull())
+            {
+                await _mediator.Send(new SetTransferCompleteCommand(targetTransfer.ParentForwardedId.ToGuid(),
+                    targetTransfer.ToPhone, targetTransfer.ToSId, true), cancellationToken);
+            }
+
+            return Unit.Value;
         }
     }
 }

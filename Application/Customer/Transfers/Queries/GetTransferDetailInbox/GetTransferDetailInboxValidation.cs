@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Application.Common.Extensions;
+using Application.Common.Statics;
 using Domain.Interfaces;
 using FluentValidation;
 
@@ -16,6 +17,8 @@ namespace Application.Customer.Transfers.Queries.GetTransferDetailInbox
                 .Must(transferId =>
                 {
                    return  dbContext.Transfers.Any(a =>
+                       (a.State == TransfersStatusTypes.Completed || 
+                        a.State == TransfersStatusTypes.InProgress)&&
                         a.Id == transferId &&
                         a.ReceiverId == httpUserContext.GetCurrentUserId().ToGuid());
                 }).WithMessage("درخواست رد شد");

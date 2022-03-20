@@ -14,10 +14,9 @@ namespace Application.Customer.Transfers.Queries.GetEditTransfer
         {
             RuleFor(a => a.Id)
                 .NotEqual(Guid.Empty)
-                .Must(id => dbContext.Transfers.Any(a =>
-                    a.Id == id &&
-                    a.State == TransfersStatusTypes.InProgress &&
-                    a.State == TransfersStatusTypes.Denied &&
+                .Must(id => dbContext.Transfers.Where(a=>a.Id==id && a.ParentForwardedId==null).Any(a =>
+                    (a.State == TransfersStatusTypes.InProgress ||
+                     a.State == TransfersStatusTypes.Denied) &&
                     a.AccountType==TransferAccountTypesStatic.MyAccount &&
                     a.SenderId == httpUserContext.GetCurrentUserId().ToGuid())).WithMessage("درخواست نامعتبر");
         }

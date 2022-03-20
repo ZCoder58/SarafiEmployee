@@ -71,7 +71,7 @@ namespace Application.Customer.Transfers.Commands.CreateTransfer
                 transactionMsg,
                 newTransfer.Id), cancellationToken);
 
-            await _mediator.Publish(new TransferCreated(receiver.CustomerFriendId.ToGuid(), newTransfer.Id),
+            await _mediator.Publish(new TransferCreated(newTransfer.Id),
                 cancellationToken);
             return Unit.Value;
         }

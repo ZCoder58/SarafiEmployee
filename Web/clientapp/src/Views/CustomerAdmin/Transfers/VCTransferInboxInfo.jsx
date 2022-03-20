@@ -132,7 +132,7 @@ export default function VCTransferInfo() {
                                 <Typography variant="body2">{transfer.comment}</Typography>
                             </StyledRowLight>   
                             <StyledRowLight>
-                                {transfer.state===0&&
+                                {(transfer.state===0&&!transfer.forwarded)&&
                                 <Button
                                 onClick={handleCompletetClick}
                                     size="small"

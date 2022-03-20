@@ -73,7 +73,7 @@ namespace Application.SubCustomers.Commands.CreateTransfer
                 string.Concat("برای حواله با کد نمبر ", request.CodeNumber, "به ", 
                     request.ToName," ",request.ToLastName," ولد",request.ToFatherName," ارسال گردید"),
                 newTransfer.Id),cancellationToken);
-            await _mediator.Publish(new TransferCreated(receiver.CustomerFriendId.ToGuid(),newTransfer.Id), cancellationToken);
+            await _mediator.Publish(new TransferCreated(newTransfer.Id), cancellationToken);
             return Unit.Value;
         }
     }

@@ -10,7 +10,7 @@ using MediatR;
 
 namespace Application.Customer.Transfers.EventHandlers
 {
-    public record TransferDenied(Guid TransferSenderId,Guid DeniedTransferId) : INotification;
+    public record TransferDenied(Guid DeniedTransferId) : INotification;
     public class TransferDeniedHandler:INotificationHandler<TransferDenied>
     {
         private readonly INotifyHubAccessor _notifyHub;
@@ -26,17 +26,18 @@ namespace Application.Customer.Transfers.EventHandlers
 
         public async Task Handle(TransferDenied notification, CancellationToken cancellationToken)
         {
-            var sender = _dbContext.Customers.GetById(_httpUserContext.GetCurrentUserId().ToGuid());
+            var targetTransfer = _dbContext.Transfers.GetById(notification.DeniedTransferId);
+            var receiver = _dbContext.Customers.GetById(targetTransfer.ReceiverId.ToGuid());
             await _dbContext.CustomerNotifications.AddAsync(new CustomerNotification()
             {
                 Title = "رد حواله",
-                Body = string.Concat(sender.Name," ",sender.LastName," حواله شما را رد کرد"),
-                CustomerId = notification.TransferSenderId,
+                Body = string.Concat(receiver.Name," ",receiver.LastName," حواله شما را رد کرد"),
+                CustomerId = targetTransfer.SenderId,
                 Type = "deniedTransfer",
                 BaseId = notification.DeniedTransferId
             },cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            await _notifyHub.UpdateNotificationUser(notification.TransferSenderId);
+            await _notifyHub.UpdateNotificationUser(targetTransfer.SenderId);
         }
     }
 }

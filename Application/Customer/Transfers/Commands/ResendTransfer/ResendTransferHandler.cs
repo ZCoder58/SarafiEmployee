@@ -1,6 +1,6 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
 using Application.Common.Statics;
 using Application.Customer.Transfers.EventHandlers;
@@ -9,10 +9,11 @@ using MediatR;
 
 namespace Application.Customer.Transfers.Commands.ResendTransfer
 {
-    public class ResendTransferHandler:IRequestHandler<ResendTransferCommand>
+    public class ResendTransferHandler : IRequestHandler<ResendTransferCommand>
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IMediator _mediator;
+
         public ResendTransferHandler(IApplicationDbContext dbContext, IMediator mediator)
         {
             _dbContext = dbContext;
@@ -24,7 +25,14 @@ namespace Application.Customer.Transfers.Commands.ResendTransfer
             var targetTransfer = _dbContext.Transfers.GetById(request.TransferId);
             targetTransfer.State = TransfersStatusTypes.InProgress;
             await _dbContext.SaveChangesAsync(cancellationToken);
-            await _mediator.Publish(new TransferCreated(targetTransfer.ReceiverId.ToGuid(),targetTransfer.Id),cancellationToken);
+            if (targetTransfer.Forwarded)
+            {
+                var childForwardedTransfer = _dbContext.Transfers.FirstOrDefault(a=>a.ParentForwardedId==targetTransfer.Id);
+                await _mediator.Send(new ResendTransferCommand(childForwardedTransfer.Id, true),cancellationToken);
+            }
+            if (!request.EnableForwarded)
+                await _mediator.Publish(new TransferCreated(targetTransfer.Id),
+                    cancellationToken);
             return Unit.Value;
         }
     }

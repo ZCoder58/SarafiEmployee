@@ -71,6 +71,11 @@ const common = {
           title:"بیلانس رسید و برد مشتریان",
           type:"item",
           url:"subCustomers/bills"
+        },
+        {
+          title:"بیلانس همکاران",
+          type:"item",
+          url:"balances"
         }
       ]
     },

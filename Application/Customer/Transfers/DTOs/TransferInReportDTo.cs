@@ -6,5 +6,6 @@
         public string TotalAmount { get; set; }
         public int TotalTransfers { get; set; }
         public double TotalFee { get; set; }
+        
     }
 }

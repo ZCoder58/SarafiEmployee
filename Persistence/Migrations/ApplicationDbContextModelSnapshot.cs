@@ -694,6 +694,15 @@ namespace Persistence.Migrations
                     b.Property<double>("Fee")
                         .HasColumnType("float");
 
+                    b.Property<int>("ForwardPriority")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Forwarded")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ForwardedTransferId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("FromCurrency")
                         .HasColumnType("nvarchar(max)");
 
@@ -711,6 +720,9 @@ namespace Persistence.Migrations
 
                     b.Property<double>("FromRate")
                         .HasColumnType("float");
+
+                    b.Property<Guid?>("ParentForwardedId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("RateUpdated")
                         .HasColumnType("bit");

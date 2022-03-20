@@ -18,7 +18,7 @@ namespace Application.Customer.Transfers.DTOs
         public string ToSId { get; set; }
         public string ToCurrency { get; set; }
 
-        // public double ToRate { get; set; }
+        public bool Forwarded { get; set; }
         public double DestinationAmount { get; set; }
         
         public DateTime CompleteDate { get; set; }

@@ -122,12 +122,27 @@ namespace Application.Common.Mappers
             CreateMap<SubCustomerEditTransferCommand, Transfer>().ReverseMap();
             CreateMap<Transfer, TransferInboxTableDTo>()
                 .ForMember(dist => dist.Deniable, option =>
-                    option.MapFrom(source =>source.State==TransfersStatusTypes.InProgress||
-                                            source.CompleteDate.Value.Date>=CDateTime.Now.AddDays(-1).Date));
-            CreateMap<Transfer, TransferOutboxTableDTo>();
+                    option.MapFrom(source =>!source.Forwarded&&
+                                            (source.State == TransfersStatusTypes.InProgress ||
+                                             (source.State == TransfersStatusTypes.Completed &&
+                                              !source.Forwarded&&
+                                              source.CompleteDate.Value.Date >= CDateTime.Now.AddDays(-1).Date &&
+                                              source.CompleteDate.Value.Date <= CDateTime.Now.Date))))
+                .ForMember(dist => dist.Forwarded, option =>
+                    option.MapFrom(source => source.Forwarded))
+                .ForMember(dist => dist.HasParent, option =>
+                    option.MapFrom(source => source.ParentForwardedId.IsNotNull()));
+            CreateMap<Transfer, TransferOutboxTableDTo>()
+                .ForMember(dist => dist.Forwarded, option =>
+                    option.MapFrom(source =>source.ForwardedTransferId.IsNotNull()))
+                .ForMember(dist => dist.HasParent, option =>
+                    option.MapFrom(source => source.ParentForwardedId.IsNotNull()));
             CreateMap<Transfer, TransferInboxDetailDTo>();
             CreateMap<Transfer, TransferOutboxDetailDTo>();
             CreateMap<EditTransferCommand, Transfer>();
+            CreateMap<Transfer, ForwardEditTransferDTo>()
+                .ForMember(dist => dist.Amount, option =>
+                    option.MapFrom(source => source.SourceAmount));
             CreateMap<Transfer, EditTransferDTo>()
                 .ForMember(dist => dist.Amount, option =>
                     option.MapFrom(source => source.SourceAmount));

@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Application.Customer.Transfers.Commands.ResendTransfer
 {
-    public record ResendTransferCommand(Guid TransferId) : IRequest;
+    public record ResendTransferCommand(Guid TransferId,bool EnableForwarded=false) : IRequest;
 }

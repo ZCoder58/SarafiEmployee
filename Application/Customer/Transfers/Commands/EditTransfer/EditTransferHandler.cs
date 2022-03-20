@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.Common.Extensions.DbContext;
@@ -6,7 +7,9 @@ using Application.Customer.CustomerAccounts.Commands.Transactions.RollbackTransa
 using Application.Customer.CustomerAccounts.Commands.UpdateAccountAmount.DepositAccountTransfer;
 using Application.Customer.CustomerAccounts.Extensions;
 using Application.Customer.ExchangeRates.Extensions;
+using Application.Customer.Transfers.Commands.ForwardEditTransfer;
 using Application.Customer.Transfers.EventHandlers;
+using Application.Customer.Transfers.Extensions;
 using AutoMapper;
 using Domain.Interfaces;
 using MediatR;
@@ -41,7 +44,8 @@ namespace Application.Customer.Transfers.Commands.EditTransfer
                 targetTransfer.FromCurrency != fromCurrency.PriceName ||
                 targetTransfer.ToCurrency != toCurrency.PriceName)
             {
-                var targetTransaction = _dbContext.CustomerAccountTransactions.GetByTransferId(targetTransfer.Id,targetTransfer.SenderId);
+                var targetTransaction =
+                    _dbContext.CustomerAccountTransactions.GetByTransferId(targetTransfer.Id, targetTransfer.SenderId);
                 await _mediator.Send(new CRollbackTransactionCommand(targetTransaction.Id, true), cancellationToken);
                 var transactionMsg = string.Concat("از ارسال حواله با کد نمبر ", targetTransfer.CodeNumber, " به ",
                     receiver.Customer.Name, " ", receiver.Customer.FatherName, " دریافت گردید ");
@@ -75,11 +79,32 @@ namespace Application.Customer.Transfers.Commands.EditTransfer
 
             if (!isTheSameReceiver)
             {
-                await _mediator.Publish(new TransferCreated(receiver.CustomerFriendId.ToGuid(), targetTransfer.Id),
+                targetTransfer.Forwarded = false;
+                await _mediator.Publish(new TransferCreated(targetTransfer.Id),
                     cancellationToken);
+                if (targetTransfer.Forwarded)
+                {
+                    var forwardedList = _dbContext.Transfers.GetForwards(targetTransfer.Id);
+                    _dbContext.Transfers.RemoveRange(forwardedList);
+                    await _dbContext.SaveChangesAsync(cancellationToken);
+                }
             }
             else
             {
+                if (targetTransfer.Forwarded)
+                {
+                    var childForwarded =
+                        _dbContext.Transfers.FirstOrDefault(a => a.ParentForwardedId == targetTransfer.Id);
+                    await _mediator.Send(new ForwardEditTransferCommand()
+                    {
+                        Id = childForwarded.Id,
+                        Comment = childForwarded.Comment,
+                        CodeNumber = childForwarded.CodeNumber,
+                        ReceiverFee = childForwarded.ReceiverFee,
+                        EnableEditForwarded = true
+                    }, cancellationToken);
+                }
+
                 await _mediator.Publish(new TransferEdited(), cancellationToken);
             }
 

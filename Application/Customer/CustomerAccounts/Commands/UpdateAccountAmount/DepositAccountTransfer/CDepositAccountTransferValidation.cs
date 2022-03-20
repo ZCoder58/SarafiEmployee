@@ -18,7 +18,7 @@ namespace Application.Customer.CustomerAccounts.Commands.UpdateAccountAmount.Dep
                 .NotEqual(Guid.Empty).WithMessage("ای دی اکانت ضروری میباشد");
             RuleFor(a => a.TransferId)
                 .Cascade(CascadeMode.Stop)
-                .Must(transferId => dbContext.Transfers.IsExistsFor(httpUserContext.GetCurrentUserId().ToGuid(),transferId))
+                .Must(transferId => dbContext.Transfers.IsSender(httpUserContext.GetCurrentUserId().ToGuid(),transferId))
                 .WithMessage("حواله نامعتبر");
             RuleFor(a => a.Amount)
                 .NotNull().WithMessage("مقدار پول ضروری میباشد")

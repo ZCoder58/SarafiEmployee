@@ -1,4 +1,4 @@
-import { TableGlobalSearch, CToolbar, CTable, CTooltip, AskDialog, CurrencyText } from '../../../ui-componets'
+import { TableGlobalSearch, CToolbar, CTable, CTooltip, AskDialog, CurrencyText, CDialog } from '../../../ui-componets'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'; import React from 'react'
 import { Box, Grid, Stack, Typography, useTheme, Chip, IconButton, ListItem, ListItemText, Button } from '@mui/material'
@@ -9,6 +9,8 @@ import { useSelector } from 'react-redux';
 import authAxiosApi from '../../../axios';
 import ReplayIcon from '@mui/icons-material/Replay';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import SavedSearchIcon from '@mui/icons-material/SavedSearch';
+import ForwardTransferEditForm from './ForwardTransferEditForm';
 export default function TransferOutbox() {
     const [refreshTableState, setRefreshTableState] = React.useState(false)
     const [searchOpen, setSeachOpen] = React.useState(false)
@@ -16,6 +18,9 @@ export default function TransferOutbox() {
     const theme = useTheme()
     const { screenXs } = useSelector(states => states.R_AdminLayout)
     const navigate = useNavigate()
+    const [askResendOpen, setAskResendOpen] = React.useState(false)
+    const [editOpen, setEditOpen] = React.useState(false)
+    const [transferId, setTransferId] = React.useState("")
     const columnsMobile = [
         {
             name: <Typography variant="body2" fontWeight={600}>از طرف</Typography>,
@@ -50,12 +55,15 @@ export default function TransferOutbox() {
                         <Button variant="contained" size="small" onClick={() => navigate("/customer/transfers/outbox/" + row.id)}>
                             جزییات
                         </Button>
-                        {row.state === -1 &&
+                        {(row.state === -1 &&!row.hasParent)?
                             <Button variant="contained" size="small" onClick={() => askForResend(row.id)}>
                                 ارسال دوباره
-                            </Button>}
+                            </Button>:""}
                         {(row.state === 0 ||row.state===-1) &&
-                            <Button variant="contained" size="small" onClick={() =>navigate(`/customer${row.accountType===1?"/subCustomers":""}/transfers/edit/${row.id}`)}>
+                            <Button variant="contained" size="small" 
+
+                            onClick={() =>handleEditClick(row)}
+                            >
                                 ویرایش
                             </Button>}
                     </Stack>
@@ -124,22 +132,23 @@ export default function TransferOutbox() {
                             <InfoOutlinedIcon />
                         </IconButton>
                     </CTooltip>
-                    {row.state === -1 &&
+                    {(row.state === -1&&!row.hasParent) ?
                         <CTooltip title="ارسال دوباره">
                             <IconButton onClick={() => askForResend(row.id)}>
                                 <ReplayIcon />
                             </IconButton>
-                        </CTooltip>}
+                        </CTooltip>:""}
                     {(row.state === 0 || row.state===-1)&&
                         <CTooltip title="ویرایش">
-                            <IconButton onClick={() => navigate(`/customer${row.accountType===1?"/subCustomers":""}/transfers/edit/${row.id}`)}>
+                            <IconButton onClick={() =>handleEditClick(row)}>
                                 <ModeEditOutlineOutlinedIcon />
                             </IconButton>
                         </CTooltip>}
                 </>
             ,
             sortable: false,
-            reorder: false
+            reorder: false,
+            minWidth:"200px"
         }
     ]
     const globalSearch = React.useCallback((searchedText) => {
@@ -148,21 +157,25 @@ export default function TransferOutbox() {
     function refreshTable() {
         setRefreshTableState(!refreshTableState)
     }
-    const [askResendOpen, setAskResendOpen] = React.useState(false)
-    const [transferIdForResend, setTransferIdForResend] = React.useState("")
+    function handleEditClick(transfer){
+        if(!transfer.forwarded){
+            navigate(`/customer${transfer.accountType===1?"/subCustomers":""}/transfers/edit/${transfer.id}`)
+        }else{
+            setTransferId(transfer.id)
+            setEditOpen(true)
+        }
+    }
     function askForResend(transferId) {
-        setTransferIdForResend(transferId)
+        setTransferId(transferId)
         setAskResendOpen(true)
     }
     async function setTransferResend() {
-        await authAxiosApi.put(`customer/transfers/resendTransfer/${transferIdForResend}`).then(r => {
+        await authAxiosApi.put(`customer/transfers/resendTransfer/${transferId}`).then(r => {
             refreshTable()
         })
         setAskResendOpen(false)
     }
     return (
-        // loading ? <SkeletonFull /> :
-
         <Grid container spacing={1}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
                 <AskDialog
@@ -170,6 +183,16 @@ export default function TransferOutbox() {
                     onNo={() => setAskResendOpen(false)}
                     onYes={() => setTransferResend()}
                     message="ارسال دوباره حواله ؟" />
+                <CDialog
+                open={editOpen}
+                onClose={()=>setEditOpen(false)}
+                title={"ویرایش حواله"}
+                >
+                    <ForwardTransferEditForm transferId={transferId} onSubmit={()=>{
+                        setEditOpen(false)
+                        refreshTable()
+                    }}/>
+                </CDialog>
                 <CToolbar>
                     <CTooltip title="حواله جدید">
                         <IconButton onClick={() => navigate('/customer/transfers/newTransfer')}>
@@ -186,6 +209,11 @@ export default function TransferOutbox() {
                             <SearchOutlinedIcon />
                         </IconButton>
                     </CTooltip>
+                    {/* <CTooltip title="جستجو پیشرفته">
+                        <IconButton onClick={() => setSeachOpen(!searchOpen)}>
+                            <SavedSearchIcon />
+                        </IconButton>
+                    </CTooltip> */}
                 </CToolbar>
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>

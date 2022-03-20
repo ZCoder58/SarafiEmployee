@@ -284,10 +284,11 @@ export default function SubCustomerEditTransfer() {
 
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={12}>
-                        <FieldSet label="معلومات حواله دار">
+                    <FieldSet label="معلومات حواله اجرا کننده">
                             <SearchFriendDropdown
                                 name="friendId"
                                 size="small"
+                                label="اجرا کننده"
                                 defaultFriendId={formik.values.friendId}
                                 error={formik.errors.friendId ? true : false}
                                 helperText={formik.errors.friendId}
@@ -296,7 +297,7 @@ export default function SubCustomerEditTransfer() {
                             />
                             <TextField
                                 name='receiverFee'
-                                label="کمیشن حواله دار"
+                                label="کمیشن اجرا کننده"
                                 size="small"
                                 type="number"
                                 defaultValue={formik.values.receiverFee}

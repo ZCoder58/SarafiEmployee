@@ -1,12 +1,14 @@
-import { RefreshOutlined } from '@mui/icons-material'
+import { ArrowBackOutlined, RefreshOutlined } from '@mui/icons-material'
 import { Grid, IconButton, Typography, Chip, Stack } from '@mui/material'
 import React from 'react'
 import { CCard, CTable, CurrencyText, FieldValue } from '../../../ui-componets'
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 export default function BalancesTransactions({ friendId }) {
     const [refreshState, setRefreshState] = React.useState(false)
     const { screenXs } = useSelector(states => states.R_AdminLayout)
+    const navigate=useNavigate()
     function refreshTable() {
         setRefreshState(!refreshState)
     }
@@ -59,10 +61,17 @@ export default function BalancesTransactions({ friendId }) {
             title=""
             headerIcon={<ReceiptOutlinedIcon />}
             enableActions
-            actions={<IconButton onClick={refreshTable}>
+            actions={
+                <>
+            <IconButton size="small" onClick={()=>navigate("/customer/balances")}>
+                <ArrowBackOutlined />
+            </IconButton>
+                  <IconButton size="small" onClick={refreshTable}>
                 <RefreshOutlined />
-            </IconButton>}
-            enableCollapse
+            </IconButton>
+                </>
+          }
+            enableCollapse={false}
         >
             <Grid container spacing={1}>
                 <Grid item lg={12} md={12} sm={12} xs={12}>

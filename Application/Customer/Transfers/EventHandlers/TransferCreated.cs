@@ -10,7 +10,7 @@ using MediatR;
 
 namespace Application.Customer.Transfers.EventHandlers
 {
-    public record TransferCreated(Guid ReceiverId,Guid NewTransferId) : INotification;
+    public record TransferCreated(Guid NewTransferId) : INotification;
     public class TransferCreatedHandler:INotificationHandler<TransferCreated>
     {
         private readonly INotifyHubAccessor _notifyHub;
@@ -26,19 +26,20 @@ namespace Application.Customer.Transfers.EventHandlers
 
         public async Task Handle(TransferCreated notification, CancellationToken cancellationToken)
         {
-            var sender = _dbContext.Customers.GetById(_httpUserContext.GetCurrentUserId().ToGuid());
+            var targetTransfer = _dbContext.Transfers.GetById(notification.NewTransferId);
+            var sender = _dbContext.Customers.GetById(targetTransfer.SenderId);
             //send self notific 
             await _notifyHub.NotifySelfAsync("حواله جدید موفقانه اضافه شد","success");
             await _dbContext.CustomerNotifications.AddAsync(new CustomerNotification()
             {
                 Title = "حواله جدید",
                 Body = string.Concat("حواله جدید از ",sender.Name," ",sender.LastName),
-                CustomerId = notification.ReceiverId,
+                CustomerId = targetTransfer.ReceiverId.ToGuid(),
                 Type = "newTransfer",
                 BaseId = notification.NewTransferId
             },cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            await _notifyHub.UpdateNotificationUser(notification.ReceiverId);
+            await _notifyHub.UpdateNotificationUser(targetTransfer.ReceiverId.ToGuid());
         }
     }
 }

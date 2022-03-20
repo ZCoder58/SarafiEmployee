@@ -21,6 +21,7 @@ namespace Web.Filters
                 {typeof(ValidationException), HandleValidationException},
                 {typeof(RefreshTokenValidationException),HandelRefreshTokenValidationException},
                 {typeof(EntityNotFoundException),HandleEntityNotFoundException},
+                {typeof(CustomException),HandleCustomException},
                 {typeof(UnAuthorizedException),HandleUnAuthorizedException}
 
                 //add more exception filters here
@@ -53,7 +54,7 @@ namespace Web.Filters
         }
         public void HandleEntityNotFoundException(ExceptionContext context)
         {
-            var exception = (ValidationException) context.Exception;
+            var exception = (Exception) context.Exception;
             context.Result = new BadRequestObjectResult(exception.Message);
             context.ExceptionHandled = true;
         } 
@@ -106,6 +107,18 @@ namespace Web.Filters
             {
                 StatusCode = StatusCodes.Status500InternalServerError
             };
+            
+            context.ExceptionHandled = true;
+        }
+        private void HandleCustomException(ExceptionContext context)
+        {
+            var details = new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = context.Exception.Message
+            };
+
+            context.Result = new ObjectResult(details);
             
             context.ExceptionHandled = true;
         }

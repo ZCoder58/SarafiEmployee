@@ -34,6 +34,10 @@ namespace Domain.Entities
         public Guid SenderId { get; set; }
         public Customer Sender { get; set; }
         public int AccountType { get; set; }
+        public Guid? ForwardedTransferId { get; set; }
+        public int ForwardPriority { get; set; }
+        public bool Forwarded { get; set; }
+        public Guid? ParentForwardedId { get; set; }
         public Guid? SubCustomerAccountId { get; set; }
         public SubCustomerAccount SubCustomerAccount { get; set; }
     }
